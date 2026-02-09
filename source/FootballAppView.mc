@@ -1,5 +1,6 @@
 import Toybox.Graphics;
 import Toybox.Lang;
+import Toybox.System;
 import Toybox.Timer;
 import Toybox.WatchUi;
 
@@ -34,46 +35,89 @@ class FootballAppView extends WatchUi.View {
         var height = dc.getHeight();
         var centerX = width / 2;
         var scoreText = _app.getTeamAScore().toString() + " - " + _app.getTeamBScore().toString();
+        var isRound = (System.getDeviceSettings().screenShape == System.SCREEN_SHAPE_ROUND);
+        var safeInset = isRound ? (width / 10) : 8;
+        if (safeInset < 8) {
+            safeInset = 8;
+        }
+
+        var titleFont = Graphics.FONT_XTINY;
+        var scoreFont = Graphics.FONT_LARGE;
+        var labelFont = Graphics.FONT_SMALL;
+        var valueFont = Graphics.FONT_MEDIUM;
+
+        var sectionGap = 10;
+        var rowGap = 4;
+        var headerHeight = dc.getFontHeight(titleFont) + 6;
+        var availableHeight = height - (safeInset * 2) - headerHeight;
+        var contentHeight = calculateContentHeight(dc, scoreFont, labelFont, valueFont, sectionGap, rowGap);
+
+        // Compact layout for tight round displays.
+        if (contentHeight > availableHeight) {
+            scoreFont = Graphics.FONT_MEDIUM;
+            labelFont = Graphics.FONT_XTINY;
+            valueFont = Graphics.FONT_SMALL;
+            sectionGap = 6;
+            rowGap = 2;
+            contentHeight = calculateContentHeight(dc, scoreFont, labelFont, valueFont, sectionGap, rowGap);
+        }
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
 
-        drawStatusIndicator(dc, width);
+        drawStatusIndicator(dc, width, safeInset);
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(centerX, 8, Graphics.FONT_XTINY, "Soccer Match", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX, safeInset, titleFont, "Soccer Match", Graphics.TEXT_JUSTIFY_CENTER);
 
-        var scoreY = (height / 2) - dc.getFontHeight(Graphics.FONT_LARGE);
-        dc.drawText(centerX, scoreY, Graphics.FONT_LARGE, scoreText, Graphics.TEXT_JUSTIFY_CENTER);
-
-        var goalieLabelY = scoreY + dc.getFontHeight(Graphics.FONT_LARGE) + 8;
-        dc.drawText(centerX, goalieLabelY, Graphics.FONT_SMALL, "Goalie Timer", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(centerX, goalieLabelY + dc.getFontHeight(Graphics.FONT_SMALL), Graphics.FONT_MEDIUM, formatGoalieTimer(_app.getGoalieTimerSeconds()), Graphics.TEXT_JUSTIFY_CENTER);
-
-        var heartRateText = formatHeartRate();
-        var heartRateY = height - dc.getFontHeight(Graphics.FONT_MEDIUM) - 12;
-        dc.drawText(centerX, heartRateY - dc.getFontHeight(Graphics.FONT_SMALL), Graphics.FONT_SMALL, "Heart Rate", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(centerX, heartRateY, Graphics.FONT_MEDIUM, heartRateText, Graphics.TEXT_JUSTIFY_CENTER);
-
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(8, height - dc.getFontHeight(Graphics.FONT_XTINY) - 4, Graphics.FONT_XTINY, "Tap left/right: +1 score", Graphics.TEXT_JUSTIFY_LEFT);
-        dc.drawText(width - 8, height - dc.getFontHeight(Graphics.FONT_XTINY) - 4, Graphics.FONT_XTINY, "Tap bottom: reset goalie", Graphics.TEXT_JUSTIFY_RIGHT);
-    }
-
-    function drawStatusIndicator(dc as Dc, width as Lang.Number) as Void {
-        var isRecording = _app.isRecording();
-        var statusColor = isRecording ? Graphics.COLOR_GREEN : Graphics.COLOR_RED;
-        var statusText = isRecording ? "Recording" : "Paused";
-
-        if (!_app.isRecordingSupported()) {
-            statusText = "FIT Unsupported";
+        var blockTop = safeInset + headerHeight + ((availableHeight - contentHeight) / 2);
+        if (blockTop < (safeInset + headerHeight)) {
+            blockTop = safeInset + headerHeight;
         }
 
-        dc.setColor(statusColor, Graphics.COLOR_TRANSPARENT);
-        dc.fillCircle(width - 16, 16, 6);
+        var scoreY = blockTop;
+        dc.drawText(centerX, scoreY, scoreFont, scoreText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(width - 28, 8, Graphics.FONT_XTINY, statusText, Graphics.TEXT_JUSTIFY_RIGHT);
+        var goalieLabelY = scoreY + dc.getFontHeight(scoreFont) + sectionGap;
+        dc.drawText(centerX, goalieLabelY, labelFont, "Goalie Timer", Graphics.TEXT_JUSTIFY_CENTER);
+        var goalieValueY = goalieLabelY + dc.getFontHeight(labelFont) + rowGap;
+        dc.drawText(centerX, goalieValueY, valueFont, formatGoalieTimer(_app.getGoalieTimerSeconds()), Graphics.TEXT_JUSTIFY_CENTER);
+
+        var heartRateText = formatHeartRate();
+        var hrLabelY = goalieValueY + dc.getFontHeight(valueFont) + sectionGap;
+        dc.drawText(centerX, hrLabelY, labelFont, "Heart Rate", Graphics.TEXT_JUSTIFY_CENTER);
+        var hrValueY = hrLabelY + dc.getFontHeight(labelFont) + rowGap;
+        dc.drawText(centerX, hrValueY, valueFont, heartRateText, Graphics.TEXT_JUSTIFY_CENTER);
+    }
+
+    function calculateContentHeight(
+        dc as Dc,
+        scoreFont as Graphics.FontType,
+        labelFont as Graphics.FontType,
+        valueFont as Graphics.FontType,
+        sectionGap as Lang.Number,
+        rowGap as Lang.Number
+    ) as Lang.Number {
+        return dc.getFontHeight(scoreFont)
+            + sectionGap
+            + dc.getFontHeight(labelFont)
+            + rowGap
+            + dc.getFontHeight(valueFont)
+            + sectionGap
+            + dc.getFontHeight(labelFont)
+            + rowGap
+            + dc.getFontHeight(valueFont);
+    }
+
+    function drawStatusIndicator(dc as Dc, width as Lang.Number, safeInset as Lang.Number) as Void {
+        var isRecording = _app.isRecording();
+        var statusColor = isRecording ? Graphics.COLOR_GREEN : Graphics.COLOR_RED;
+        var radius = 5;
+        var dotX = width - safeInset;
+        var dotY = safeInset + radius;
+
+        dc.setColor(statusColor, Graphics.COLOR_TRANSPARENT);
+        dc.fillCircle(dotX, dotY, radius);
     }
 
     function formatGoalieTimer(totalSeconds as Lang.Number) as Lang.String {
