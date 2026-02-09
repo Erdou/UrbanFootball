@@ -1,0 +1,23 @@
+# Build artifacts
+bin/
+gen/
+*.prg
+*.prg.debug.xml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# OS
+Thumbs.db
+
+# Dependencies
+node_modules/
