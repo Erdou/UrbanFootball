@@ -11,11 +11,17 @@ class FootballAppGoalieModeView extends WatchUi.View {
     var _yesLabel = null;
     var _noLabel = null;
 
-    function initialize() {
+    function initialize(initialEnabled) {
         View.initialize();
         _title = WatchUi.loadResource(Rez.Strings.goalieModeTitle);
         _yesLabel = WatchUi.loadResource(Rez.Strings.goalieModeYes);
         _noLabel = WatchUi.loadResource(Rez.Strings.goalieModeNo);
+
+        if (initialEnabled) {
+            _selectedIndex = 0;
+        } else {
+            _selectedIndex = 1;
+        }
     }
 
     function isTimerEnabledSelection() {

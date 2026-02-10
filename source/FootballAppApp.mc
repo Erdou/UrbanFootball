@@ -7,6 +7,8 @@ class FootballAppApp extends Application.AppBase {
     var _gpsEnabled = false;
     var _goalieTimerEnabled = true;
     var _goalieTimerDurationMinutes = 7;
+    var _mainView = null;
+    var _mainDelegate = null;
 
     function initialize() {
         AppBase.initialize();
@@ -81,7 +83,7 @@ class FootballAppApp extends Application.AppBase {
     }
 
     function openGoalieModeView() as Void {
-        var view = new FootballAppGoalieModeView();
+        var view = new FootballAppGoalieModeView(_goalieTimerEnabled);
         var delegate = new FootballAppGoalieModeDelegate(self, view);
         WatchUi.switchToView(view, delegate, WatchUi.SLIDE_IMMEDIATE);
     }
@@ -93,9 +95,12 @@ class FootballAppApp extends Application.AppBase {
     }
 
     function openMainView() as Void {
-        var view = new FootballAppView();
-        view.configureGoalieTimer(_goalieTimerEnabled, _goalieTimerDurationMinutes);
-        var delegate = new FootballAppDelegate(view);
-        WatchUi.switchToView(view, delegate, WatchUi.SLIDE_IMMEDIATE);
+        if (_mainView == null || _mainDelegate == null) {
+            _mainView = new FootballAppView();
+            _mainDelegate = new FootballAppDelegate(_mainView);
+        }
+
+        _mainView.configureGoalieTimer(_goalieTimerEnabled, _goalieTimerDurationMinutes);
+        WatchUi.switchToView(_mainView, _mainDelegate, WatchUi.SLIDE_IMMEDIATE);
     }
 }

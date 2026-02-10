@@ -9,14 +9,17 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
 
     const MAX_SCORE = 99;
     const LONG_PRESS_THRESHOLD_MS = 550;
+    const BACK_LONG_PRESS_THRESHOLD_MS = 700;
     const LONG_PRESS_DEDUPE_MS = 300;
     const BACK_RESET_DEDUPE_MS = 250;
 
     var _view;
     var _leftButtonDownAt = null;
     var _rightButtonDownAt = null;
+    var _backButtonDownAt = null;
     var _lastLeftLongPressAt = -LONG_PRESS_DEDUPE_MS;
     var _consumeNextUpRelease = false;
+    var _suppressNextOnBack = false;
     var _lastBackResetAt = -BACK_RESET_DEDUPE_MS;
 
     function initialize(view) {
@@ -107,6 +110,11 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
         });
     }
 
+    function openGoalieConfiguration() as Void {
+        var app = Application.getApp() as FootballAppApp;
+        app.openGoalieModeView();
+    }
+
     function onTap(clickEvent) {
         var coords = clickEvent.getCoordinates();
         var x = coords[0];
@@ -139,6 +147,11 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
 
         if (key == WatchUi.KEY_DOWN) {
             _rightButtonDownAt = now;
+            return true;
+        }
+
+        if (key == WatchUi.KEY_ESC) {
+            _backButtonDownAt = now;
             return true;
         }
 
@@ -179,6 +192,19 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
             return true;
         }
 
+        if (key == WatchUi.KEY_ESC) {
+            var backLongPress = (_backButtonDownAt != null) && ((now - _backButtonDownAt) >= BACK_LONG_PRESS_THRESHOLD_MS);
+            _backButtonDownAt = null;
+
+            if (backLongPress) {
+                _suppressNextOnBack = true;
+                openGoalieConfiguration();
+            } else {
+                handleBackReset();
+            }
+            return true;
+        }
+
         return false;
     }
 
@@ -190,6 +216,10 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onBack() {
+        if (_suppressNextOnBack) {
+            _suppressNextOnBack = false;
+            return true;
+        }
         handleBackReset();
         return true;
     }
@@ -202,15 +232,14 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
             return true;
         }
 
+        if (key == WatchUi.KEY_ESC) {
+            return true;
+        }
+
         if (key == WatchUi.KEY_MENU) {
             _consumeNextUpRelease = true;
             _leftButtonDownAt = null;
             handleLeftLongPress();
-            return true;
-        }
-
-        if (key == WatchUi.KEY_ESC && keyType == WatchUi.PRESS_TYPE_ACTION) {
-            handleBackReset();
             return true;
         }
 
