@@ -45,15 +45,12 @@ class FootballAppGoalieDurationDelegate extends WatchUi.BehaviorDelegate {
         var width = System.getDeviceSettings().screenWidth;
         var height = System.getDeviceSettings().screenHeight;
 
-        if (x < 0 || x > width) {
-            return true;
+        if (_view.isTapOnMinus(x, y, width, height)) {
+            _view.decrementMinutes();
+        } else if (_view.isTapOnPlus(x, y, width, height)) {
+            _view.incrementMinutes();
         }
 
-        if (y < (height / 2)) {
-            _view.incrementMinutes();
-        } else {
-            _view.decrementMinutes();
-        }
         return true;
     }
 }
