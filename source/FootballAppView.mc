@@ -44,13 +44,16 @@ class FootballAppView extends WatchUi.View {
         var height = dc.getHeight();
         var centerX = width / 2;
         var centerY = height / 2;
-        var scoreY = centerY - 40;
+        var scoreFont = Graphics.FONT_NUMBER_HOT;
+        var scoreY = centerY - 34;
+        var scoreHeight = dc.getFontHeight(scoreFont);
 
-        dc.drawText(centerX - 50, scoreY, Graphics.FONT_NUMBER_HOT, scoreA.toString(), Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(centerX + 50, scoreY, Graphics.FONT_NUMBER_HOT, scoreB.toString(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX - 50, scoreY, scoreFont, scoreA.toString(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX + 50, scoreY, scoreFont, scoreB.toString(), Graphics.TEXT_JUSTIFY_CENTER);
 
         if (footIcon != null) {
-            dc.drawBitmap(centerX - (footIcon.getWidth() / 2), scoreY + 4, footIcon);
+            var iconY = scoreY + ((scoreHeight - footIcon.getHeight()) / 2);
+            dc.drawBitmap(centerX - (footIcon.getWidth() / 2), iconY, footIcon);
         } else {
             dc.drawText(centerX, scoreY, Graphics.FONT_LARGE, "-", Graphics.TEXT_JUSTIFY_CENTER);
         }
@@ -61,8 +64,14 @@ class FootballAppView extends WatchUi.View {
         var seconds = diffSeconds % 60;
         var timeStr = minutes.format("%02d") + ":" + seconds.format("%02d");
         
+        var goalieFont = Graphics.FONT_SMALL;
+        var goalieY = centerY + 70;
+        var goalieMaxY = height - dc.getFontHeight(goalieFont) - 24;
+        if (goalieY > goalieMaxY) {
+            goalieY = goalieMaxY;
+        }
         dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(centerX, height - 50, Graphics.FONT_MEDIUM, "Gardien: " + timeStr, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX, goalieY, goalieFont, "Gardien: " + timeStr, Graphics.TEXT_JUSTIFY_CENTER);
 
         var hr = "--";
         var info = Activity.getActivityInfo();
