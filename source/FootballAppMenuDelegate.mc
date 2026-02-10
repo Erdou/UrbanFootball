@@ -1,21 +1,45 @@
 using Toybox.WatchUi;
 
-class FootballAppMenuDelegate extends WatchUi.MenuInputDelegate {
+class FootballAppMenuDelegate extends WatchUi.BehaviorDelegate {
 
     var _app;
+    var _selectorView;
 
-    function initialize(app) {
-        MenuInputDelegate.initialize();
+    function initialize(app, selectorView) {
+        BehaviorDelegate.initialize();
         _app = app;
+        _selectorView = selectorView;
     }
 
-    function onMenuItem(item) as Void {
-        if (item == :modeIndoor) {
-            _app.selectEnvironment(false);
-            _app.openMainView();
-        } else if (item == :modeOutdoor) {
-            _app.selectEnvironment(true);
-            _app.openMainView();
+    function confirmSelection() as Void {
+        _app.selectEnvironment(_selectorView.getSelectedIsOutdoor());
+        _app.openMainView();
+    }
+
+    function onKey(keyEvent) {
+        if (keyEvent.getType() != WatchUi.PRESS_TYPE_ACTION) {
+            return false;
         }
+
+        var key = keyEvent.getKey();
+        if (key == WatchUi.KEY_UP) {
+            _selectorView.moveSelection(-1);
+            return true;
+        } else if (key == WatchUi.KEY_DOWN) {
+            _selectorView.moveSelection(1);
+            return true;
+        } else if (key == WatchUi.KEY_ENTER || key == WatchUi.KEY_START) {
+            confirmSelection();
+            return true;
+        }
+
+        return false;
+    }
+
+    function onTap(clickEvent) {
+        var y = clickEvent.getCoordinates()[1];
+        _selectorView.selectFromTap(y);
+        confirmSelection();
+        return true;
     }
 }

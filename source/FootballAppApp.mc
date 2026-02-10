@@ -24,7 +24,8 @@ class FootballAppApp extends Application.AppBase {
     }
 
     function getInitialView() {
-        return [ new Rez.Menus.EnvironmentMenu(), new FootballAppMenuDelegate(self) ];
+        var selectorView = new FootballAppEnvironmentView();
+        return [ selectorView, new FootballAppMenuDelegate(self, selectorView) ];
     }
 
     function selectEnvironment(isOutdoor) as Void {

@@ -4,6 +4,7 @@
     <string id="prompt">Click the menu button</string>
 
     <string id="environmentMenuTitle">Mode de jeu</string>
+    <string id="environmentTypeTitle">Type</string>
     <string id="environmentIndoor">Intérieur</string>
     <string id="environmentOutdoor">Extérieur</string>
 </strings>
