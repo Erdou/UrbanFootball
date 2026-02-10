@@ -2,9 +2,14 @@ using Toybox.WatchUi;
 using Toybox.Graphics;
 using Toybox.System;
 using Toybox.Activity;
+using Toybox.Attention;
 using Toybox.Timer;
 
 class FootballAppView extends WatchUi.View {
+
+    const GOALIE_ALERT_PULSE_INTERVAL_MS = 900;
+    const GOALIE_ALERT_PULSE_DURATION_MS = 80;
+    const GOALIE_ALERT_PULSE_STRENGTH = 30;
 
     var scoreA = 0;
     var scoreB = 0;
@@ -17,6 +22,7 @@ class FootballAppView extends WatchUi.View {
     var isRecording = false;
 
     var refreshTimer;
+    var _lastGoalieAlertAt = null;
 
     function initialize() {
         View.initialize();
@@ -28,6 +34,7 @@ class FootballAppView extends WatchUi.View {
     }
 
     function onTimerTick() as Void {
+        maybePulseGoalieAlert();
         WatchUi.requestUpdate();
     }
 
@@ -41,6 +48,35 @@ class FootballAppView extends WatchUi.View {
         }
 
         goalieTimerStart = System.getTimer();
+        _lastGoalieAlertAt = null;
+    }
+
+    function getGoalieRemainingSeconds() {
+        var now = System.getTimer();
+        var elapsedSeconds = (now - goalieTimerStart) / 1000;
+        return goalieTimerDurationSeconds - elapsedSeconds;
+    }
+
+    function maybePulseGoalieAlert() as Void {
+        if (!goalieTimerEnabled || !(Attention has :vibrate)) {
+            _lastGoalieAlertAt = null;
+            return;
+        }
+
+        var remainingSeconds = getGoalieRemainingSeconds();
+        if (remainingSeconds >= 0) {
+            _lastGoalieAlertAt = null;
+            return;
+        }
+
+        var now = System.getTimer();
+        if (_lastGoalieAlertAt != null && ((now - _lastGoalieAlertAt) < GOALIE_ALERT_PULSE_INTERVAL_MS)) {
+            return;
+        }
+
+        var vibeData = [new Attention.VibeProfile(GOALIE_ALERT_PULSE_DURATION_MS, GOALIE_ALERT_PULSE_STRENGTH)];
+        Attention.vibrate(vibeData);
+        _lastGoalieAlertAt = now;
     }
 
     function onLayout(dc) {
@@ -75,16 +111,18 @@ class FootballAppView extends WatchUi.View {
         }
 
         if (goalieTimerEnabled) {
-            var now = System.getTimer();
-            var diffSeconds = (now - goalieTimerStart) / 1000;
-            var remainingSeconds = goalieTimerDurationSeconds - diffSeconds;
-            if (remainingSeconds < 0) {
-                remainingSeconds = 0;
+            var remainingSeconds = getGoalieRemainingSeconds();
+            var isOvertime = remainingSeconds < 0;
+            var displaySeconds = remainingSeconds;
+            var signPrefix = "";
+            if (isOvertime) {
+                displaySeconds = -displaySeconds;
+                signPrefix = "-";
             }
 
-            var minutes = remainingSeconds / 60;
-            var seconds = remainingSeconds % 60;
-            var timeStr = minutes.format("%02d") + ":" + seconds.format("%02d");
+            var minutes = displaySeconds / 60;
+            var seconds = displaySeconds % 60;
+            var timeStr = signPrefix + minutes.format("%02d") + ":" + seconds.format("%02d");
 
             var goalieFont = Graphics.FONT_SMALL;
             var goalieY = centerY + 70;
@@ -92,7 +130,11 @@ class FootballAppView extends WatchUi.View {
             if (goalieY > goalieMaxY) {
                 goalieY = goalieMaxY;
             }
-            dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
+            if (isOvertime) {
+                dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+            } else {
+                dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
+            }
             dc.drawText(centerX, goalieY, goalieFont, "Gardien: " + timeStr, Graphics.TEXT_JUSTIFY_CENTER);
         }
 
