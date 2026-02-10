@@ -82,8 +82,8 @@ class FootballAppApp extends Application.AppBase {
     function onPositionUpdate(info as Position.Info) as Void {
     }
 
-    function openGoalieModeView() as Void {
-        var view = new FootballAppGoalieModeView(_goalieTimerEnabled);
+    function openGoalieModeView(showCancelOption) as Void {
+        var view = new FootballAppGoalieModeView(_goalieTimerEnabled, showCancelOption);
         var delegate = new FootballAppGoalieModeDelegate(self, view);
         WatchUi.switchToView(view, delegate, WatchUi.SLIDE_IMMEDIATE);
     }
@@ -94,13 +94,26 @@ class FootballAppApp extends Application.AppBase {
         WatchUi.switchToView(view, delegate, WatchUi.SLIDE_IMMEDIATE);
     }
 
+    function openMainViewPreservingGoalieTimer() as Void {
+        openMainViewInternal(true);
+    }
+
     function openMainView() as Void {
+        openMainViewInternal(false);
+    }
+
+    function openMainViewInternal(preserveGoalieTimer) as Void {
         if (_mainView == null || _mainDelegate == null) {
             _mainView = new FootballAppView();
             _mainDelegate = new FootballAppDelegate(_mainView);
         }
 
-        _mainView.configureGoalieTimer(_goalieTimerEnabled, _goalieTimerDurationMinutes);
+        var shouldResetTimer = true;
+        if (preserveGoalieTimer != null && preserveGoalieTimer) {
+            shouldResetTimer = false;
+        }
+
+        _mainView.configureGoalieTimer(_goalieTimerEnabled, _goalieTimerDurationMinutes, shouldResetTimer);
         WatchUi.switchToView(_mainView, _mainDelegate, WatchUi.SLIDE_IMMEDIATE);
     }
 }

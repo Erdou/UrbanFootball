@@ -13,7 +13,7 @@ class FootballAppMenuDelegate extends WatchUi.BehaviorDelegate {
 
     function confirmSelection() as Void {
         _app.selectEnvironment(_selectorView.getSelectedIsOutdoor());
-        _app.openGoalieModeView();
+        _app.openGoalieModeView(false);
     }
 
     function onKey(keyEvent) {

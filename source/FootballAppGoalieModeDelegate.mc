@@ -12,7 +12,9 @@ class FootballAppGoalieModeDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function confirmSelection() as Void {
-        if (_view.isTimerEnabledSelection()) {
+        if (_view.isCancelSelection()) {
+            _app.openMainViewPreservingGoalieTimer();
+        } else if (_view.isTimerEnabledSelection()) {
             _app.setGoalieTimerEnabled(true);
             _app.openGoalieDurationView();
         } else {

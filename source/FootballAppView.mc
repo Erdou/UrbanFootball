@@ -38,7 +38,7 @@ class FootballAppView extends WatchUi.View {
         WatchUi.requestUpdate();
     }
 
-    function configureGoalieTimer(enabled, durationMinutes) as Void {
+    function configureGoalieTimer(enabled, durationMinutes, resetTimer) as Void {
         goalieTimerEnabled = enabled;
 
         if (durationMinutes < 1) {
@@ -47,8 +47,10 @@ class FootballAppView extends WatchUi.View {
             goalieTimerDurationSeconds = durationMinutes * 60;
         }
 
-        goalieTimerStart = System.getTimer();
-        _lastGoalieAlertAt = null;
+        if (resetTimer == null || resetTimer) {
+            goalieTimerStart = System.getTimer();
+            _lastGoalieAlertAt = null;
+        }
     }
 
     function getGoalieRemainingSeconds() {

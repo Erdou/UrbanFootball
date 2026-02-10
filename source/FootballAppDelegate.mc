@@ -112,7 +112,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
 
     function openGoalieConfiguration() as Void {
         var app = Application.getApp() as FootballAppApp;
-        app.openGoalieModeView();
+        app.openGoalieModeView(true);
     }
 
     function onTap(clickEvent) {
