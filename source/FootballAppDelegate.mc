@@ -1,5 +1,6 @@
 using Toybox.WatchUi;
 using Toybox.System;
+using Toybox.Activity;
 using Toybox.ActivityRecording;
 using Toybox.Attention;
 
@@ -43,8 +44,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
             if (_view.session == null) {
                 _view.session = ActivityRecording.createSession({
                     :name => "Football",
-                    :sport => ActivityRecording.SPORT_SOCCER,
-                    :subSport => ActivityRecording.SUB_SPORT_GENERIC
+                    :sport => Activity.SPORT_SOCCER
                 });
             }
 
