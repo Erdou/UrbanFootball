@@ -8,6 +8,7 @@ class FootballAppGoalieDurationView extends WatchUi.View {
     const CONTROL_SIZE = 30;
     const CONTROL_THICKNESS = 6;
     const CONTROL_HIT_RADIUS = 26;
+    const VALUE_TO_CONTROL_CENTER_OFFSET = 22;
 
     var _minutes = 7;
     var _title = null;
@@ -47,18 +48,22 @@ class FootballAppGoalieDurationView extends WatchUi.View {
     }
 
     function getMinusCenterX(width) {
-        return 52;
+        return (width / 2) - 78;
     }
 
     function getPlusCenterX(width) {
-        return width - 52;
+        return (width / 2) + 78;
+    }
+
+    function getValueTopY(height) {
+        if (height < 280) {
+            return 96;
+        }
+        return 102;
     }
 
     function getControlCenterY(height) {
-        if (height < 280) {
-            return 152;
-        }
-        return 158;
+        return getValueTopY(height) + VALUE_TO_CONTROL_CENTER_OFFSET;
     }
 
     function isTapOnMinus(x, y, width, height) {
@@ -90,6 +95,7 @@ class FootballAppGoalieDurationView extends WatchUi.View {
         var width = dc.getWidth();
         var height = dc.getHeight();
         var centerX = width / 2;
+        var valueTopY = getValueTopY(height);
         var controlY = getControlCenterY(height);
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
@@ -101,15 +107,15 @@ class FootballAppGoalieDurationView extends WatchUi.View {
         var dividerMargin = 32;
         dc.fillRectangle(dividerMargin, 68, width - (dividerMargin * 2), 2);
 
-        var minuteText = _minutes.format("%02d") + " min";
-        dc.drawText(centerX, 96, Graphics.FONT_LARGE, minuteText, Graphics.TEXT_JUSTIFY_CENTER);
+        var minuteText = _minutes.toString() + " min";
+        dc.drawText(centerX, valueTopY, Graphics.FONT_LARGE, minuteText, Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         drawMinus(dc, getMinusCenterX(width), controlY);
         drawPlus(dc, getPlusCenterX(width), controlY);
 
         var hintFont = Graphics.FONT_TINY;
-        var hintY = height - dc.getFontHeight(hintFont) - 10;
+        var hintY = height - dc.getFontHeight(hintFont) - 26;
         dc.drawText(centerX, hintY, hintFont, _hint, Graphics.TEXT_JUSTIFY_CENTER);
     }
 }
