@@ -1,71 +1,74 @@
-import Toybox.Attention;
-import Toybox.Lang;
-import Toybox.System;
-import Toybox.WatchUi;
+using Toybox.WatchUi;
+using Toybox.System;
+using Toybox.ActivityRecording;
+using Toybox.Attention;
 
 class FootballAppDelegate extends WatchUi.BehaviorDelegate {
 
-    private var _app as FootballAppApp;
-    private var _screenWidth as Lang.Number;
-    private var _screenHeight as Lang.Number;
+    var _view;
 
-    function initialize() {
+    function initialize(view) {
         BehaviorDelegate.initialize();
-        _app = getApp();
-
-        var deviceSettings = System.getDeviceSettings();
-        _screenWidth = deviceSettings.screenWidth;
-        _screenHeight = deviceSettings.screenHeight;
+        _view = view;
     }
 
-    function onTap(clickEvent as ClickEvent) as Lang.Boolean {
-        var coordinates = clickEvent.getCoordinates();
-        var tapX = coordinates[0];
-        var tapY = coordinates[1];
-        var bottomZoneStart = (_screenHeight * 2) / 3;
+    function onTap(clickEvent) {
+        var coords = clickEvent.getCoordinates();
+        var x = coords[0];
+        var y = coords[1];
+        var width = System.getDeviceSettings().screenWidth;
+        var height = System.getDeviceSettings().screenHeight;
 
-        if (tapY >= bottomZoneStart) {
-            _app.resetGoalieTimer();
-            vibrateGoalieReset();
-        } else if (tapX < (_screenWidth / 2)) {
-            _app.incrementTeamAScore();
-        } else {
-            _app.incrementTeamBScore();
+        if (y > height * 0.7) {
+            _view.goalieTimerStart = System.getTimer();
+            if (Attention has :vibrate) {
+                var vibeData = [new Attention.VibeProfile(50, 100)];
+                Attention.vibrate(vibeData);
+            }
         }
-
+        else if (x < width / 2) {
+            _view.scoreA += 1;
+        } else {
+            _view.scoreB += 1;
+        }
+        
         WatchUi.requestUpdate();
         return true;
     }
 
-    function onSelect() as Lang.Boolean {
-        _app.toggleRecording();
-        WatchUi.requestUpdate();
-        return true;
-    }
-
-    function onBack() as Lang.Boolean {
-        _app.stopSaveAndExit();
-        return true;
-    }
-
-    function onKey(keyEvent as KeyEvent) as Lang.Boolean {
+    function onKey(keyEvent) {
         var key = keyEvent.getKey();
 
-        if ((key == KEY_START) || (key == KEY_ENTER)) {
-            return onSelect();
-        }
+        if (key == WatchUi.KEY_ENTER || key == WatchUi.KEY_START) {
+            if (_view.session == null) {
+                _view.session = ActivityRecording.createSession({
+                    :name => "Football",
+                    :sport => ActivityRecording.SPORT_SOCCER,
+                    :subSport => ActivityRecording.SUB_SPORT_GENERIC
+                });
+            }
 
-        if ((key == KEY_LAP) || (key == KEY_ESC)) {
-            return onBack();
+            if (_view.isRecording) {
+                _view.session.stop();
+                _view.isRecording = false;
+            } else {
+                _view.session.start();
+                _view.isRecording = true;
+            }
+            WatchUi.requestUpdate();
+            return true;
+        }
+        
+        if (key == WatchUi.KEY_ESC) {
+            if (_view.session != null && _view.isRecording) {
+                _view.session.stop();
+                _view.session.save();
+            } else if (_view.session != null) {
+                _view.session.save();
+            }
+            return false; 
         }
 
         return false;
     }
-
-    function vibrateGoalieReset() as Void {
-        if (Attention has :vibrate) {
-            Attention.vibrate([new Attention.VibeProfile(100, 120)]);
-        }
-    }
-
 }
