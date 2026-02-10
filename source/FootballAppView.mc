@@ -9,6 +9,7 @@ class FootballAppView extends WatchUi.View {
     var scoreA = 0;
     var scoreB = 0;
     var goalieTimerStart = 0;
+    var footIcon = null;
     
     var session = null; 
     var isRecording = false;
@@ -18,6 +19,7 @@ class FootballAppView extends WatchUi.View {
     function initialize() {
         View.initialize();
         goalieTimerStart = System.getTimer();
+        footIcon = WatchUi.loadResource(Rez.Drawables.FootIconScore) as Graphics.BitmapType;
         
         refreshTimer = new Timer.Timer();
         refreshTimer.start(method(:onTimerTick), 1000, true);
@@ -42,10 +44,16 @@ class FootballAppView extends WatchUi.View {
         var height = dc.getHeight();
         var centerX = width / 2;
         var centerY = height / 2;
+        var scoreY = centerY - 40;
 
-        dc.drawText(centerX - 50, centerY - 40, Graphics.FONT_NUMBER_HOT, scoreA.toString(), Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(centerX, centerY - 40, Graphics.FONT_LARGE, "-", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(centerX + 50, centerY - 40, Graphics.FONT_NUMBER_HOT, scoreB.toString(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX - 50, scoreY, Graphics.FONT_NUMBER_HOT, scoreA.toString(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX + 50, scoreY, Graphics.FONT_NUMBER_HOT, scoreB.toString(), Graphics.TEXT_JUSTIFY_CENTER);
+
+        if (footIcon != null) {
+            dc.drawBitmap(centerX - (footIcon.getWidth() / 2), scoreY + 4, footIcon);
+        } else {
+            dc.drawText(centerX, scoreY, Graphics.FONT_LARGE, "-", Graphics.TEXT_JUSTIFY_CENTER);
+        }
 
         var now = System.getTimer();
         var diffSeconds = (now - goalieTimerStart) / 1000;
