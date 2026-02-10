@@ -47,9 +47,11 @@ class FootballAppView extends WatchUi.View {
         var scoreFont = Graphics.FONT_NUMBER_HOT;
         var scoreY = centerY - 34;
         var scoreHeight = dc.getFontHeight(scoreFont);
+        var hasTwoDigitScore = (scoreA >= 10 || scoreB >= 10);
+        var scoreXOffset = hasTwoDigitScore ? 68 : 50;
 
-        dc.drawText(centerX - 50, scoreY, scoreFont, scoreA.toString(), Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(centerX + 50, scoreY, scoreFont, scoreB.toString(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX - scoreXOffset, scoreY, scoreFont, scoreA.toString(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX + scoreXOffset, scoreY, scoreFont, scoreB.toString(), Graphics.TEXT_JUSTIFY_CENTER);
 
         if (footIcon != null) {
             var iconY = scoreY + ((scoreHeight - footIcon.getHeight()) / 2);

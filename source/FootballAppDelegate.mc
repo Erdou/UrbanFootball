@@ -1,3 +1,4 @@
+using Toybox.Application;
 using Toybox.WatchUi;
 using Toybox.System;
 using Toybox.Activity;
@@ -6,6 +7,7 @@ using Toybox.Attention;
 
 class FootballAppDelegate extends WatchUi.BehaviorDelegate {
 
+    const MAX_SCORE = 99;
     const LONG_PRESS_THRESHOLD_MS = 550;
     const LONG_PRESS_DEDUPE_MS = 300;
     const BACK_RESET_DEDUPE_MS = 250;
@@ -34,11 +36,15 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
             _view.scoreA += delta;
             if (_view.scoreA < 0) {
                 _view.scoreA = 0;
+            } else if (_view.scoreA > MAX_SCORE) {
+                _view.scoreA = MAX_SCORE;
             }
         } else {
             _view.scoreB += delta;
             if (_view.scoreB < 0) {
                 _view.scoreB = 0;
+            } else if (_view.scoreB > MAX_SCORE) {
+                _view.scoreB = MAX_SCORE;
             }
         }
 
@@ -74,6 +80,25 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
         resetGoalieTimer(true);
     }
 
+    function createSessionForCurrentMode() {
+        var sessionName = "Football";
+        var baseApp = Application.getApp();
+        if (baseApp instanceof FootballAppApp) {
+            var app = baseApp as FootballAppApp;
+            if (app.isGpsEnabled()) {
+                sessionName = "Football Ext";
+            } else {
+                sessionName = "Football Int";
+            }
+            app.applyGpsMode();
+        }
+
+        _view.session = ActivityRecording.createSession({
+            :name => sessionName,
+            :sport => Activity.SPORT_SOCCER
+        });
+    }
+
     function onTap(clickEvent) {
         var coords = clickEvent.getCoordinates();
         var x = coords[0];
@@ -86,12 +111,11 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
             return true;
         }
         else if (x < width / 2) {
-            _view.scoreA += 1;
+            adjustScore(true, 1, false);
         } else {
-            _view.scoreB += 1;
+            adjustScore(false, 1, false);
         }
-        
-        WatchUi.requestUpdate();
+
         return true;
     }
 
@@ -184,10 +208,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
 
         if ((key == WatchUi.KEY_ENTER || key == WatchUi.KEY_START) && keyType == WatchUi.PRESS_TYPE_ACTION) {
             if (_view.session == null) {
-                _view.session = ActivityRecording.createSession({
-                    :name => "Football",
-                    :sport => Activity.SPORT_SOCCER
-                });
+                createSessionForCurrentMode();
             }
 
             if (_view.isRecording) {
