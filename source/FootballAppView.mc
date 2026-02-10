@@ -9,6 +9,8 @@ class FootballAppView extends WatchUi.View {
     var scoreA = 0;
     var scoreB = 0;
     var goalieTimerStart = 0;
+    var goalieTimerEnabled = true;
+    var goalieTimerDurationSeconds = 420;
     var footIcon = null;
     
     var session = null; 
@@ -27,6 +29,18 @@ class FootballAppView extends WatchUi.View {
 
     function onTimerTick() as Void {
         WatchUi.requestUpdate();
+    }
+
+    function configureGoalieTimer(enabled, durationMinutes) as Void {
+        goalieTimerEnabled = enabled;
+
+        if (durationMinutes < 1) {
+            goalieTimerDurationSeconds = 60;
+        } else {
+            goalieTimerDurationSeconds = durationMinutes * 60;
+        }
+
+        goalieTimerStart = System.getTimer();
     }
 
     function onLayout(dc) {
@@ -60,20 +74,27 @@ class FootballAppView extends WatchUi.View {
             dc.drawText(centerX, scoreY, Graphics.FONT_LARGE, "-", Graphics.TEXT_JUSTIFY_CENTER);
         }
 
-        var now = System.getTimer();
-        var diffSeconds = (now - goalieTimerStart) / 1000;
-        var minutes = diffSeconds / 60;
-        var seconds = diffSeconds % 60;
-        var timeStr = minutes.format("%02d") + ":" + seconds.format("%02d");
-        
-        var goalieFont = Graphics.FONT_SMALL;
-        var goalieY = centerY + 70;
-        var goalieMaxY = height - dc.getFontHeight(goalieFont) - 24;
-        if (goalieY > goalieMaxY) {
-            goalieY = goalieMaxY;
+        if (goalieTimerEnabled) {
+            var now = System.getTimer();
+            var diffSeconds = (now - goalieTimerStart) / 1000;
+            var remainingSeconds = goalieTimerDurationSeconds - diffSeconds;
+            if (remainingSeconds < 0) {
+                remainingSeconds = 0;
+            }
+
+            var minutes = remainingSeconds / 60;
+            var seconds = remainingSeconds % 60;
+            var timeStr = minutes.format("%02d") + ":" + seconds.format("%02d");
+
+            var goalieFont = Graphics.FONT_SMALL;
+            var goalieY = centerY + 70;
+            var goalieMaxY = height - dc.getFontHeight(goalieFont) - 24;
+            if (goalieY > goalieMaxY) {
+                goalieY = goalieMaxY;
+            }
+            dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(centerX, goalieY, goalieFont, "Gardien: " + timeStr, Graphics.TEXT_JUSTIFY_CENTER);
         }
-        dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(centerX, goalieY, goalieFont, "Gardien: " + timeStr, Graphics.TEXT_JUSTIFY_CENTER);
 
         var hr = "--";
         var info = Activity.getActivityInfo();

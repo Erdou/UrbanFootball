@@ -7,4 +7,9 @@
     <string id="environmentTypeTitle">Type</string>
     <string id="environmentIndoor">Intérieur</string>
     <string id="environmentOutdoor">Extérieur</string>
+    <string id="goalieModeTitle">Chrono gardien</string>
+    <string id="goalieModeYes">Oui</string>
+    <string id="goalieModeNo">Non</string>
+    <string id="goalieDurationTitle">Durée gardien</string>
+    <string id="goalieDurationHint">START pour valider</string>
 </strings>

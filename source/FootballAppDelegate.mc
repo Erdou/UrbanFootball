@@ -64,6 +64,10 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function resetGoalieTimer(withVibration) {
+        if (!_view.goalieTimerEnabled) {
+            return;
+        }
+
         _view.goalieTimerStart = System.getTimer();
         if (withVibration) {
             vibrate(50, 100);
@@ -72,6 +76,10 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function handleBackReset() {
+        if (!_view.goalieTimerEnabled) {
+            return;
+        }
+
         var now = System.getTimer();
         if ((now - _lastBackResetAt) < BACK_RESET_DEDUPE_MS) {
             return;
@@ -106,7 +114,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
         var width = System.getDeviceSettings().screenWidth;
         var height = System.getDeviceSettings().screenHeight;
 
-        if (y > height * 0.7) {
+        if (_view.goalieTimerEnabled && y > height * 0.7) {
             resetGoalieTimer(true);
             return true;
         }
