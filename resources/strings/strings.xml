@@ -13,4 +13,5 @@
     <string id="goalieModeCancel">Annuler</string>
     <string id="goalieDurationTitle">Durée gardien</string>
     <string id="goalieDurationHint">START pour valider</string>
+    <string id="gameTimeLabel">Jeu</string>
 </strings>

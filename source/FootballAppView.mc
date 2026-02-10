@@ -17,6 +17,7 @@ class FootballAppView extends WatchUi.View {
     var goalieTimerEnabled = true;
     var goalieTimerDurationSeconds = 420;
     var footIcon = null;
+    var _gameTimeLabel = null;
     
     var session = null; 
     var isRecording = false;
@@ -28,6 +29,7 @@ class FootballAppView extends WatchUi.View {
         View.initialize();
         goalieTimerStart = System.getTimer();
         footIcon = WatchUi.loadResource(Rez.Drawables.FootIconScore) as Graphics.BitmapType;
+        _gameTimeLabel = WatchUi.loadResource(Rez.Strings.gameTimeLabel);
         
         refreshTimer = new Timer.Timer();
         refreshTimer.start(method(:onTimerTick), 1000, true);
@@ -81,6 +83,31 @@ class FootballAppView extends WatchUi.View {
         _lastGoalieAlertAt = now;
     }
 
+    function formatGameTime(activityInfo) {
+        var totalMs = 0;
+        if (activityInfo != null) {
+            if (activityInfo.timerTime != null) {
+                totalMs = activityInfo.timerTime;
+            } else if (activityInfo.elapsedTime != null) {
+                totalMs = activityInfo.elapsedTime;
+            }
+        }
+
+        var totalSeconds = totalMs / 1000;
+        if (totalSeconds < 0) {
+            totalSeconds = 0;
+        }
+
+        var hours = totalSeconds / 3600;
+        var minutes = (totalSeconds % 3600) / 60;
+        var seconds = totalSeconds % 60;
+
+        if (hours > 0) {
+            return hours.toString() + ":" + minutes.format("%02d") + ":" + seconds.format("%02d");
+        }
+        return minutes.format("%02d") + ":" + seconds.format("%02d");
+    }
+
     function onLayout(dc) {
     }
 
@@ -97,10 +124,11 @@ class FootballAppView extends WatchUi.View {
         var centerX = width / 2;
         var centerY = height / 2;
         var scoreFont = Graphics.FONT_NUMBER_HOT;
-        var scoreY = centerY - 34;
+        var scoreY = centerY - 50;
         var scoreHeight = dc.getFontHeight(scoreFont);
         var hasTwoDigitScore = (scoreA >= 10 || scoreB >= 10);
         var scoreXOffset = hasTwoDigitScore ? 68 : 50;
+        var info = Activity.getActivityInfo();
 
         dc.drawText(centerX - scoreXOffset, scoreY, scoreFont, scoreA.toString(), Graphics.TEXT_JUSTIFY_CENTER);
         dc.drawText(centerX + scoreXOffset, scoreY, scoreFont, scoreB.toString(), Graphics.TEXT_JUSTIFY_CENTER);
@@ -111,6 +139,11 @@ class FootballAppView extends WatchUi.View {
         } else {
             dc.drawText(centerX, scoreY, Graphics.FONT_LARGE, "-", Graphics.TEXT_JUSTIFY_CENTER);
         }
+
+        var gameTimeY = centerY + 38;
+        var gameTime = formatGameTime(info);
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(centerX, gameTimeY, Graphics.FONT_TINY, _gameTimeLabel + ": " + gameTime, Graphics.TEXT_JUSTIFY_CENTER);
 
         if (goalieTimerEnabled) {
             var remainingSeconds = getGoalieRemainingSeconds();
@@ -127,7 +160,7 @@ class FootballAppView extends WatchUi.View {
             var timeStr = signPrefix + minutes.format("%02d") + ":" + seconds.format("%02d");
 
             var goalieFont = Graphics.FONT_SMALL;
-            var goalieY = centerY + 70;
+            var goalieY = centerY + 74;
             var goalieMaxY = height - dc.getFontHeight(goalieFont) - 24;
             if (goalieY > goalieMaxY) {
                 goalieY = goalieMaxY;
@@ -141,7 +174,6 @@ class FootballAppView extends WatchUi.View {
         }
 
         var hr = "--";
-        var info = Activity.getActivityInfo();
         if (info != null && info.currentHeartRate != null) {
             hr = info.currentHeartRate.toString();
         }
