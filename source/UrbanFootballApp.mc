@@ -16,6 +16,8 @@ class UrbanFootballApp extends Application.AppBase {
     var _mainDelegate = null;
     var _pauseMenuView = null;
     var _pauseMenuDelegate = null;
+    var _discardConfirmView = null;
+    var _discardConfirmDelegate = null;
     var _resumeLaterState = null;
 
     function initialize() {
@@ -133,13 +135,34 @@ class UrbanFootballApp extends Application.AppBase {
     }
 
     function openPauseMenuView() as Void {
+        openPauseMenuViewWithSelection(null);
+    }
+
+    function openPauseMenuViewWithSelection(selectionIndex) as Void {
         if (_pauseMenuView == null || _pauseMenuDelegate == null) {
             _pauseMenuView = new UrbanFootballPauseMenuView();
             _pauseMenuDelegate = new UrbanFootballPauseMenuDelegate(self, _pauseMenuView);
         }
-        _pauseMenuView.resetSelection();
+        if (selectionIndex == null) {
+            _pauseMenuView.resetSelection();
+        } else {
+            _pauseMenuView.setSelectionIndex(selectionIndex);
+        }
 
         WatchUi.switchToView(_pauseMenuView, _pauseMenuDelegate, WatchUi.SLIDE_IMMEDIATE);
+    }
+
+    function openDiscardConfirmView() as Void {
+        if (_discardConfirmView == null || _discardConfirmDelegate == null) {
+            _discardConfirmView = new UrbanFootballDiscardConfirmView();
+            _discardConfirmDelegate = new UrbanFootballDiscardConfirmDelegate(self, _discardConfirmView);
+        }
+
+        WatchUi.switchToView(_discardConfirmView, _discardConfirmDelegate, WatchUi.SLIDE_IMMEDIATE);
+    }
+
+    function returnToPauseMenuFromDiscardConfirm() as Void {
+        openPauseMenuViewWithSelection(3);
     }
 
     function resumeFromPauseMenu() as Void {

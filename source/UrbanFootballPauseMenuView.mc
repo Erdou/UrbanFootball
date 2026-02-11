@@ -86,6 +86,20 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
         return _selectedIndex == 2;
     }
 
+    function isDiscardSelection() {
+        return _selectedIndex == 3;
+    }
+
+    function setSelectionIndex(index) as Void {
+        if (index == null || index < 0) {
+            _selectedIndex = 0;
+        } else if (index > 3) {
+            _selectedIndex = 3;
+        } else {
+            _selectedIndex = index;
+        }
+    }
+
     function getLabelForIndex(index) {
         if (index == 0) {
             return _resumeLabel;
