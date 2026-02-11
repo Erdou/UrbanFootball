@@ -82,6 +82,10 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
         return _selectedIndex == 0;
     }
 
+    function isResumeLaterSelection() {
+        return _selectedIndex == 2;
+    }
+
     function getLabelForIndex(index) {
         if (index == 0) {
             return _resumeLabel;
