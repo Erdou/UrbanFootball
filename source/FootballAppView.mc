@@ -40,6 +40,7 @@ class FootballAppView extends WatchUi.View {
     
     var session = null; 
     var isRecording = false;
+    var activityStarted = false;
 
     var refreshTimer;
     var _lastGoalieAlertAt = null;
@@ -218,6 +219,10 @@ class FootballAppView extends WatchUi.View {
     }
 
     function formatGameTime(activityInfo) {
+        if (!activityStarted) {
+            return "--:--";
+        }
+
         var totalMs = 0;
         if (activityInfo != null) {
             if (activityInfo.timerTime != null) {

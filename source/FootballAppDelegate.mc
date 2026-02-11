@@ -254,6 +254,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
             } else {
                 _view.session.start();
                 _view.isRecording = true;
+                _view.activityStarted = true;
             }
             WatchUi.requestUpdate();
             return true;
