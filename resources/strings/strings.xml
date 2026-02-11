@@ -20,5 +20,5 @@
     <string id="pauseMenuSave">Enregistrer</string>
     <string id="pauseMenuResumeLater">Reprendre plus tard</string>
     <string id="pauseMenuDiscard">Ignorer</string>
-    <string id="pauseDiscardConfirmTitle">Ignorer?</string>
+    <string id="pauseDiscardConfirmTitle">Ignorer ?</string>
 </strings>

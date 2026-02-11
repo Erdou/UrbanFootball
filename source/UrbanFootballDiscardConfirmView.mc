@@ -4,11 +4,9 @@ using Toybox.WatchUi;
 class UrbanFootballDiscardConfirmView extends WatchUi.View {
 
     const ACTION_INDICATOR_PEN_WIDTH = 6;
+    const INDICATOR_GAP_DEG = 22;
     const DELETE_INDICATOR_START_DEG = 40;
-    const DELETE_INDICATOR_SWEEP_DEG = 22;
-    const BACK_INDICATOR_START_DEG = 224;
-    const BACK_INDICATOR_SWEEP_DEG = 22;
-
+    const BACK_INDICATOR_START_DEG = 223;
     const BACK_ICON_TAP_RADIUS = 30;
     const DELETE_ICON_TAP_RADIUS = 30;
 
@@ -20,11 +18,11 @@ class UrbanFootballDiscardConfirmView extends WatchUi.View {
     }
 
     function getBackIconCenterX(width) {
-        return width / 6;
+        return width / 4.9;
     }
 
     function getBackIconCenterY(height) {
-        return height - (height / 3);
+        return height - (height / 3.3);
     }
 
     function getDeleteIconCenterX(width) {
@@ -32,7 +30,7 @@ class UrbanFootballDiscardConfirmView extends WatchUi.View {
     }
 
     function getDeleteIconCenterY(height) {
-        return height / 4;
+        return height / 3;
     }
 
     function getTitleY(height) {
@@ -83,8 +81,8 @@ class UrbanFootballDiscardConfirmView extends WatchUi.View {
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.setPenWidth(ACTION_INDICATOR_PEN_WIDTH);
-        dc.drawArc(centerX, centerY, outerRadius, Graphics.ARC_CLOCKWISE, DELETE_INDICATOR_START_DEG, DELETE_INDICATOR_SWEEP_DEG);
-        dc.drawArc(centerX, centerY, outerRadius, Graphics.ARC_CLOCKWISE, BACK_INDICATOR_START_DEG, BACK_INDICATOR_SWEEP_DEG);
+        dc.drawArc(centerX, centerY, outerRadius, Graphics.ARC_CLOCKWISE, DELETE_INDICATOR_START_DEG, DELETE_INDICATOR_START_DEG - INDICATOR_GAP_DEG);
+        dc.drawArc(centerX, centerY, outerRadius, Graphics.ARC_CLOCKWISE, BACK_INDICATOR_START_DEG, BACK_INDICATOR_START_DEG - INDICATOR_GAP_DEG);
         dc.setPenWidth(1);
     }
 
@@ -100,6 +98,7 @@ class UrbanFootballDiscardConfirmView extends WatchUi.View {
 
         dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
         drawDeleteIcon(dc, getDeleteIconCenterX(width), getDeleteIconCenterY(height));
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX, getTitleY(height), Graphics.FONT_MEDIUM, _title, Graphics.TEXT_JUSTIFY_CENTER);
 
         drawBackIcon(dc, getBackIconCenterX(width), getBackIconCenterY(height));
