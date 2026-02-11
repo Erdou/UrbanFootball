@@ -29,6 +29,7 @@ class UrbanFootballApp extends Application.AppBase {
     var _saveExitTimer = null;
     var _discardExitTimer = null;
     var _resumeLaterState = null;
+    var _goalieSettingsReturnToMain = false;
 
     function initialize() {
         AppBase.initialize();
@@ -53,8 +54,16 @@ class UrbanFootballApp extends Application.AppBase {
             return [ _mainView, _mainDelegate ];
         }
 
+        _goalieSettingsReturnToMain = false;
         var selectorView = new UrbanFootballEnvironmentView();
         return [ selectorView, new UrbanFootballEnvironmentDelegate(self, selectorView) ];
+    }
+
+    function openEnvironmentView() as Void {
+        _goalieSettingsReturnToMain = false;
+        var selectorView = new UrbanFootballEnvironmentView();
+        var selectorDelegate = new UrbanFootballEnvironmentDelegate(self, selectorView);
+        WatchUi.switchToView(selectorView, selectorDelegate, WatchUi.SLIDE_IMMEDIATE);
     }
 
     function selectEnvironment(isOutdoor) as Void {
@@ -108,6 +117,7 @@ class UrbanFootballApp extends Application.AppBase {
     }
 
     function openGoalieModeView(showCancelOption) as Void {
+        _goalieSettingsReturnToMain = (showCancelOption != null) && showCancelOption;
         var view = new UrbanFootballGoalieModeView(_goalieTimerEnabled, showCancelOption);
         var delegate = new UrbanFootballGoalieModeDelegate(self, view);
         WatchUi.switchToView(view, delegate, WatchUi.SLIDE_IMMEDIATE);
@@ -117,6 +127,19 @@ class UrbanFootballApp extends Application.AppBase {
         var view = new UrbanFootballGoalieDurationView(_goalieTimerDurationMinutes);
         var delegate = new UrbanFootballGoalieDurationDelegate(self, view);
         WatchUi.switchToView(view, delegate, WatchUi.SLIDE_IMMEDIATE);
+    }
+
+    function handleBackFromGoalieMode() as Void {
+        if (_goalieSettingsReturnToMain) {
+            openMainViewPreservingGoalieTimer();
+            return;
+        }
+
+        openEnvironmentView();
+    }
+
+    function handleBackFromGoalieDuration() as Void {
+        openGoalieModeView(_goalieSettingsReturnToMain);
     }
 
     function openMainViewPreservingGoalieTimer() as Void {

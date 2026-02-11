@@ -5,11 +5,16 @@ class UrbanFootballSaveConfirmDelegate extends WatchUi.BehaviorDelegate {
 
     var _app;
     var _view;
+    var _consumeNextOnBack = false;
 
     function initialize(app, view) {
         BehaviorDelegate.initialize();
         _app = app;
         _view = view;
+    }
+
+    function handleBackAction() as Void {
+        _app.returnToPauseMenuFromSaveConfirm();
     }
 
     function onKey(keyEvent) {
@@ -19,7 +24,13 @@ class UrbanFootballSaveConfirmDelegate extends WatchUi.BehaviorDelegate {
 
         var key = keyEvent.getKey();
         if (key == WatchUi.KEY_DOWN) {
-            _app.returnToPauseMenuFromSaveConfirm();
+            handleBackAction();
+            return true;
+        }
+
+        if (key == WatchUi.KEY_ESC) {
+            _consumeNextOnBack = true;
+            handleBackAction();
             return true;
         }
 
@@ -31,6 +42,16 @@ class UrbanFootballSaveConfirmDelegate extends WatchUi.BehaviorDelegate {
         return true;
     }
 
+    function onBack() {
+        if (_consumeNextOnBack) {
+            _consumeNextOnBack = false;
+            return true;
+        }
+
+        handleBackAction();
+        return true;
+    }
+
     function onTap(clickEvent) {
         var coords = clickEvent.getCoordinates();
         var x = coords[0];
@@ -39,7 +60,7 @@ class UrbanFootballSaveConfirmDelegate extends WatchUi.BehaviorDelegate {
         var height = System.getDeviceSettings().screenHeight;
 
         if (_view.isTapOnBackAction(x, y, width, height)) {
-            _app.returnToPauseMenuFromSaveConfirm();
+            handleBackAction();
             return true;
         }
 
