@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <string id="AppName">UrbanFootball</string>
+    <string id="prompt">Menü düğmesine basın</string>
+    <string id="environmentMenuTitle">Oyun modu</string>
+    <string id="environmentTypeTitle">Tür</string>
+    <string id="environmentIndoor">İç mekan</string>
+    <string id="environmentOutdoor">Dış mekan</string>
+    <string id="goalieModeTitle">Kaleci zamanlayıcısı</string>
+    <string id="goalieModeYes">Evet</string>
+    <string id="goalieModeNo">Hayır</string>
+    <string id="goalieModeCancel">İptal</string>
+    <string id="goalieDurationTitle">Kaleci süresi</string>
+    <string id="goalieDurationHint">Onaylamak için START'a basın</string>
+    <string id="goalieDurationValueFormat">%1$s dk</string>
+    <string id="goalieDurationValueSuffix"> dk</string>
+    <string id="gameTimeLabel">Oyun</string>
+    <string id="gameTimeFormat">%1$s: %2$s</string>
+    <string id="gameTimeSeparator">: </string>
+    <string id="goalieTimeFormat">Kaleci: %1$s</string>
+    <string id="goalieTimePrefix">Kaleci: </string>
+    <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">ZAMANLAYICI</string>
+    <string id="pauseMenuResume">Devam et</string>
+    <string id="pauseMenuSave">Kaydet</string>
+    <string id="pauseMenuResumeLater">Daha sonra devam et</string>
+    <string id="pauseMenuDiscard">Yok say</string>
+    <string id="pauseSaveConfirmTitle">Kaydedilsin mi?</string>
+    <string id="pauseDiscardConfirmTitle">Yok sayılsın mı?</string>
+    <string id="pauseSavedTitle">Etkinlik kaydedildi</string>
+    <string id="pauseDiscardedTitle">Etkinlik yok sayıldı</string>
+    <string id="sessionNameGeneric">Urban Football</string>
+    <string id="sessionNameIndoor">Urban Football İç</string>
+    <string id="sessionNameOutdoor">Urban Football Dış</string>
+</strings>

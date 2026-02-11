@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <string id="AppName">UrbanFootball</string>
+    <string id="prompt">Paspauskite meniu mygtuką</string>
+    <string id="environmentMenuTitle">Žaidimo režimas</string>
+    <string id="environmentTypeTitle">Tipas</string>
+    <string id="environmentIndoor">Viduje</string>
+    <string id="environmentOutdoor">Lauke</string>
+    <string id="goalieModeTitle">Vartininko laikmatis</string>
+    <string id="goalieModeYes">Taip</string>
+    <string id="goalieModeNo">Ne</string>
+    <string id="goalieModeCancel">Atšaukti</string>
+    <string id="goalieDurationTitle">Vartininko trukmė</string>
+    <string id="goalieDurationHint">Patvirtinkite paspausdami START</string>
+    <string id="goalieDurationValueFormat">%1$s min</string>
+    <string id="goalieDurationValueSuffix"> min</string>
+    <string id="gameTimeLabel">Žaidimas</string>
+    <string id="gameTimeFormat">%1$s: %2$s</string>
+    <string id="gameTimeSeparator">: </string>
+    <string id="goalieTimeFormat">Vartininkas: %1$s</string>
+    <string id="goalieTimePrefix">Vartininkas: </string>
+    <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">LAIKMATIS</string>
+    <string id="pauseMenuResume">Tęsti</string>
+    <string id="pauseMenuSave">Išsaugoti</string>
+    <string id="pauseMenuResumeLater">Tęsti vėliau</string>
+    <string id="pauseMenuDiscard">Atmesti</string>
+    <string id="pauseSaveConfirmTitle">Išsaugoti?</string>
+    <string id="pauseDiscardConfirmTitle">Atmesti?</string>
+    <string id="pauseSavedTitle">Veikla išsaugota</string>
+    <string id="pauseDiscardedTitle">Veikla atmesta</string>
+    <string id="sessionNameGeneric">Urban Football</string>
+    <string id="sessionNameIndoor">Urban Football Viduje</string>
+    <string id="sessionNameOutdoor">Urban Football Lauke</string>
+</strings>

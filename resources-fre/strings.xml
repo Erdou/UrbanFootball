@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <string id="AppName">UrbanFootball</string>
+    <string id="prompt">Appuyez sur le bouton menu</string>
+    <string id="environmentMenuTitle">Mode de jeu</string>
+    <string id="environmentTypeTitle">Type</string>
+    <string id="environmentIndoor">Intérieur</string>
+    <string id="environmentOutdoor">Extérieur</string>
+    <string id="goalieModeTitle">Chrono gardien</string>
+    <string id="goalieModeYes">Oui</string>
+    <string id="goalieModeNo">Non</string>
+    <string id="goalieModeCancel">Annuler</string>
+    <string id="goalieDurationTitle">Durée gardien</string>
+    <string id="goalieDurationHint">Appuyez sur START pour valider</string>
+    <string id="goalieDurationValueFormat">%1$s min</string>
+    <string id="goalieDurationValueSuffix"> min</string>
+    <string id="gameTimeLabel">Jeu</string>
+    <string id="gameTimeFormat">%1$s : %2$s</string>
+    <string id="gameTimeSeparator"> : </string>
+    <string id="goalieTimeFormat">Gardien : %1$s</string>
+    <string id="goalieTimePrefix">Gardien : </string>
+    <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">CHRONOMÈTRE</string>
+    <string id="pauseMenuResume">Reprendre</string>
+    <string id="pauseMenuSave">Enregistrer</string>
+    <string id="pauseMenuResumeLater">Reprendre plus tard</string>
+    <string id="pauseMenuDiscard">Ignorer</string>
+    <string id="pauseSaveConfirmTitle">Enregistrer ?</string>
+    <string id="pauseDiscardConfirmTitle">Ignorer ?</string>
+    <string id="pauseSavedTitle">Activité enregistrée</string>
+    <string id="pauseDiscardedTitle">Activité ignorée</string>
+    <string id="sessionNameGeneric">Urban Football</string>
+    <string id="sessionNameIndoor">Urban Football Intérieur</string>
+    <string id="sessionNameOutdoor">Urban Football Extérieur</string>
+</strings>

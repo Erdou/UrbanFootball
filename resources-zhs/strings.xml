@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <string id="AppName">UrbanFootball</string>
+    <string id="prompt">按下菜单按钮</string>
+    <string id="environmentMenuTitle">比赛模式</string>
+    <string id="environmentTypeTitle">类型</string>
+    <string id="environmentIndoor">室内</string>
+    <string id="environmentOutdoor">室外</string>
+    <string id="goalieModeTitle">守门员计时器</string>
+    <string id="goalieModeYes">是</string>
+    <string id="goalieModeNo">否</string>
+    <string id="goalieModeCancel">取消</string>
+    <string id="goalieDurationTitle">守门员时长</string>
+    <string id="goalieDurationHint">按 START 确认</string>
+    <string id="goalieDurationValueFormat">%1$s 分钟</string>
+    <string id="goalieDurationValueSuffix"> 分钟</string>
+    <string id="gameTimeLabel">比赛</string>
+    <string id="gameTimeFormat">%1$s: %2$s</string>
+    <string id="gameTimeSeparator">: </string>
+    <string id="goalieTimeFormat">守门员: %1$s</string>
+    <string id="goalieTimePrefix">守门员: </string>
+    <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">计时器</string>
+    <string id="pauseMenuResume">继续</string>
+    <string id="pauseMenuSave">保存</string>
+    <string id="pauseMenuResumeLater">稍后继续</string>
+    <string id="pauseMenuDiscard">忽略</string>
+    <string id="pauseSaveConfirmTitle">保存？</string>
+    <string id="pauseDiscardConfirmTitle">忽略？</string>
+    <string id="pauseSavedTitle">活动已保存</string>
+    <string id="pauseDiscardedTitle">活动已忽略</string>
+    <string id="sessionNameGeneric">Urban Football</string>
+    <string id="sessionNameIndoor">Urban Football 室内</string>
+    <string id="sessionNameOutdoor">Urban Football 室外</string>
+</strings>

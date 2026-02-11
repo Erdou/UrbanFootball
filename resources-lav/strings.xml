@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <string id="AppName">UrbanFootball</string>
+    <string id="prompt">Nospiediet izvēlnes pogu</string>
+    <string id="environmentMenuTitle">Spēles režīms</string>
+    <string id="environmentTypeTitle">Tips</string>
+    <string id="environmentIndoor">Iekštelpās</string>
+    <string id="environmentOutdoor">Ārā</string>
+    <string id="goalieModeTitle">Vārtsarga taimeris</string>
+    <string id="goalieModeYes">Jā</string>
+    <string id="goalieModeNo">Nē</string>
+    <string id="goalieModeCancel">Atcelt</string>
+    <string id="goalieDurationTitle">Vārtsarga ilgums</string>
+    <string id="goalieDurationHint">Nospiediet START, lai apstiprinātu</string>
+    <string id="goalieDurationValueFormat">%1$s min</string>
+    <string id="goalieDurationValueSuffix"> min</string>
+    <string id="gameTimeLabel">Spēle</string>
+    <string id="gameTimeFormat">%1$s: %2$s</string>
+    <string id="gameTimeSeparator">: </string>
+    <string id="goalieTimeFormat">Vārtsargs: %1$s</string>
+    <string id="goalieTimePrefix">Vārtsargs: </string>
+    <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">TAIMERIS</string>
+    <string id="pauseMenuResume">Turpināt</string>
+    <string id="pauseMenuSave">Saglabāt</string>
+    <string id="pauseMenuResumeLater">Turpināt vēlāk</string>
+    <string id="pauseMenuDiscard">Noraidīt</string>
+    <string id="pauseSaveConfirmTitle">Saglabāt?</string>
+    <string id="pauseDiscardConfirmTitle">Noraidīt?</string>
+    <string id="pauseSavedTitle">Aktivitāte saglabāta</string>
+    <string id="pauseDiscardedTitle">Aktivitāte noraidīta</string>
+    <string id="sessionNameGeneric">Urban Football</string>
+    <string id="sessionNameIndoor">Urban Football Iekštelpās</string>
+    <string id="sessionNameOutdoor">Urban Football Ārā</string>
+</strings>

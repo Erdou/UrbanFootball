@@ -19,8 +19,7 @@ class UrbanFootballMainScreenRenderer {
         footIcon,
         scoreA,
         scoreB,
-        gameTimeLabel,
-        gameTime,
+        gameTimeText,
         goalieTimerEnabled,
         goalieTimeText,
         goalieTimerOvertime,
@@ -53,7 +52,7 @@ class UrbanFootballMainScreenRenderer {
 
         var gameTimeY = centerY + 38;
         dc.setColor(SECONDARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(centerX, gameTimeY, Graphics.FONT_TINY, gameTimeLabel + ": " + gameTime, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX, gameTimeY, Graphics.FONT_TINY, gameTimeText, Graphics.TEXT_JUSTIFY_CENTER);
 
         if (goalieTimerEnabled) {
             var goalieFont = Graphics.FONT_SMALL;
@@ -69,7 +68,7 @@ class UrbanFootballMainScreenRenderer {
                 dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
             }
 
-            dc.drawText(centerX, goalieY, goalieFont, "Gardien: " + goalieTimeText, Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(centerX, goalieY, goalieFont, goalieTimeText, Graphics.TEXT_JUSTIFY_CENTER);
         }
 
         if (isRecording) {

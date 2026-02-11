@@ -23,11 +23,17 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
     var _suppressNextOnBack = false;
     var _lastBackResetAt = -BACK_RESET_DEDUPE_MS;
     var _pauseMenuTimer = null;
+    var _sessionNameGeneric = null;
+    var _sessionNameIndoor = null;
+    var _sessionNameOutdoor = null;
 
     function initialize(view) {
         BehaviorDelegate.initialize();
         _view = view;
         _pauseMenuTimer = new Timer.Timer();
+        _sessionNameGeneric = WatchUi.loadResource(Rez.Strings.sessionNameGeneric);
+        _sessionNameIndoor = WatchUi.loadResource(Rez.Strings.sessionNameIndoor);
+        _sessionNameOutdoor = WatchUi.loadResource(Rez.Strings.sessionNameOutdoor);
     }
 
     function vibrate(durationMs, strength) {
@@ -153,14 +159,14 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function createSessionForCurrentMode() {
-        var sessionName = "Urban Football";
+        var sessionName = _sessionNameGeneric;
         var baseApp = Application.getApp();
         if (baseApp instanceof UrbanFootballApp) {
             var app = baseApp as UrbanFootballApp;
             if (app.isGpsEnabled()) {
-                sessionName = "Urban Football Ext";
+                sessionName = _sessionNameOutdoor;
             } else {
-                sessionName = "Urban Football Int";
+                sessionName = _sessionNameIndoor;
             }
             app.applyGpsMode();
         }

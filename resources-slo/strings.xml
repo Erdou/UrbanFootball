@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <string id="AppName">UrbanFootball</string>
+    <string id="prompt">Stlačte tlačidlo menu</string>
+    <string id="environmentMenuTitle">Režim hry</string>
+    <string id="environmentTypeTitle">Typ</string>
+    <string id="environmentIndoor">Vnútri</string>
+    <string id="environmentOutdoor">Vonku</string>
+    <string id="goalieModeTitle">Časovač brankára</string>
+    <string id="goalieModeYes">Áno</string>
+    <string id="goalieModeNo">Nie</string>
+    <string id="goalieModeCancel">Zrušiť</string>
+    <string id="goalieDurationTitle">Dĺžka brankára</string>
+    <string id="goalieDurationHint">Potvrďte stlačením START</string>
+    <string id="goalieDurationValueFormat">%1$s min</string>
+    <string id="goalieDurationValueSuffix"> min</string>
+    <string id="gameTimeLabel">Hra</string>
+    <string id="gameTimeFormat">%1$s: %2$s</string>
+    <string id="gameTimeSeparator">: </string>
+    <string id="goalieTimeFormat">Brankár: %1$s</string>
+    <string id="goalieTimePrefix">Brankár: </string>
+    <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">ČASOVAČ</string>
+    <string id="pauseMenuResume">Pokračovať</string>
+    <string id="pauseMenuSave">Uložiť</string>
+    <string id="pauseMenuResumeLater">Pokračovať neskôr</string>
+    <string id="pauseMenuDiscard">Zahodiť</string>
+    <string id="pauseSaveConfirmTitle">Uložiť?</string>
+    <string id="pauseDiscardConfirmTitle">Zahodiť?</string>
+    <string id="pauseSavedTitle">Aktivita uložená</string>
+    <string id="pauseDiscardedTitle">Aktivita zahodená</string>
+    <string id="sessionNameGeneric">Urban Football</string>
+    <string id="sessionNameIndoor">Urban Football Vnútri</string>
+    <string id="sessionNameOutdoor">Urban Football Vonku</string>
+</strings>

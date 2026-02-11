@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <string id="AppName">UrbanFootball</string>
+    <string id="prompt">לחץ על כפתור התפריט</string>
+    <string id="environmentMenuTitle">מצב משחק</string>
+    <string id="environmentTypeTitle">סוג</string>
+    <string id="environmentIndoor">אולם</string>
+    <string id="environmentOutdoor">חוץ</string>
+    <string id="goalieModeTitle">טיימר שוער</string>
+    <string id="goalieModeYes">כן</string>
+    <string id="goalieModeNo">לא</string>
+    <string id="goalieModeCancel">ביטול</string>
+    <string id="goalieDurationTitle">משך שוער</string>
+    <string id="goalieDurationHint">לחץ START לאישור</string>
+    <string id="goalieDurationValueFormat">%1$s דק</string>
+    <string id="goalieDurationValueSuffix"> דק</string>
+    <string id="gameTimeLabel">משחק</string>
+    <string id="gameTimeFormat">%1$s: %2$s</string>
+    <string id="gameTimeSeparator">: </string>
+    <string id="goalieTimeFormat">שוער: %1$s</string>
+    <string id="goalieTimePrefix">שוער: </string>
+    <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">טיימר</string>
+    <string id="pauseMenuResume">המשך</string>
+    <string id="pauseMenuSave">שמור</string>
+    <string id="pauseMenuResumeLater">המשך מאוחר יותר</string>
+    <string id="pauseMenuDiscard">התעלם</string>
+    <string id="pauseSaveConfirmTitle">לשמור?</string>
+    <string id="pauseDiscardConfirmTitle">להתעלם?</string>
+    <string id="pauseSavedTitle">הפעילות נשמרה</string>
+    <string id="pauseDiscardedTitle">הפעילות בוטלה</string>
+    <string id="sessionNameGeneric">Urban Football</string>
+    <string id="sessionNameIndoor">Urban Football אולם</string>
+    <string id="sessionNameOutdoor">Urban Football חוץ</string>
+</strings>

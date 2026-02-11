@@ -26,6 +26,8 @@ class UrbanFootballActivityView extends WatchUi.View {
 
     var _footIcon = null;
     var _gameTimeLabel = null;
+    var _gameTimeSeparator = null;
+    var _goalieTimePrefix = null;
     var _preStartTitle = null;
     var _startAnimationUntil = null;
     var _pauseAnimationUntil = null;
@@ -47,6 +49,8 @@ class UrbanFootballActivityView extends WatchUi.View {
         goalieTimerStart = System.getTimer();
         _footIcon = WatchUi.loadResource(Rez.Drawables.FootIconScore) as Graphics.BitmapType;
         _gameTimeLabel = WatchUi.loadResource(Rez.Strings.gameTimeLabel);
+        _gameTimeSeparator = WatchUi.loadResource(Rez.Strings.gameTimeSeparator);
+        _goalieTimePrefix = WatchUi.loadResource(Rez.Strings.goalieTimePrefix);
         _preStartTitle = WatchUi.loadResource(Rez.Strings.preStartTitle);
 
         _heartRateRenderer = new UrbanFootballHeartRateRenderer();
@@ -189,6 +193,29 @@ class UrbanFootballActivityView extends WatchUi.View {
         return minutes.format("%02d") + ":" + seconds.format("%02d");
     }
 
+    function formatGameLine(gameTimeText) {
+        var label = "Game";
+        if (_gameTimeLabel != null) {
+            label = _gameTimeLabel;
+        }
+
+        var separator = ": ";
+        if (_gameTimeSeparator != null) {
+            separator = _gameTimeSeparator;
+        }
+
+        return label + separator + gameTimeText;
+    }
+
+    function formatGoalieLine(goalieTimeText) {
+        var prefix = "Goalie: ";
+        if (_goalieTimePrefix != null) {
+            prefix = _goalieTimePrefix;
+        }
+
+        return prefix + goalieTimeText;
+    }
+
     function getCurrentGameTimeMs(activityInfo) {
         var liveSessionMs = 0;
         if (session != null && activityInfo != null) {
@@ -321,15 +348,17 @@ class UrbanFootballActivityView extends WatchUi.View {
         var height = dc.getHeight();
         var remainingSeconds = getGoalieRemainingSeconds();
         var goalieTimeText = formatGoalieTime(remainingSeconds);
+        var formattedGoalieTimeText = formatGoalieLine(goalieTimeText);
         // Pre-start layout stays visible during the start overlay to mimic Garmin flow.
         var showPreStartScreen = !activityStarted || isStartAnimationActive();
 
         if (showPreStartScreen) {
-            _preStartRenderer.drawScreen(dc, width, height, _footIcon, _preStartTitle, goalieTimerEnabled, goalieTimeText, !activityStarted);
+            _preStartRenderer.drawScreen(dc, width, height, _footIcon, _preStartTitle, goalieTimerEnabled, formattedGoalieTimeText, !activityStarted);
         } else {
             var activityInfo = Activity.getActivityInfo();
             var hrValue = _heartRateRenderer.getHeartRateValue(activityInfo);
             var gameTime = formatGameTime(activityInfo);
+            var gameTimeText = formatGameLine(gameTime);
             _mainScreenRenderer.drawScreen(
                 dc,
                 width,
@@ -339,10 +368,9 @@ class UrbanFootballActivityView extends WatchUi.View {
                 _footIcon,
                 scoreA,
                 scoreB,
-                _gameTimeLabel,
-                gameTime,
+                gameTimeText,
                 goalieTimerEnabled,
-                goalieTimeText,
+                formattedGoalieTimeText,
                 remainingSeconds < 0,
                 isRecording,
                 activityStarted

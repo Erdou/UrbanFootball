@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <string id="AppName">UrbanFootball</string>
+    <string id="prompt">Натисніть кнопку меню</string>
+    <string id="environmentMenuTitle">Режим гри</string>
+    <string id="environmentTypeTitle">Тип</string>
+    <string id="environmentIndoor">У приміщенні</string>
+    <string id="environmentOutdoor">Надворі</string>
+    <string id="goalieModeTitle">Таймер воротаря</string>
+    <string id="goalieModeYes">Так</string>
+    <string id="goalieModeNo">Ні</string>
+    <string id="goalieModeCancel">Скасувати</string>
+    <string id="goalieDurationTitle">Тривалість воротаря</string>
+    <string id="goalieDurationHint">Натисніть START для підтвердження</string>
+    <string id="goalieDurationValueFormat">%1$s хв</string>
+    <string id="goalieDurationValueSuffix"> хв</string>
+    <string id="gameTimeLabel">Гра</string>
+    <string id="gameTimeFormat">%1$s: %2$s</string>
+    <string id="gameTimeSeparator">: </string>
+    <string id="goalieTimeFormat">Воротар: %1$s</string>
+    <string id="goalieTimePrefix">Воротар: </string>
+    <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">ТАЙМЕР</string>
+    <string id="pauseMenuResume">Продовжити</string>
+    <string id="pauseMenuSave">Зберегти</string>
+    <string id="pauseMenuResumeLater">Продовжити пізніше</string>
+    <string id="pauseMenuDiscard">Відхилити</string>
+    <string id="pauseSaveConfirmTitle">Зберегти?</string>
+    <string id="pauseDiscardConfirmTitle">Відхилити?</string>
+    <string id="pauseSavedTitle">Активність збережено</string>
+    <string id="pauseDiscardedTitle">Активність відхилено</string>
+    <string id="sessionNameGeneric">Urban Football</string>
+    <string id="sessionNameIndoor">Urban Football В приміщенні</string>
+    <string id="sessionNameOutdoor">Urban Football Надворі</string>
+</strings>

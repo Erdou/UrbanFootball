@@ -17,11 +17,13 @@ class UrbanFootballGoalieDurationView extends WatchUi.View {
 
     var _minutes = 7;
     var _title = null;
+    var _durationValueSuffix = null;
 
     function initialize(defaultMinutes) {
         View.initialize();
 
         _title = WatchUi.loadResource(Rez.Strings.goalieDurationTitle);
+        _durationValueSuffix = WatchUi.loadResource(Rez.Strings.goalieDurationValueSuffix);
 
         if (defaultMinutes < MIN_MINUTES) {
             _minutes = MIN_MINUTES;
@@ -144,6 +146,17 @@ class UrbanFootballGoalieDurationView extends WatchUi.View {
         dc.setPenWidth(1);
     }
 
+    function getDurationText() {
+        var valueText = _minutes.toString();
+        var suffixText = " min";
+
+        if (_durationValueSuffix != null) {
+            suffixText = _durationValueSuffix;
+        }
+
+        return valueText + suffixText;
+    }
+
     function onUpdate(dc) {
         var width = dc.getWidth();
         var height = dc.getHeight();
@@ -161,7 +174,7 @@ class UrbanFootballGoalieDurationView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX, getTitleY(height), Graphics.FONT_MEDIUM, _title, Graphics.TEXT_JUSTIFY_CENTER);
 
-        var minuteText = _minutes.toString() + " min";
+        var minuteText = getDurationText();
         dc.drawText(centerX, valueTopY, valueFont, minuteText, Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);

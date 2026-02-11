@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <string id="AppName">UrbanFootball</string>
+    <string id="prompt">Tekan tombol menu</string>
+    <string id="environmentMenuTitle">Mode permainan</string>
+    <string id="environmentTypeTitle">Tipe</string>
+    <string id="environmentIndoor">Dalam ruangan</string>
+    <string id="environmentOutdoor">Luar ruangan</string>
+    <string id="goalieModeTitle">Timer kiper</string>
+    <string id="goalieModeYes">Ya</string>
+    <string id="goalieModeNo">Tidak</string>
+    <string id="goalieModeCancel">Batal</string>
+    <string id="goalieDurationTitle">Durasi kiper</string>
+    <string id="goalieDurationHint">Tekan START untuk konfirmasi</string>
+    <string id="goalieDurationValueFormat">%1$s mnt</string>
+    <string id="goalieDurationValueSuffix"> mnt</string>
+    <string id="gameTimeLabel">Permainan</string>
+    <string id="gameTimeFormat">%1$s: %2$s</string>
+    <string id="gameTimeSeparator">: </string>
+    <string id="goalieTimeFormat">Kiper: %1$s</string>
+    <string id="goalieTimePrefix">Kiper: </string>
+    <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">TIMER</string>
+    <string id="pauseMenuResume">Lanjutkan</string>
+    <string id="pauseMenuSave">Simpan</string>
+    <string id="pauseMenuResumeLater">Lanjutkan nanti</string>
+    <string id="pauseMenuDiscard">Abaikan</string>
+    <string id="pauseSaveConfirmTitle">Simpan?</string>
+    <string id="pauseDiscardConfirmTitle">Abaikan?</string>
+    <string id="pauseSavedTitle">Aktivitas disimpan</string>
+    <string id="pauseDiscardedTitle">Aktivitas diabaikan</string>
+    <string id="sessionNameGeneric">Urban Football</string>
+    <string id="sessionNameIndoor">Urban Football Dalam</string>
+    <string id="sessionNameOutdoor">Urban Football Luar</string>
+</strings>

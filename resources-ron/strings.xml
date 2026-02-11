@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <string id="AppName">UrbanFootball</string>
+    <string id="prompt">Apăsați butonul de meniu</string>
+    <string id="environmentMenuTitle">Mod de joc</string>
+    <string id="environmentTypeTitle">Tip</string>
+    <string id="environmentIndoor">Interior</string>
+    <string id="environmentOutdoor">Exterior</string>
+    <string id="goalieModeTitle">Cronometru portar</string>
+    <string id="goalieModeYes">Da</string>
+    <string id="goalieModeNo">Nu</string>
+    <string id="goalieModeCancel">Anulează</string>
+    <string id="goalieDurationTitle">Durata portarului</string>
+    <string id="goalieDurationHint">Apăsați START pentru confirmare</string>
+    <string id="goalieDurationValueFormat">%1$s min</string>
+    <string id="goalieDurationValueSuffix"> min</string>
+    <string id="gameTimeLabel">Joc</string>
+    <string id="gameTimeFormat">%1$s: %2$s</string>
+    <string id="gameTimeSeparator">: </string>
+    <string id="goalieTimeFormat">Portar: %1$s</string>
+    <string id="goalieTimePrefix">Portar: </string>
+    <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">CRONOMETRU</string>
+    <string id="pauseMenuResume">Reia</string>
+    <string id="pauseMenuSave">Salvează</string>
+    <string id="pauseMenuResumeLater">Reia mai târziu</string>
+    <string id="pauseMenuDiscard">Ignoră</string>
+    <string id="pauseSaveConfirmTitle">Salvezi?</string>
+    <string id="pauseDiscardConfirmTitle">Ignori?</string>
+    <string id="pauseSavedTitle">Activitate salvată</string>
+    <string id="pauseDiscardedTitle">Activitate ignorată</string>
+    <string id="sessionNameGeneric">Urban Football</string>
+    <string id="sessionNameIndoor">Urban Football Interior</string>
+    <string id="sessionNameOutdoor">Urban Football Exterior</string>
+</strings>

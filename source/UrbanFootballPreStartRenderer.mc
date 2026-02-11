@@ -30,7 +30,7 @@ class UrbanFootballPreStartRenderer {
         if (goalieTimerEnabled) {
             var goalieY = centerY + 44;
             dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(centerX, goalieY, Graphics.FONT_SMALL, "Gardien: " + goalieTimeText, Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(centerX, goalieY, Graphics.FONT_SMALL, goalieTimeText, Graphics.TEXT_JUSTIFY_CENTER);
         }
 
         if (showReadyIndicator) {
