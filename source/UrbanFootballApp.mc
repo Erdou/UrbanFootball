@@ -2,7 +2,7 @@ using Toybox.Application;
 using Toybox.Position;
 using Toybox.WatchUi;
 
-class FootballAppApp extends Application.AppBase {
+class UrbanFootballApp extends Application.AppBase {
 
     var _gpsEnabled = false;
     var _goalieTimerEnabled = true;
@@ -22,14 +22,14 @@ class FootballAppApp extends Application.AppBase {
             try {
                 Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
             } catch (ex) {
-                // Ignore failures during shutdown.
+                // Keep stop flow safe even if location state is already invalid.
             }
         }
     }
 
     function getInitialView() {
-        var selectorView = new FootballAppEnvironmentView();
-        return [ selectorView, new FootballAppMenuDelegate(self, selectorView) ];
+        var selectorView = new UrbanFootballEnvironmentView();
+        return [ selectorView, new UrbanFootballEnvironmentDelegate(self, selectorView) ];
     }
 
     function selectEnvironment(isOutdoor) as Void {
@@ -83,14 +83,14 @@ class FootballAppApp extends Application.AppBase {
     }
 
     function openGoalieModeView(showCancelOption) as Void {
-        var view = new FootballAppGoalieModeView(_goalieTimerEnabled, showCancelOption);
-        var delegate = new FootballAppGoalieModeDelegate(self, view);
+        var view = new UrbanFootballGoalieModeView(_goalieTimerEnabled, showCancelOption);
+        var delegate = new UrbanFootballGoalieModeDelegate(self, view);
         WatchUi.switchToView(view, delegate, WatchUi.SLIDE_IMMEDIATE);
     }
 
     function openGoalieDurationView() as Void {
-        var view = new FootballAppGoalieDurationView(_goalieTimerDurationMinutes);
-        var delegate = new FootballAppGoalieDurationDelegate(self, view);
+        var view = new UrbanFootballGoalieDurationView(_goalieTimerDurationMinutes);
+        var delegate = new UrbanFootballGoalieDurationDelegate(self, view);
         WatchUi.switchToView(view, delegate, WatchUi.SLIDE_IMMEDIATE);
     }
 
@@ -104,8 +104,8 @@ class FootballAppApp extends Application.AppBase {
 
     function openMainViewInternal(preserveGoalieTimer) as Void {
         if (_mainView == null || _mainDelegate == null) {
-            _mainView = new FootballAppView();
-            _mainDelegate = new FootballAppDelegate(_mainView);
+            _mainView = new UrbanFootballActivityView();
+            _mainDelegate = new UrbanFootballActivityDelegate(_mainView);
         }
 
         var shouldResetTimer = true;

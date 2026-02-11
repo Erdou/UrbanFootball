@@ -1,11 +1,11 @@
-using Toybox.Application;
-using Toybox.WatchUi;
-using Toybox.System;
 using Toybox.Activity;
 using Toybox.ActivityRecording;
+using Toybox.Application;
 using Toybox.Attention;
+using Toybox.System;
+using Toybox.WatchUi;
 
-class FootballAppDelegate extends WatchUi.BehaviorDelegate {
+class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
 
     const MAX_SCORE = 99;
     const LONG_PRESS_THRESHOLD_MS = 550;
@@ -35,6 +35,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function adjustScore(isLeft, delta, withVibration) {
+        // Ignore scoring inputs on the pre-start screen.
         if (!_view.activityStarted) {
             return;
         }
@@ -66,6 +67,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
         if ((now - _lastLeftLongPressAt) < LONG_PRESS_DEDUPE_MS) {
             return;
         }
+
         _lastLeftLongPressAt = now;
         adjustScore(true, -1, true);
     }
@@ -91,19 +93,20 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
         if ((now - _lastBackResetAt) < BACK_RESET_DEDUPE_MS) {
             return;
         }
+
         _lastBackResetAt = now;
         resetGoalieTimer(true);
     }
 
     function createSessionForCurrentMode() {
-        var sessionName = "Football";
+        var sessionName = "Urban Football";
         var baseApp = Application.getApp();
-        if (baseApp instanceof FootballAppApp) {
-            var app = baseApp as FootballAppApp;
+        if (baseApp instanceof UrbanFootballApp) {
+            var app = baseApp as UrbanFootballApp;
             if (app.isGpsEnabled()) {
-                sessionName = "Football Ext";
+                sessionName = "Urban Football Ext";
             } else {
-                sessionName = "Football Int";
+                sessionName = "Urban Football Int";
             }
             app.applyGpsMode();
         }
@@ -115,7 +118,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function openGoalieConfiguration() as Void {
-        var app = Application.getApp() as FootballAppApp;
+        var app = Application.getApp() as UrbanFootballApp;
         app.openGoalieModeView(true);
     }
 
@@ -134,7 +137,8 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
             resetGoalieTimer(true);
             return true;
         }
-        else if (x < width / 2) {
+
+        if (x < width / 2) {
             adjustScore(true, 1, false);
         } else {
             adjustScore(false, 1, false);
@@ -228,6 +232,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
             _suppressNextOnBack = false;
             return true;
         }
+
         handleBackReset();
         return true;
     }
@@ -236,11 +241,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
         var key = keyEvent.getKey();
         var keyType = keyEvent.getType();
 
-        if (key == WatchUi.KEY_UP || key == WatchUi.KEY_DOWN) {
-            return true;
-        }
-
-        if (key == WatchUi.KEY_ESC) {
+        if (key == WatchUi.KEY_UP || key == WatchUi.KEY_DOWN || key == WatchUi.KEY_ESC) {
             return true;
         }
 
@@ -267,6 +268,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
                     _view.markActivityStarted();
                 }
             }
+
             WatchUi.requestUpdate();
             return true;
         }

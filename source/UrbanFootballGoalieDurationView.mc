@@ -1,7 +1,7 @@
 using Toybox.Graphics;
 using Toybox.WatchUi;
 
-class FootballAppGoalieDurationView extends WatchUi.View {
+class UrbanFootballGoalieDurationView extends WatchUi.View {
 
     const MIN_MINUTES = 1;
     const MAX_MINUTES = 99;

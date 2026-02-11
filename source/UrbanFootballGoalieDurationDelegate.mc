@@ -1,7 +1,7 @@
 using Toybox.System;
 using Toybox.WatchUi;
 
-class FootballAppGoalieDurationDelegate extends WatchUi.BehaviorDelegate {
+class UrbanFootballGoalieDurationDelegate extends WatchUi.BehaviorDelegate {
 
     var _app;
     var _view;

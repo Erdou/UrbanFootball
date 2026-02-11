@@ -2,7 +2,7 @@ using Toybox.Graphics;
 using Toybox.System;
 using Toybox.WatchUi;
 
-class FootballAppGoalieModeView extends WatchUi.View {
+class UrbanFootballGoalieModeView extends WatchUi.View {
 
     const OPTION_ROW_SPACING_TWO = 66;
     const OPTION_ROW_SPACING_THREE = 50;

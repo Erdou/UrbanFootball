@@ -1,26 +1,19 @@
 using Toybox.WatchUi;
 
-class FootballAppGoalieModeDelegate extends WatchUi.BehaviorDelegate {
+class UrbanFootballEnvironmentDelegate extends WatchUi.BehaviorDelegate {
 
     var _app;
-    var _view;
+    var _selectorView;
 
-    function initialize(app, view) {
+    function initialize(app, selectorView) {
         BehaviorDelegate.initialize();
         _app = app;
-        _view = view;
+        _selectorView = selectorView;
     }
 
     function confirmSelection() as Void {
-        if (_view.isCancelSelection()) {
-            _app.openMainViewPreservingGoalieTimer();
-        } else if (_view.isTimerEnabledSelection()) {
-            _app.setGoalieTimerEnabled(true);
-            _app.openGoalieDurationView();
-        } else {
-            _app.setGoalieTimerEnabled(false);
-            _app.openMainView();
-        }
+        _app.selectEnvironment(_selectorView.getSelectedIsOutdoor());
+        _app.openGoalieModeView(false);
     }
 
     function onKey(keyEvent) {
@@ -30,12 +23,12 @@ class FootballAppGoalieModeDelegate extends WatchUi.BehaviorDelegate {
 
         var key = keyEvent.getKey();
         if (key == WatchUi.KEY_UP) {
-            _view.moveSelection(-1);
+            _selectorView.moveSelection(-1);
             return true;
         } else if (key == WatchUi.KEY_DOWN) {
-            _view.moveSelection(1);
+            _selectorView.moveSelection(1);
             return true;
-        } else if (key == WatchUi.KEY_START || key == WatchUi.KEY_ENTER) {
+        } else if (key == WatchUi.KEY_ENTER || key == WatchUi.KEY_START) {
             confirmSelection();
             return true;
         }
@@ -46,7 +39,7 @@ class FootballAppGoalieModeDelegate extends WatchUi.BehaviorDelegate {
     function onTap(clickEvent) {
         var coords = clickEvent.getCoordinates();
         var y = coords[1];
-        _view.selectFromTap(y);
+        _selectorView.selectFromTap(y);
         confirmSelection();
         return true;
     }

@@ -2,7 +2,7 @@ using Toybox.Graphics;
 using Toybox.System;
 using Toybox.WatchUi;
 
-class FootballAppEnvironmentView extends WatchUi.View {
+class UrbanFootballEnvironmentView extends WatchUi.View {
 
     const OPTION_ROW_SPACING = 66;
 
