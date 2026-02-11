@@ -44,6 +44,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
 
     function selectFromTap(y) as Void {
         var scrollOffset = getScrollOffset();
+        var maxOffset = 4 - VISIBLE_ITEM_COUNT;
         var closestIndex = 0;
         var closestDistance = 9999;
         for (var i = 0; i < VISIBLE_ITEM_COUNT; i += 1) {
@@ -55,6 +56,18 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
             if (distance < closestDistance) {
                 closestDistance = distance;
                 closestIndex = scrollOffset + i;
+            }
+        }
+
+        if (scrollOffset < maxOffset) {
+            var peekY = ITEM_START_Y + (VISIBLE_ITEM_COUNT * ITEM_SPACING);
+            var peekDistance = y - peekY;
+            if (peekDistance < 0) {
+                peekDistance = -peekDistance;
+            }
+            if (peekDistance < closestDistance) {
+                closestDistance = peekDistance;
+                closestIndex = scrollOffset + VISIBLE_ITEM_COUNT;
             }
         }
 
@@ -205,6 +218,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
         var rowFont = Graphics.FONT_MEDIUM;
         var rowHeight = dc.getFontHeight(rowFont);
         var scrollOffset = getScrollOffset();
+        var maxOffset = 4 - VISIBLE_ITEM_COUNT;
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
@@ -223,6 +237,13 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
             }
             var rowY = ITEM_START_Y + (i * ITEM_SPACING);
             drawMenuRow(dc, textX, iconX, rowY, rowFont, rowHeight, getLabelForIndex(itemIndex), _selectedIndex == itemIndex, itemIndex);
+        }
+
+        // Show a cropped preview of the next item so users can see the list continues.
+        if (scrollOffset < maxOffset) {
+            var peekIndex = scrollOffset + VISIBLE_ITEM_COUNT;
+            var peekY = ITEM_START_Y + (VISIBLE_ITEM_COUNT * ITEM_SPACING);
+            drawMenuRow(dc, textX, iconX, peekY, rowFont, rowHeight, getLabelForIndex(peekIndex), false, peekIndex);
         }
 
         // Draw the ring last so it stays visually on top, like Garmin pause UI.
