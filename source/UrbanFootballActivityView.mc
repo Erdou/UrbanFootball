@@ -11,6 +11,7 @@ class UrbanFootballActivityView extends WatchUi.View {
     const GOALIE_ALERT_PULSE_DURATION_MS = 80;
     const GOALIE_ALERT_PULSE_STRENGTH = 30;
     const START_ANIMATION_DURATION_MS = 1400;
+    const PAUSE_ANIMATION_DURATION_MS = 900;
 
     var scoreA = 0;
     var scoreB = 0;
@@ -26,10 +27,12 @@ class UrbanFootballActivityView extends WatchUi.View {
     var _gameTimeLabel = null;
     var _preStartTitle = null;
     var _startAnimationUntil = null;
+    var _pauseAnimationUntil = null;
     var _lastGoalieAlertAt = null;
 
     var _refreshTimer;
     var _startAnimationTimer;
+    var _pauseAnimationTimer;
 
     var _heartRateRenderer;
     var _preStartRenderer;
@@ -51,6 +54,7 @@ class UrbanFootballActivityView extends WatchUi.View {
         _refreshTimer.start(method(:onTimerTick), 1000, true);
 
         _startAnimationTimer = new Timer.Timer();
+        _pauseAnimationTimer = new Timer.Timer();
     }
 
     function onTimerTick() as Void {
@@ -157,6 +161,12 @@ class UrbanFootballActivityView extends WatchUi.View {
         WatchUi.requestUpdate();
     }
 
+    function triggerPauseAnimation() as Void {
+        _pauseAnimationUntil = System.getTimer() + PAUSE_ANIMATION_DURATION_MS;
+        _pauseAnimationTimer.start(method(:onPauseAnimationEndTick), PAUSE_ANIMATION_DURATION_MS + 30, false);
+        WatchUi.requestUpdate();
+    }
+
     function markActivityStarted() as Void {
         // Goalie timing starts from real activity start, not from screen entry.
         activityStarted = true;
@@ -169,8 +179,20 @@ class UrbanFootballActivityView extends WatchUi.View {
         WatchUi.requestUpdate();
     }
 
+    function onPauseAnimationEndTick() as Void {
+        WatchUi.requestUpdate();
+    }
+
     function isStartAnimationActive() {
         return (_startAnimationUntil != null) && (System.getTimer() <= _startAnimationUntil);
+    }
+
+    function isPauseAnimationActive() {
+        return (_pauseAnimationUntil != null) && (System.getTimer() <= _pauseAnimationUntil);
+    }
+
+    function getPauseAnimationDurationMs() {
+        return PAUSE_ANIMATION_DURATION_MS;
     }
 
     function onLayout(dc) {
@@ -215,6 +237,8 @@ class UrbanFootballActivityView extends WatchUi.View {
         // Keep overlay and pre-start background together during start transition.
         if (isStartAnimationActive()) {
             _preStartRenderer.drawStartAnimationOverlay(dc, width, height);
+        } else if (isPauseAnimationActive()) {
+            _mainScreenRenderer.drawPauseAnimationOverlay(dc, width, height);
         }
     }
 

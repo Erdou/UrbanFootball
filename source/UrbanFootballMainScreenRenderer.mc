@@ -80,4 +80,18 @@ class UrbanFootballMainScreenRenderer {
             dc.fillCircle(width - 20, 20, 5);
         }
     }
+
+    function drawPauseAnimationOverlay(dc, width, height) as Void {
+        var centerX = width / 2;
+        var centerY = height / 2;
+        var ringRadius = (height / 2) - 12;
+        var halfSize = 34;
+
+        dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+        dc.setPenWidth(6);
+        dc.drawCircle(centerX, centerY, ringRadius);
+        dc.setPenWidth(1);
+
+        dc.fillRectangle(centerX - halfSize, centerY - halfSize, halfSize * 2, halfSize * 2);
+    }
 }

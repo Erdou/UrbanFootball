@@ -3,6 +3,7 @@ using Toybox.ActivityRecording;
 using Toybox.Application;
 using Toybox.Attention;
 using Toybox.System;
+using Toybox.Timer;
 using Toybox.WatchUi;
 
 class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
@@ -21,10 +22,12 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
     var _consumeNextUpRelease = false;
     var _suppressNextOnBack = false;
     var _lastBackResetAt = -BACK_RESET_DEDUPE_MS;
+    var _pauseMenuTimer = null;
 
     function initialize(view) {
         BehaviorDelegate.initialize();
         _view = view;
+        _pauseMenuTimer = new Timer.Timer();
     }
 
     function vibrate(durationMs, strength) {
@@ -34,9 +37,58 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         }
     }
 
+    function playStartFeedback() as Void {
+        // Mirrors the official activity start cue: one tone + a short light haptic pulse.
+        if (Attention has :playTone) {
+            try {
+                Attention.playTone(Attention.TONE_START);
+            } catch (ex) {
+                // Some devices may not expose tone output at runtime.
+            }
+        }
+
+        if (Attention has :vibrate) {
+            try {
+                Attention.vibrate([new Attention.VibeProfile(20, 60)]);
+            } catch (ex) {
+                // Keep start flow alive even if haptics are unavailable.
+            }
+        }
+    }
+
+    function playPauseFeedback() as Void {
+        // Matches Garmin-style pause cue: stop tone with a light pulse.
+        if (Attention has :playTone) {
+            try {
+                Attention.playTone(Attention.TONE_STOP);
+            } catch (ex) {
+                // Some devices may not expose tone output at runtime.
+            }
+        }
+
+        if (Attention has :vibrate) {
+            try {
+                Attention.vibrate([new Attention.VibeProfile(24, 65)]);
+            } catch (ex) {
+                // Keep pause flow alive even if haptics are unavailable.
+            }
+        }
+    }
+
+    function showPauseMenuAfterOverlay() as Void {
+        _pauseMenuTimer.start(method(:onPauseOverlayFinished), _view.getPauseAnimationDurationMs() + 40, false);
+    }
+
+    function onPauseOverlayFinished() as Void {
+        var app = Application.getApp() as UrbanFootballApp;
+        if (app != null) {
+            app.openPauseMenuView();
+        }
+    }
+
     function adjustScore(isLeft, delta, withVibration) {
         // Ignore scoring inputs on the pre-start screen.
-        if (!_view.activityStarted) {
+        if (!_view.activityStarted || !_view.isRecording) {
             return;
         }
 
@@ -125,7 +177,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onTap(clickEvent) {
-        if (!_view.activityStarted) {
+        if (!_view.activityStarted || !_view.isRecording || _view.isPauseAnimationActive()) {
             return true;
         }
 
@@ -256,6 +308,10 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         }
 
         if ((key == WatchUi.KEY_ENTER || key == WatchUi.KEY_START) && keyType == WatchUi.PRESS_TYPE_ACTION) {
+            if (_view.isPauseAnimationActive()) {
+                return true;
+            }
+
             if (_view.session == null) {
                 createSessionForCurrentMode();
             }
@@ -263,6 +319,9 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
             if (_view.isRecording) {
                 _view.session.stop();
                 _view.isRecording = false;
+                _view.triggerPauseAnimation();
+                playPauseFeedback();
+                showPauseMenuAfterOverlay();
             } else {
                 var firstStart = !_view.activityStarted;
                 _view.session.start();
@@ -270,6 +329,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
                 if (firstStart) {
                     // First start initializes runtime counters and launch overlay once.
                     _view.markActivityStarted();
+                    playStartFeedback();
                 }
             }
 

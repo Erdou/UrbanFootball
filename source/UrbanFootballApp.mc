@@ -9,6 +9,8 @@ class UrbanFootballApp extends Application.AppBase {
     var _goalieTimerDurationMinutes = 7;
     var _mainView = null;
     var _mainDelegate = null;
+    var _pauseMenuView = null;
+    var _pauseMenuDelegate = null;
 
     function initialize() {
         AppBase.initialize();
@@ -115,6 +117,31 @@ class UrbanFootballApp extends Application.AppBase {
         }
 
         _mainView.configureGoalieTimer(_goalieTimerEnabled, _goalieTimerDurationMinutes, shouldResetTimer);
+        WatchUi.switchToView(_mainView, _mainDelegate, WatchUi.SLIDE_IMMEDIATE);
+    }
+
+    function openPauseMenuView() as Void {
+        if (_pauseMenuView == null || _pauseMenuDelegate == null) {
+            _pauseMenuView = new UrbanFootballPauseMenuView();
+            _pauseMenuDelegate = new UrbanFootballPauseMenuDelegate(self, _pauseMenuView);
+        }
+        _pauseMenuView.resetSelection();
+
+        WatchUi.switchToView(_pauseMenuView, _pauseMenuDelegate, WatchUi.SLIDE_IMMEDIATE);
+    }
+
+    function resumeFromPauseMenu() as Void {
+        if (_mainView == null || _mainDelegate == null) {
+            return;
+        }
+
+        if (_mainView.session != null) {
+            _mainView.session.start();
+        }
+        _mainView.isRecording = true;
+        _mainView.triggerStartAnimation();
+        _mainDelegate.playStartFeedback();
+
         WatchUi.switchToView(_mainView, _mainDelegate, WatchUi.SLIDE_IMMEDIATE);
     }
 }

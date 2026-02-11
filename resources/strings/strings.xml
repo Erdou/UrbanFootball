@@ -15,4 +15,9 @@
     <string id="goalieDurationHint">START pour valider</string>
     <string id="gameTimeLabel">Jeu</string>
     <string id="preStartTitle">Urban Football</string>
+    <string id="pauseMenuTimerTitle">CHRONOMÈTRE</string>
+    <string id="pauseMenuResume">Reprendre</string>
+    <string id="pauseMenuSave">Enregistrer</string>
+    <string id="pauseMenuResumeLater">Reprendre plus tard</string>
+    <string id="pauseMenuDiscard">Ignorer</string>
 </strings>
