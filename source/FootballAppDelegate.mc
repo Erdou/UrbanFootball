@@ -35,6 +35,10 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function adjustScore(isLeft, delta, withVibration) {
+        if (!_view.activityStarted) {
+            return;
+        }
+
         if (isLeft) {
             _view.scoreA += delta;
             if (_view.scoreA < 0) {
@@ -116,6 +120,10 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onTap(clickEvent) {
+        if (!_view.activityStarted) {
+            return true;
+        }
+
         var coords = clickEvent.getCoordinates();
         var x = coords[0];
         var y = coords[1];
@@ -252,10 +260,12 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
                 _view.session.stop();
                 _view.isRecording = false;
             } else {
+                var firstStart = !_view.activityStarted;
                 _view.session.start();
                 _view.isRecording = true;
-                _view.activityStarted = true;
-                _view.triggerStartAnimation();
+                if (firstStart) {
+                    _view.markActivityStarted();
+                }
             }
             WatchUi.requestUpdate();
             return true;

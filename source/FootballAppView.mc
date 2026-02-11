@@ -11,6 +11,7 @@ class FootballAppView extends WatchUi.View {
     const GOALIE_ALERT_PULSE_DURATION_MS = 80;
     const GOALIE_ALERT_PULSE_STRENGTH = 30;
     const START_ANIMATION_DURATION_MS = 1400;
+    const PRESTART_BG_COLOR = Graphics.COLOR_BLACK;
     const MAIN_BG_COLOR = Graphics.COLOR_WHITE;
     const PRIMARY_TEXT_COLOR = Graphics.COLOR_BLACK;
     const SECONDARY_TEXT_COLOR = Graphics.COLOR_DK_GRAY;
@@ -40,6 +41,7 @@ class FootballAppView extends WatchUi.View {
     var goalieTimerDurationSeconds = 420;
     var footIcon = null;
     var _gameTimeLabel = null;
+    var _preStartTitle = null;
     
     var session = null; 
     var isRecording = false;
@@ -47,6 +49,7 @@ class FootballAppView extends WatchUi.View {
     var _startAnimationUntil = null;
 
     var refreshTimer;
+    var _startAnimationTimer;
     var _lastGoalieAlertAt = null;
 
     function initialize() {
@@ -54,9 +57,12 @@ class FootballAppView extends WatchUi.View {
         goalieTimerStart = System.getTimer();
         footIcon = WatchUi.loadResource(Rez.Drawables.FootIconScore) as Graphics.BitmapType;
         _gameTimeLabel = WatchUi.loadResource(Rez.Strings.gameTimeLabel);
+        _preStartTitle = WatchUi.loadResource(Rez.Strings.preStartTitle);
         
         refreshTimer = new Timer.Timer();
         refreshTimer.start(method(:onTimerTick), 1000, true);
+
+        _startAnimationTimer = new Timer.Timer();
     }
 
     function onTimerTick() as Void {
@@ -80,6 +86,10 @@ class FootballAppView extends WatchUi.View {
     }
 
     function getGoalieRemainingSeconds() {
+        if (!activityStarted) {
+            return goalieTimerDurationSeconds;
+        }
+
         var now = System.getTimer();
         var elapsedSeconds = (now - goalieTimerStart) / 1000;
         return goalieTimerDurationSeconds - elapsedSeconds;
@@ -251,8 +261,35 @@ class FootballAppView extends WatchUi.View {
         return minutes.format("%02d") + ":" + seconds.format("%02d");
     }
 
+    function formatGoalieTime(remainingSeconds) {
+        var isOvertime = remainingSeconds < 0;
+        var displaySeconds = remainingSeconds;
+        var signPrefix = "";
+        if (isOvertime) {
+            displaySeconds = -displaySeconds;
+            signPrefix = "-";
+        }
+
+        var minutes = displaySeconds / 60;
+        var seconds = displaySeconds % 60;
+        return signPrefix + minutes.format("%02d") + ":" + seconds.format("%02d");
+    }
+
     function triggerStartAnimation() as Void {
         _startAnimationUntil = System.getTimer() + START_ANIMATION_DURATION_MS;
+        _startAnimationTimer.start(method(:onStartAnimationEndTick), START_ANIMATION_DURATION_MS + 30, false);
+        WatchUi.requestUpdate();
+    }
+
+    function markActivityStarted() as Void {
+        activityStarted = true;
+        goalieTimerStart = System.getTimer();
+        _lastGoalieAlertAt = null;
+        triggerStartAnimation();
+    }
+
+    function onStartAnimationEndTick() as Void {
+        WatchUi.requestUpdate();
     }
 
     function isStartAnimationActive() {
@@ -289,19 +326,37 @@ class FootballAppView extends WatchUi.View {
         ]);
     }
 
-    function onLayout(dc) {
-    }
+    function drawPreStartScreen(dc, width, height, showReadyIndicator) as Void {
+        var centerX = width / 2;
+        var centerY = height / 2;
 
-    function onShow() {
-    }
-
-    function onUpdate(dc) {
-        dc.setColor(MAIN_BG_COLOR, MAIN_BG_COLOR);
+        dc.setColor(PRESTART_BG_COLOR, PRESTART_BG_COLOR);
         dc.clear();
-        dc.setColor(PRIMARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
-        var width = dc.getWidth();
-        var height = dc.getHeight();
+        if (footIcon != null) {
+            var iconX = centerX - (footIcon.getWidth() / 2);
+            var iconY = centerY - 42;
+            dc.drawBitmap(iconX, iconY, footIcon);
+        }
+
+        var titleY = centerY + 2;
+        dc.drawText(centerX, titleY, Graphics.FONT_MEDIUM, _preStartTitle, Graphics.TEXT_JUSTIFY_CENTER);
+
+        if (goalieTimerEnabled) {
+            var remainingSeconds = getGoalieRemainingSeconds();
+            var timeStr = formatGoalieTime(remainingSeconds);
+            var goalieY = centerY + 44;
+            dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(centerX, goalieY, Graphics.FONT_SMALL, "Gardien: " + timeStr, Graphics.TEXT_JUSTIFY_CENTER);
+        }
+
+        if (showReadyIndicator) {
+            drawReadyToStartIndicator(dc, width, height);
+        }
+    }
+
+    function drawMainActivityScreen(dc, width, height) as Void {
         var centerX = width / 2;
         var centerY = height / 2;
         var scoreFont = Graphics.FONT_NUMBER_HOT;
@@ -311,6 +366,9 @@ class FootballAppView extends WatchUi.View {
         var scoreXOffset = hasTwoDigitScore ? 68 : 50;
         var info = Activity.getActivityInfo();
         var hrValue = getHeartRateValue(info);
+
+        dc.setColor(MAIN_BG_COLOR, MAIN_BG_COLOR);
+        dc.clear();
 
         drawHeartRateHeader(dc, width, height, hrValue);
 
@@ -332,17 +390,8 @@ class FootballAppView extends WatchUi.View {
 
         if (goalieTimerEnabled) {
             var remainingSeconds = getGoalieRemainingSeconds();
+            var timeStr = formatGoalieTime(remainingSeconds);
             var isOvertime = remainingSeconds < 0;
-            var displaySeconds = remainingSeconds;
-            var signPrefix = "";
-            if (isOvertime) {
-                displaySeconds = -displaySeconds;
-                signPrefix = "-";
-            }
-
-            var minutes = displaySeconds / 60;
-            var seconds = displaySeconds % 60;
-            var timeStr = signPrefix + minutes.format("%02d") + ":" + seconds.format("%02d");
 
             var goalieFont = Graphics.FONT_SMALL;
             var goalieY = centerY + 74;
@@ -358,16 +407,29 @@ class FootballAppView extends WatchUi.View {
             dc.drawText(centerX, goalieY, goalieFont, "Gardien: " + timeStr, Graphics.TEXT_JUSTIFY_CENTER);
         }
 
-        if (!activityStarted && !isRecording) {
-            drawReadyToStartIndicator(dc, width, height);
-        }
-
         if (isRecording) {
             dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(width - 20, 20, 5);
         } else if (activityStarted) {
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(width - 20, 20, 5);
+        }
+    }
+
+    function onLayout(dc) {
+    }
+
+    function onShow() {
+    }
+
+    function onUpdate(dc) {
+        var width = dc.getWidth();
+        var height = dc.getHeight();
+        var showingPreStartScreen = !activityStarted || isStartAnimationActive();
+        if (showingPreStartScreen) {
+            drawPreStartScreen(dc, width, height, !activityStarted);
+        } else {
+            drawMainActivityScreen(dc, width, height);
         }
 
         if (isStartAnimationActive()) {
