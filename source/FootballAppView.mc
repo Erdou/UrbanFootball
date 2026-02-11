@@ -10,6 +10,9 @@ class FootballAppView extends WatchUi.View {
     const GOALIE_ALERT_PULSE_INTERVAL_MS = 900;
     const GOALIE_ALERT_PULSE_DURATION_MS = 80;
     const GOALIE_ALERT_PULSE_STRENGTH = 30;
+    const MAIN_BG_COLOR = Graphics.COLOR_WHITE;
+    const PRIMARY_TEXT_COLOR = Graphics.COLOR_BLACK;
+    const SECONDARY_TEXT_COLOR = Graphics.COLOR_DK_GRAY;
     const HR_ZONE_1_MAX_BPM = 109;
     const HR_ZONE_2_MAX_BPM = 129;
     const HR_ZONE_3_MAX_BPM = 149;
@@ -183,7 +186,7 @@ class FootballAppView extends WatchUi.View {
 
         dc.setPenWidth(8);
 
-        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawArc(centerX, centerY, gaugeRadius, Graphics.ARC_CLOCKWISE, HR_ZONE_1_START_DEG, HR_ZONE_1_END_DEG);
 
         dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
@@ -198,16 +201,16 @@ class FootballAppView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
         dc.drawArc(centerX, centerY, gaugeRadius, Graphics.ARC_CLOCKWISE, HR_ZONE_5_START_DEG, HR_ZONE_5_END_DEG);
 
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(PRIMARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
         dc.setPenWidth(10);
         dc.drawArc(centerX, centerY, gaugeRadius, Graphics.ARC_CLOCKWISE, cursorAngle + 1, cursorAngle - 1);
 
         dc.setPenWidth(1);
         drawHeartGlyph(dc, centerX - 32, 48, 20, heartColor);
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(PRIMARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX + 18, 30, Graphics.FONT_LARGE, hrText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.setPenWidth(2);
         dc.drawLine(34, 74, width - 34, 74);
         dc.setPenWidth(1);
@@ -245,9 +248,9 @@ class FootballAppView extends WatchUi.View {
     }
 
     function onUpdate(dc) {
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        dc.setColor(MAIN_BG_COLOR, MAIN_BG_COLOR);
         dc.clear();
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(PRIMARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
 
         var width = dc.getWidth();
         var height = dc.getHeight();
@@ -263,6 +266,7 @@ class FootballAppView extends WatchUi.View {
 
         drawHeartRateHeader(dc, width, height, hrValue);
 
+        dc.setColor(PRIMARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX - scoreXOffset, scoreY, scoreFont, scoreA.toString(), Graphics.TEXT_JUSTIFY_CENTER);
         dc.drawText(centerX + scoreXOffset, scoreY, scoreFont, scoreB.toString(), Graphics.TEXT_JUSTIFY_CENTER);
 
@@ -275,7 +279,7 @@ class FootballAppView extends WatchUi.View {
 
         var gameTimeY = centerY + 38;
         var gameTime = formatGameTime(info);
-        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(SECONDARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX, gameTimeY, Graphics.FONT_TINY, _gameTimeLabel + ": " + gameTime, Graphics.TEXT_JUSTIFY_CENTER);
 
         if (goalieTimerEnabled) {
