@@ -54,6 +54,7 @@ class UrbanFootballActivityView extends WatchUi.View {
     }
 
     function onTimerTick() as Void {
+        // Central heartbeat for time-based UI updates and goalie overtime vibration.
         maybePulseGoalieAlert();
         WatchUi.requestUpdate();
     }
@@ -68,6 +69,7 @@ class UrbanFootballActivityView extends WatchUi.View {
         }
 
         if (resetTimer == null || resetTimer) {
+            // Preserve timer only when returning from in-activity settings.
             goalieTimerStart = System.getTimer();
             _lastGoalieAlertAt = null;
         }
@@ -182,6 +184,7 @@ class UrbanFootballActivityView extends WatchUi.View {
         var height = dc.getHeight();
         var remainingSeconds = getGoalieRemainingSeconds();
         var goalieTimeText = formatGoalieTime(remainingSeconds);
+        // Pre-start layout stays visible during the start overlay to mimic Garmin flow.
         var showPreStartScreen = !activityStarted || isStartAnimationActive();
 
         if (showPreStartScreen) {

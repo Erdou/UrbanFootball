@@ -104,6 +104,7 @@ class UrbanFootballApp extends Application.AppBase {
 
     function openMainViewInternal(preserveGoalieTimer) as Void {
         if (_mainView == null || _mainDelegate == null) {
+            // Keep one activity view instance so score/session state survives settings round-trips.
             _mainView = new UrbanFootballActivityView();
             _mainDelegate = new UrbanFootballActivityDelegate(_mainView);
         }

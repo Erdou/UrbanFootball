@@ -72,6 +72,7 @@ class UrbanFootballMainScreenRenderer {
         }
 
         if (isRecording) {
+            // Green: actively recording. Red: session exists but paused/stopped.
             dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(width - 20, 20, 5);
         } else if (activityStarted) {

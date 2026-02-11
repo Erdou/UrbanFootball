@@ -42,6 +42,7 @@ class UrbanFootballPreStartRenderer {
         var centerY = height / 2;
         var outerRadius = (height / 2) - 8;
 
+        // Arc is intentionally placed near the physical START button area.
         dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
         dc.setPenWidth(6);
         dc.drawArc(centerX, centerY, outerRadius, Graphics.ARC_CLOCKWISE, READY_INDICATOR_START_DEG, READY_INDICATOR_END_DEG);

@@ -64,6 +64,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
 
     function handleLeftLongPress() {
         var now = System.getTimer();
+        // Ignore repeated key-repeat events while the same long press is held.
         if ((now - _lastLeftLongPressAt) < LONG_PRESS_DEDUPE_MS) {
             return;
         }
@@ -90,6 +91,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         }
 
         var now = System.getTimer();
+        // ESC may arrive through multiple paths; de-dupe to avoid double resets.
         if ((now - _lastBackResetAt) < BACK_RESET_DEDUPE_MS) {
             return;
         }
@@ -209,6 +211,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
             _backButtonDownAt = null;
 
             if (backLongPress) {
+                // Consume the paired onBack callback after opening settings.
                 _suppressNextOnBack = true;
                 openGoalieConfiguration();
             } else {
@@ -265,6 +268,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
                 _view.session.start();
                 _view.isRecording = true;
                 if (firstStart) {
+                    // First start initializes runtime counters and launch overlay once.
                     _view.markActivityStarted();
                 }
             }
