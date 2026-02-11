@@ -31,8 +31,8 @@ class FootballAppView extends WatchUi.View {
     const HR_ZONE_5_START_DEG = 51;
     const HR_ZONE_5_END_DEG = 27;
     const HR_HEADER_DIVIDER_Y = 86;
-    const READY_INDICATOR_START_DEG = 36;
-    const READY_INDICATOR_END_DEG = 18;
+    const READY_INDICATOR_START_DEG = 40;
+    const READY_INDICATOR_END_DEG = 22;
 
     var scoreA = 0;
     var scoreB = 0;
@@ -336,11 +336,11 @@ class FootballAppView extends WatchUi.View {
 
         if (footIcon != null) {
             var iconX = centerX - (footIcon.getWidth() / 2);
-            var iconY = centerY - 42;
+            var iconY = centerY - 60;
             dc.drawBitmap(iconX, iconY, footIcon);
         }
 
-        var titleY = centerY + 2;
+        var titleY = centerY + 8;
         dc.drawText(centerX, titleY, Graphics.FONT_MEDIUM, _preStartTitle, Graphics.TEXT_JUSTIFY_CENTER);
 
         if (goalieTimerEnabled) {
