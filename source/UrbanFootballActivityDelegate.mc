@@ -130,7 +130,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
             return;
         }
 
-        _view.goalieTimerStart = System.getTimer();
+        _view.resetGoalieTimer();
         if (withVibration) {
             vibrate(50, 100);
         }
@@ -318,6 +318,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
 
             if (_view.isRecording) {
                 _view.session.stop();
+                _view.pauseGoalieTimer();
                 _view.isRecording = false;
                 _view.triggerPauseAnimation();
                 playPauseFeedback();
@@ -336,6 +337,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
                     _view.markActivityStarted();
                     playStartFeedback();
                 } else {
+                    _view.resumeGoalieTimer();
                     // Resume from an already-started activity should still use start cue/overlay.
                     _view.triggerStartAnimation();
                     playStartFeedback();

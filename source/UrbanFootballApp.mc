@@ -302,6 +302,7 @@ class UrbanFootballApp extends Application.AppBase {
             _mainView.session.start();
         }
         _mainView.isRecording = true;
+        _mainView.resumeGoalieTimer();
         _mainView.triggerStartAnimation();
         _mainDelegate.playStartFeedback();
 

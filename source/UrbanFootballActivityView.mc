@@ -31,6 +31,7 @@ class UrbanFootballActivityView extends WatchUi.View {
     var _pauseAnimationUntil = null;
     var _lastGoalieAlertAt = null;
     var _sessionTimeOffsetMs = 0;
+    var _goaliePausedRemainingSeconds = null;
 
     var _refreshTimer;
     var _startAnimationTimer;
@@ -77,8 +78,17 @@ class UrbanFootballActivityView extends WatchUi.View {
         if (resetTimer == null || resetTimer) {
             // Preserve timer only when returning from in-activity settings.
             goalieTimerStart = System.getTimer();
+            _goaliePausedRemainingSeconds = null;
+            if (activityStarted && !isRecording) {
+                _goaliePausedRemainingSeconds = goalieTimerDurationSeconds;
+            }
             _lastGoalieAlertAt = null;
         }
+    }
+
+    function computeGoalieRemainingFromClock(nowMs) {
+        var elapsedSeconds = (nowMs - goalieTimerStart) / 1000;
+        return goalieTimerDurationSeconds - elapsedSeconds;
     }
 
     function getGoalieRemainingSeconds() {
@@ -86,13 +96,44 @@ class UrbanFootballActivityView extends WatchUi.View {
             return goalieTimerDurationSeconds;
         }
 
-        var now = System.getTimer();
-        var elapsedSeconds = (now - goalieTimerStart) / 1000;
-        return goalieTimerDurationSeconds - elapsedSeconds;
+        if (!isRecording && _goaliePausedRemainingSeconds != null) {
+            return _goaliePausedRemainingSeconds;
+        }
+
+        return computeGoalieRemainingFromClock(System.getTimer());
+    }
+
+    function pauseGoalieTimer() as Void {
+        if (!activityStarted) {
+            return;
+        }
+
+        _goaliePausedRemainingSeconds = computeGoalieRemainingFromClock(System.getTimer());
+        _lastGoalieAlertAt = null;
+    }
+
+    function resumeGoalieTimer() as Void {
+        if (!activityStarted || _goaliePausedRemainingSeconds == null) {
+            return;
+        }
+
+        var elapsedSeconds = goalieTimerDurationSeconds - _goaliePausedRemainingSeconds;
+        goalieTimerStart = System.getTimer() - (elapsedSeconds * 1000);
+        _goaliePausedRemainingSeconds = null;
+        _lastGoalieAlertAt = null;
+    }
+
+    function resetGoalieTimer() as Void {
+        goalieTimerStart = System.getTimer();
+        _goaliePausedRemainingSeconds = null;
+        if (activityStarted && !isRecording) {
+            _goaliePausedRemainingSeconds = goalieTimerDurationSeconds;
+        }
+        _lastGoalieAlertAt = null;
     }
 
     function maybePulseGoalieAlert() as Void {
-        if (!goalieTimerEnabled || !(Attention has :vibrate)) {
+        if (!goalieTimerEnabled || !isRecording || !(Attention has :vibrate)) {
             _lastGoalieAlertAt = null;
             return;
         }
@@ -182,6 +223,7 @@ class UrbanFootballActivityView extends WatchUi.View {
         activityStarted = true;
         _sessionTimeOffsetMs = 0;
         goalieTimerStart = System.getTimer();
+        _goaliePausedRemainingSeconds = null;
         _lastGoalieAlertAt = null;
         triggerStartAnimation();
     }
@@ -238,6 +280,7 @@ class UrbanFootballActivityView extends WatchUi.View {
 
         var elapsedGoalieSeconds = goalieTimerDurationSeconds - restoredGoalieRemainingSeconds;
         goalieTimerStart = System.getTimer() - (elapsedGoalieSeconds * 1000);
+        _goaliePausedRemainingSeconds = restoredGoalieRemainingSeconds;
 
         var restoredGameTimeMs = state["gameTimeMs"];
         setSessionTimeOffsetMs(restoredGameTimeMs);
