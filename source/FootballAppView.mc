@@ -28,6 +28,7 @@ class FootballAppView extends WatchUi.View {
     const HR_ZONE_4_END_DEG = 53;
     const HR_ZONE_5_START_DEG = 51;
     const HR_ZONE_5_END_DEG = 27;
+    const HR_HEADER_DIVIDER_Y = 86;
 
     var scoreA = 0;
     var scoreB = 0;
@@ -212,7 +213,7 @@ class FootballAppView extends WatchUi.View {
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.setPenWidth(2);
-        dc.drawLine(34, 74, width - 34, 74);
+        dc.drawLine(34, HR_HEADER_DIVIDER_Y, width - 34, HR_HEADER_DIVIDER_Y);
         dc.setPenWidth(1);
     }
 
