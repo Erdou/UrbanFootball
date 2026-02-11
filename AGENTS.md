@@ -1,43 +1,49 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `source/` contains Monkey C application logic:
-  - `FootballAppApp.mc`: app entry point and initial view wiring.
-  - `FootballAppDelegate.mc`: input handling, session start/stop, and key behavior.
-  - `FootballAppView.mc`: rendering, timer updates, and activity data display.
-- `resources/` contains UI assets and localization files:
-  - `layouts/`, `menus/`, `strings/`, `drawables/`.
-- Root config files:
-  - `manifest.xml` (products, permissions, app metadata).
-  - `monkey.jungle` (project manifest mapping).
-- `bin/`, `build/`, `gen/`, `*.prg`, and `*.prg.debug.xml` are generated artifacts; do not edit them manually.
+- `source/`: Monkey C app logic. Files follow `UrbanFootball<Feature><Role>.mc` (for example, `UrbanFootballActivityView.mc`, `UrbanFootballGoalieModeDelegate.mc`).
+- `resources/`: Connect IQ assets in `drawables/`, `layouts/`, `menus/`, and `strings/`.
+- `manifest.xml`: app id, supported products, permissions, and language settings.
+- `monkey.jungle`: project entry used by the Monkey C compiler.
+- `bin/` and `build/`: generated artifacts (`.prg`, debug XML, MIR). Treat as build output; do not edit manually.
 
 ## Build, Test, and Development Commands
-- Build a PRG (example device target):
-  - ``$CIQ_SDK_HOME/bin/monkeyc -f monkey.jungle -m manifest.xml -d fenix7 -o build/FootballApp.prg``
-- Run in simulator:
-  - ``$CIQ_SDK_HOME/bin/monkeydo build/FootballApp.prg fenix7``
-- VS Code alternative: use Monkey C extension commands such as `Monkey C: Build for Device` and `Monkey C: Run App`.
+Set your SDK path once:
+```bash
+export CIQ_SDK="$HOME/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-<version>"
+```
+Compile and launch in simulator:
+```bash
+java -jar "$CIQ_SDK/bin/monkeybrains.jar" \
+  -o bin/FootballApp.prg -f monkey.jungle -y <path-to-dev-key> \
+  -d fenix7pro_sim -w
+```
+Optional run command (if `monkeydo` is available):
+```bash
+monkeydo bin/FootballApp.prg fenix7pro
+```
+Clean generated output:
+```bash
+rm -rf bin build
+```
 
 ## Coding Style & Naming Conventions
-- Use 4-space indentation and K&R-style braces (`function foo() {`).
-- Keep class names and file names aligned in PascalCase (`FootballAppView` in `FootballAppView.mc`).
-- Use lowerCamelCase for methods/variables (`goalieTimerStart`, `getInitialView`); reserve leading `_` for internal fields (`_view`).
-- Add user-facing text in `resources/strings/strings.xml` when introducing new labels.
+- Use 4-space indentation and keep braces on the same line as declarations.
+- Use PascalCase class names with the `UrbanFootball` prefix.
+- Use descriptive role suffixes: `View`, `Delegate`, `Renderer`, `App`.
+- Constants use `UPPER_SNAKE_CASE`; fields and methods use camelCase.
+- Keep methods focused; isolate timer, navigation, and rendering responsibilities.
 
 ## Testing Guidelines
-- There is currently no automated test suite; validate behavior in Connect IQ simulator before opening a PR.
-- Minimum manual checks:
-  - Left/right tap increments score.
-  - Bottom tap resets goalie timer and triggers vibration (when supported).
-  - `START/ENTER` toggles recording state indicator.
-  - `ESC` stops/saves session safely.
+- No automated test suite is currently configured; validate changes in Connect IQ Simulator before opening a PR.
+- Minimum manual checks: environment selection, goalie mode and duration setup, pre-start-to-live transition, score controls, overtime vibration pulse, and back-navigation reset behavior.
+- Test at least one supported target from `manifest.xml` (default: `fenix7pro`).
 
 ## Commit & Pull Request Guidelines
-- Follow the existing commit style from history: imperative, capitalized summaries (for example, `Refactor FootballAppView rendering`).
-- Prefer one logical change per commit.
-- PRs should include:
-  - concise change summary,
-  - test notes (simulator/device and what was validated),
-  - screenshots for UI updates,
-  - explicit note for any new permission added to `manifest.xml`.
+- Match existing history: imperative, behavior-focused commit subjects (for example, `Add dedicated pre-start screen`, `Refactor goalie duration controls`).
+- Keep each commit scoped to one logical change.
+- PRs should include a concise summary, simulator/device used, screenshots for UI changes, and linked issue/task when available.
+
+## Security & Configuration Tips
+- Never commit developer keys or machine-specific absolute paths.
+- Keep SDK and key locations in local environment variables rather than source files.
