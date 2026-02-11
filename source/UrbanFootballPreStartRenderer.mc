@@ -5,6 +5,7 @@ class UrbanFootballPreStartRenderer {
     const PRESTART_BG_COLOR = Graphics.COLOR_BLACK;
     const READY_INDICATOR_START_DEG = 40;
     const READY_INDICATOR_END_DEG = 22;
+    const OVERLAY_RING_PEN_WIDTH = 6;
 
     function initialize() {
     }
@@ -52,13 +53,17 @@ class UrbanFootballPreStartRenderer {
     function drawStartAnimationOverlay(dc, width, height) as Void {
         var centerX = width / 2;
         var centerY = height / 2;
-        var ringRadius = (height / 2) - 12;
+        var minDimension = width;
+        if (height < minDimension) {
+            minDimension = height;
+        }
+        var ringRadius = (minDimension / 2) - (OVERLAY_RING_PEN_WIDTH / 2);
         var playHalfHeight = 36;
         var playLeftX = centerX - 24;
         var playRightX = centerX + 34;
 
         dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
-        dc.setPenWidth(6);
+        dc.setPenWidth(OVERLAY_RING_PEN_WIDTH);
         dc.drawCircle(centerX, centerY, ringRadius);
         dc.setPenWidth(1);
 

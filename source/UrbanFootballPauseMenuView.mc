@@ -5,8 +5,10 @@ using Toybox.WatchUi;
 class UrbanFootballPauseMenuView extends WatchUi.View {
 
     const RING_COLOR = Graphics.COLOR_RED;
-    const ITEM_START_Y = 102;
-    const ITEM_SPACING = 44;
+    const RING_PEN_WIDTH = 6;
+    const ITEM_START_Y = 98;
+    const ITEM_SPACING = 40;
+    const VISIBLE_ITEM_COUNT = 3;
 
     var _selectedIndex = 0;
     var _resumeLabel = null;
@@ -41,9 +43,10 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
     }
 
     function selectFromTap(y) as Void {
+        var scrollOffset = getScrollOffset();
         var closestIndex = 0;
         var closestDistance = 9999;
-        for (var i = 0; i < 4; i += 1) {
+        for (var i = 0; i < VISIBLE_ITEM_COUNT; i += 1) {
             var rowY = ITEM_START_Y + (i * ITEM_SPACING);
             var distance = y - rowY;
             if (distance < 0) {
@@ -51,16 +54,43 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
             }
             if (distance < closestDistance) {
                 closestDistance = distance;
-                closestIndex = i;
+                closestIndex = scrollOffset + i;
             }
         }
 
+        if (closestIndex > 3) {
+            closestIndex = 3;
+        }
         _selectedIndex = closestIndex;
         WatchUi.requestUpdate();
     }
 
     function isResumeSelection() {
         return _selectedIndex == 0;
+    }
+
+    function getLabelForIndex(index) {
+        if (index == 0) {
+            return _resumeLabel;
+        } else if (index == 1) {
+            return _saveLabel;
+        } else if (index == 2) {
+            return _resumeLaterLabel;
+        }
+        return _discardLabel;
+    }
+
+    function getScrollOffset() {
+        var offset = _selectedIndex - (VISIBLE_ITEM_COUNT - 1);
+        if (offset < 0) {
+            return 0;
+        }
+
+        var maxOffset = 4 - VISIBLE_ITEM_COUNT;
+        if (offset > maxOffset) {
+            return maxOffset;
+        }
+        return offset;
     }
 
     function formatActivityTime() {
@@ -131,39 +161,53 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
         dc.setPenWidth(1);
     }
 
-    function drawMenuRow(dc, textX, iconX, rowY, label, isSelected, iconType) as Void {
+    function drawMenuRow(dc, textX, iconX, rowY, rowFont, rowHeight, label, isSelected, iconType) as Void {
         if (isSelected) {
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            dc.fillRectangle(34, rowY - 16, 4, 30);
+            dc.fillRectangle(34, rowY - 2, 4, rowHeight + 4);
         } else {
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         }
 
+        var iconCenterY = rowY + (rowHeight / 2) + 1;
         if (iconType == 0) {
-            drawPlayIcon(dc, iconX, rowY - 4, 18);
+            drawPlayIcon(dc, iconX, iconCenterY, 18);
         } else if (iconType == 1) {
-            drawSaveIcon(dc, iconX, rowY - 4, 18);
+            drawSaveIcon(dc, iconX, iconCenterY, 18);
         } else if (iconType == 2) {
-            drawResumeLaterIcon(dc, iconX, rowY - 4, 16);
+            drawResumeLaterIcon(dc, iconX, iconCenterY, 16);
         } else {
-            drawDiscardIcon(dc, iconX, rowY - 4, 16);
+            drawDiscardIcon(dc, iconX, iconCenterY, 16);
         }
 
-        dc.drawText(textX, rowY, Graphics.FONT_MEDIUM, label, Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(textX, rowY, rowFont, label, Graphics.TEXT_JUSTIFY_LEFT);
+    }
+
+    function drawOuterRing(dc, width, height) as Void {
+        var centerX = width / 2;
+        var centerY = height / 2;
+        var minDimension = width;
+        if (height < minDimension) {
+            minDimension = height;
+        }
+        var ringRadius = (minDimension / 2) - (RING_PEN_WIDTH / 2);
+
+        dc.setColor(RING_COLOR, Graphics.COLOR_TRANSPARENT);
+        dc.setPenWidth(RING_PEN_WIDTH);
+        dc.drawCircle(centerX, centerY, ringRadius);
+        dc.setPenWidth(1);
     }
 
     function onUpdate(dc) {
         var width = dc.getWidth();
         var height = dc.getHeight();
         var centerX = width / 2;
+        var rowFont = Graphics.FONT_MEDIUM;
+        var rowHeight = dc.getFontHeight(rowFont);
+        var scrollOffset = getScrollOffset();
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
-
-        dc.setColor(RING_COLOR, Graphics.COLOR_TRANSPARENT);
-        dc.setPenWidth(6);
-        dc.drawCircle(centerX, height / 2, (height / 2) - 12);
-        dc.setPenWidth(1);
 
         var timerText = formatActivityTime();
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
@@ -172,9 +216,16 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
 
         var iconX = 52;
         var textX = 78;
-        drawMenuRow(dc, textX, iconX, ITEM_START_Y, _resumeLabel, _selectedIndex == 0, 0);
-        drawMenuRow(dc, textX, iconX, ITEM_START_Y + ITEM_SPACING, _saveLabel, _selectedIndex == 1, 1);
-        drawMenuRow(dc, textX, iconX, ITEM_START_Y + (ITEM_SPACING * 2), _resumeLaterLabel, _selectedIndex == 2, 2);
-        drawMenuRow(dc, textX, iconX, ITEM_START_Y + (ITEM_SPACING * 3), _discardLabel, _selectedIndex == 3, 3);
+        for (var i = 0; i < VISIBLE_ITEM_COUNT; i += 1) {
+            var itemIndex = scrollOffset + i;
+            if (itemIndex > 3) {
+                break;
+            }
+            var rowY = ITEM_START_Y + (i * ITEM_SPACING);
+            drawMenuRow(dc, textX, iconX, rowY, rowFont, rowHeight, getLabelForIndex(itemIndex), _selectedIndex == itemIndex, itemIndex);
+        }
+
+        // Draw the ring last so it stays visually on top, like Garmin pause UI.
+        drawOuterRing(dc, width, height);
     }
 }

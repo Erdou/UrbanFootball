@@ -5,6 +5,7 @@ class UrbanFootballMainScreenRenderer {
     const MAIN_BG_COLOR = Graphics.COLOR_WHITE;
     const PRIMARY_TEXT_COLOR = Graphics.COLOR_BLACK;
     const SECONDARY_TEXT_COLOR = Graphics.COLOR_DK_GRAY;
+    const OVERLAY_RING_PEN_WIDTH = 6;
 
     function initialize() {
     }
@@ -84,11 +85,15 @@ class UrbanFootballMainScreenRenderer {
     function drawPauseAnimationOverlay(dc, width, height) as Void {
         var centerX = width / 2;
         var centerY = height / 2;
-        var ringRadius = (height / 2) - 12;
+        var minDimension = width;
+        if (height < minDimension) {
+            minDimension = height;
+        }
+        var ringRadius = (minDimension / 2) - (OVERLAY_RING_PEN_WIDTH / 2);
         var halfSize = 34;
 
         dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-        dc.setPenWidth(6);
+        dc.setPenWidth(OVERLAY_RING_PEN_WIDTH);
         dc.drawCircle(centerX, centerY, ringRadius);
         dc.setPenWidth(1);
 
