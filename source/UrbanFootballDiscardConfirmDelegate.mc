@@ -24,7 +24,7 @@ class UrbanFootballDiscardConfirmDelegate extends WatchUi.BehaviorDelegate {
         }
 
         if (key == WatchUi.KEY_START || key == WatchUi.KEY_ENTER) {
-            // Discard action will be implemented later.
+            _app.discardFromPauseMenu();
             return true;
         }
 
@@ -45,7 +45,7 @@ class UrbanFootballDiscardConfirmDelegate extends WatchUi.BehaviorDelegate {
         }
 
         if (_view.isTapOnDeleteAction(x, y, width, height)) {
-            // Discard action will be implemented later.
+            _app.discardFromPauseMenu();
             return true;
         }
 

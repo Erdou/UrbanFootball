@@ -2,12 +2,14 @@ using Toybox.Application;
 using Toybox.Lang;
 using Toybox.Position;
 using Toybox.System;
+using Toybox.Timer;
 using Toybox.WatchUi;
 import Toybox.Application.Storage;
 
 class UrbanFootballApp extends Application.AppBase {
 
     const RESUME_LATER_STATE_KEY = "resumeLaterState";
+    const DISCARD_EXIT_DELAY_MS = 2000;
 
     var _gpsEnabled = false;
     var _goalieTimerEnabled = true;
@@ -18,6 +20,9 @@ class UrbanFootballApp extends Application.AppBase {
     var _pauseMenuDelegate = null;
     var _discardConfirmView = null;
     var _discardConfirmDelegate = null;
+    var _discardedView = null;
+    var _discardedDelegate = null;
+    var _discardExitTimer = null;
     var _resumeLaterState = null;
 
     function initialize() {
@@ -163,6 +168,46 @@ class UrbanFootballApp extends Application.AppBase {
 
     function returnToPauseMenuFromDiscardConfirm() as Void {
         openPauseMenuViewWithSelection(3);
+    }
+
+    function discardFromPauseMenu() as Void {
+        clearResumeLaterState();
+
+        if (_mainView != null && _mainView.session != null) {
+            try {
+                if (_mainView.isRecording) {
+                    _mainView.session.stop();
+                }
+            } catch (ex) {
+                // Continue with discard attempt even if stop fails.
+            }
+
+            try {
+                _mainView.session.discard();
+            } catch (ex) {
+                // Keep exit flow safe even if session state is already invalid.
+            }
+
+            _mainView.session = null;
+            _mainView.isRecording = false;
+            _mainView.activityStarted = false;
+        }
+
+        if (_discardedView == null || _discardedDelegate == null) {
+            _discardedView = new UrbanFootballDiscardedView();
+            _discardedDelegate = new UrbanFootballDiscardedDelegate();
+        }
+
+        if (_discardExitTimer == null) {
+            _discardExitTimer = new Timer.Timer();
+        }
+
+        WatchUi.switchToView(_discardedView, _discardedDelegate, WatchUi.SLIDE_IMMEDIATE);
+        _discardExitTimer.start(method(:onDiscardExitTimer), DISCARD_EXIT_DELAY_MS, false);
+    }
+
+    function onDiscardExitTimer() as Void {
+        System.exit();
     }
 
     function resumeFromPauseMenu() as Void {
