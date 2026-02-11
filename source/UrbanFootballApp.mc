@@ -18,10 +18,15 @@ class UrbanFootballApp extends Application.AppBase {
     var _mainDelegate = null;
     var _pauseMenuView = null;
     var _pauseMenuDelegate = null;
+    var _saveConfirmView = null;
+    var _saveConfirmDelegate = null;
     var _discardConfirmView = null;
     var _discardConfirmDelegate = null;
+    var _savedView = null;
+    var _savedDelegate = null;
     var _discardedView = null;
     var _discardedDelegate = null;
+    var _saveExitTimer = null;
     var _discardExitTimer = null;
     var _resumeLaterState = null;
 
@@ -166,8 +171,57 @@ class UrbanFootballApp extends Application.AppBase {
         WatchUi.switchToView(_discardConfirmView, _discardConfirmDelegate, WatchUi.SLIDE_IMMEDIATE);
     }
 
+    function openSaveConfirmView() as Void {
+        if (_saveConfirmView == null || _saveConfirmDelegate == null) {
+            _saveConfirmView = new UrbanFootballSaveConfirmView();
+            _saveConfirmDelegate = new UrbanFootballSaveConfirmDelegate(self, _saveConfirmView);
+        }
+
+        WatchUi.switchToView(_saveConfirmView, _saveConfirmDelegate, WatchUi.SLIDE_IMMEDIATE);
+    }
+
+    function returnToPauseMenuFromSaveConfirm() as Void {
+        openPauseMenuViewWithSelection(1);
+    }
+
     function returnToPauseMenuFromDiscardConfirm() as Void {
         openPauseMenuViewWithSelection(3);
+    }
+
+    function saveFromPauseMenu() as Void {
+        clearResumeLaterState();
+
+        if (_mainView != null && _mainView.session != null) {
+            try {
+                if (_mainView.isRecording) {
+                    _mainView.session.stop();
+                }
+            } catch (ex) {
+                // Continue with save attempt even if stop fails.
+            }
+
+            try {
+                _mainView.session.save();
+            } catch (ex) {
+                // Keep exit flow safe even if session state is already invalid.
+            }
+
+            _mainView.session = null;
+            _mainView.isRecording = false;
+            _mainView.activityStarted = false;
+        }
+
+        if (_savedView == null || _savedDelegate == null) {
+            _savedView = new UrbanFootballSavedView();
+            _savedDelegate = new UrbanFootballSavedDelegate();
+        }
+
+        if (_saveExitTimer == null) {
+            _saveExitTimer = new Timer.Timer();
+        }
+
+        WatchUi.switchToView(_savedView, _savedDelegate, WatchUi.SLIDE_IMMEDIATE);
+        _saveExitTimer.start(method(:onSaveExitTimer), DISCARD_EXIT_DELAY_MS, false);
     }
 
     function discardFromPauseMenu() as Void {
@@ -204,6 +258,10 @@ class UrbanFootballApp extends Application.AppBase {
 
         WatchUi.switchToView(_discardedView, _discardedDelegate, WatchUi.SLIDE_IMMEDIATE);
         _discardExitTimer.start(method(:onDiscardExitTimer), DISCARD_EXIT_DELAY_MS, false);
+    }
+
+    function onSaveExitTimer() as Void {
+        System.exit();
     }
 
     function onDiscardExitTimer() as Void {

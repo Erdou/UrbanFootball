@@ -20,6 +20,8 @@
     <string id="pauseMenuSave">Enregistrer</string>
     <string id="pauseMenuResumeLater">Reprendre plus tard</string>
     <string id="pauseMenuDiscard">Ignorer</string>
+    <string id="pauseSaveConfirmTitle">Enregistrer ?</string>
     <string id="pauseDiscardConfirmTitle">Ignorer ?</string>
+    <string id="pauseSavedTitle">Activité enregistrée</string>
     <string id="pauseDiscardedTitle">Activité ignorée</string>
 </strings>
