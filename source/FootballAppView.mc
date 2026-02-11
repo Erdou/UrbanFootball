@@ -10,6 +10,7 @@ class FootballAppView extends WatchUi.View {
     const GOALIE_ALERT_PULSE_INTERVAL_MS = 900;
     const GOALIE_ALERT_PULSE_DURATION_MS = 80;
     const GOALIE_ALERT_PULSE_STRENGTH = 30;
+    const START_ANIMATION_DURATION_MS = 1400;
     const MAIN_BG_COLOR = Graphics.COLOR_WHITE;
     const PRIMARY_TEXT_COLOR = Graphics.COLOR_BLACK;
     const SECONDARY_TEXT_COLOR = Graphics.COLOR_DK_GRAY;
@@ -29,6 +30,8 @@ class FootballAppView extends WatchUi.View {
     const HR_ZONE_5_START_DEG = 51;
     const HR_ZONE_5_END_DEG = 27;
     const HR_HEADER_DIVIDER_Y = 86;
+    const READY_INDICATOR_START_DEG = 36;
+    const READY_INDICATOR_END_DEG = 18;
 
     var scoreA = 0;
     var scoreB = 0;
@@ -41,6 +44,7 @@ class FootballAppView extends WatchUi.View {
     var session = null; 
     var isRecording = false;
     var activityStarted = false;
+    var _startAnimationUntil = null;
 
     var refreshTimer;
     var _lastGoalieAlertAt = null;
@@ -247,6 +251,44 @@ class FootballAppView extends WatchUi.View {
         return minutes.format("%02d") + ":" + seconds.format("%02d");
     }
 
+    function triggerStartAnimation() as Void {
+        _startAnimationUntil = System.getTimer() + START_ANIMATION_DURATION_MS;
+    }
+
+    function isStartAnimationActive() {
+        return (_startAnimationUntil != null) && (System.getTimer() <= _startAnimationUntil);
+    }
+
+    function drawReadyToStartIndicator(dc, width, height) as Void {
+        var centerX = width / 2;
+        var centerY = height / 2;
+        var outerRadius = (height / 2) - 8;
+        dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+        dc.setPenWidth(6);
+        dc.drawArc(centerX, centerY, outerRadius, Graphics.ARC_CLOCKWISE, READY_INDICATOR_START_DEG, READY_INDICATOR_END_DEG);
+        dc.setPenWidth(1);
+    }
+
+    function drawStartAnimationOverlay(dc, width, height) as Void {
+        var centerX = width / 2;
+        var centerY = height / 2;
+        var ringRadius = (height / 2) - 12;
+        var playHalfHeight = 36;
+        var playLeftX = centerX - 24;
+        var playRightX = centerX + 34;
+
+        dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+        dc.setPenWidth(6);
+        dc.drawCircle(centerX, centerY, ringRadius);
+        dc.setPenWidth(1);
+
+        dc.fillPolygon([
+            [playLeftX, centerY - playHalfHeight],
+            [playRightX, centerY],
+            [playLeftX, centerY + playHalfHeight]
+        ]);
+    }
+
     function onLayout(dc) {
     }
 
@@ -316,12 +358,20 @@ class FootballAppView extends WatchUi.View {
             dc.drawText(centerX, goalieY, goalieFont, "Gardien: " + timeStr, Graphics.TEXT_JUSTIFY_CENTER);
         }
 
+        if (!activityStarted && !isRecording) {
+            drawReadyToStartIndicator(dc, width, height);
+        }
+
         if (isRecording) {
             dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(width - 20, 20, 5);
-        } else {
+        } else if (activityStarted) {
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(width - 20, 20, 5);
+        }
+
+        if (isStartAnimationActive()) {
+            drawStartAnimationOverlay(dc, width, height);
         }
     }
 

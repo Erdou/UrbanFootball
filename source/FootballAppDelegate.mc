@@ -255,6 +255,7 @@ class FootballAppDelegate extends WatchUi.BehaviorDelegate {
                 _view.session.start();
                 _view.isRecording = true;
                 _view.activityStarted = true;
+                _view.triggerStartAnimation();
             }
             WatchUi.requestUpdate();
             return true;
