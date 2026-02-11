@@ -3,10 +3,14 @@ using Toybox.WatchUi;
 
 class UrbanFootballDiscardConfirmView extends WatchUi.View {
 
-    const TOP_MARKER_WIDTH = 42;
-    const TOP_MARKER_HEIGHT = 4;
-    const BACK_ICON_TAP_RADIUS = 34;
-    const DELETE_ICON_TAP_RADIUS = 34;
+    const ACTION_INDICATOR_PEN_WIDTH = 6;
+    const DELETE_INDICATOR_START_DEG = 40;
+    const DELETE_INDICATOR_SWEEP_DEG = 22;
+    const BACK_INDICATOR_START_DEG = 224;
+    const BACK_INDICATOR_SWEEP_DEG = 22;
+
+    const BACK_ICON_TAP_RADIUS = 30;
+    const DELETE_ICON_TAP_RADIUS = 30;
 
     var _title = null;
 
@@ -16,19 +20,19 @@ class UrbanFootballDiscardConfirmView extends WatchUi.View {
     }
 
     function getBackIconCenterX(width) {
-        return width / 2;
+        return width / 6;
     }
 
     function getBackIconCenterY(height) {
-        return height - 34;
+        return height - (height / 3);
     }
 
     function getDeleteIconCenterX(width) {
-        return width / 2;
+        return width - (width / 6);
     }
 
-    function getDeleteIconCenterY() {
-        return 46;
+    function getDeleteIconCenterY(height) {
+        return height / 4;
     }
 
     function getTitleY(height) {
@@ -41,9 +45,9 @@ class UrbanFootballDiscardConfirmView extends WatchUi.View {
         return (x >= (centerX - BACK_ICON_TAP_RADIUS) && x <= (centerX + BACK_ICON_TAP_RADIUS) && y >= (centerY - BACK_ICON_TAP_RADIUS) && y <= (centerY + BACK_ICON_TAP_RADIUS));
     }
 
-    function isTapOnDeleteAction(x, y, width) {
+    function isTapOnDeleteAction(x, y, width, height) {
         var centerX = getDeleteIconCenterX(width);
-        var centerY = getDeleteIconCenterY();
+        var centerY = getDeleteIconCenterY(height);
         return (x >= (centerX - DELETE_ICON_TAP_RADIUS) && x <= (centerX + DELETE_ICON_TAP_RADIUS) && y >= (centerY - DELETE_ICON_TAP_RADIUS) && y <= (centerY + DELETE_ICON_TAP_RADIUS));
     }
 
@@ -53,7 +57,7 @@ class UrbanFootballDiscardConfirmView extends WatchUi.View {
         var lidWidth = 24;
         var lidHeight = 4;
 
-        dc.setColor(Graphics.COLOR_PINK, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
         dc.fillRectangle(centerX - (lidWidth / 2), centerY - 10, lidWidth, lidHeight);
         dc.fillRectangle(centerX - (bodyWidth / 2), centerY - 6, bodyWidth, bodyHeight);
         dc.fillRectangle(centerX - 4, centerY - 13, 8, 3);
@@ -62,9 +66,25 @@ class UrbanFootballDiscardConfirmView extends WatchUi.View {
     function drawBackIcon(dc, centerX, centerY) as Void {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.setPenWidth(3);
-        dc.drawLine(centerX + 14, centerY, centerX - 8, centerY);
-        dc.drawLine(centerX - 8, centerY, centerX + 2, centerY - 9);
-        dc.drawLine(centerX - 8, centerY, centerX + 2, centerY + 9);
+        dc.drawLine(centerX + 16, centerY, centerX - 8, centerY);
+        dc.drawLine(centerX - 8, centerY, centerX + 4, centerY - 10);
+        dc.drawLine(centerX - 8, centerY, centerX + 4, centerY + 10);
+        dc.setPenWidth(1);
+    }
+
+    function drawActionIndicators(dc, width, height) as Void {
+        var centerX = width / 2;
+        var centerY = height / 2;
+        var minDimension = width;
+        if (height < minDimension) {
+            minDimension = height;
+        }
+        var outerRadius = (minDimension / 2) - 8;
+
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.setPenWidth(ACTION_INDICATOR_PEN_WIDTH);
+        dc.drawArc(centerX, centerY, outerRadius, Graphics.ARC_CLOCKWISE, DELETE_INDICATOR_START_DEG, DELETE_INDICATOR_SWEEP_DEG);
+        dc.drawArc(centerX, centerY, outerRadius, Graphics.ARC_CLOCKWISE, BACK_INDICATOR_START_DEG, BACK_INDICATOR_SWEEP_DEG);
         dc.setPenWidth(1);
     }
 
@@ -76,11 +96,12 @@ class UrbanFootballDiscardConfirmView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
 
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.fillRectangle(centerX - (TOP_MARKER_WIDTH / 2), 12, TOP_MARKER_WIDTH, TOP_MARKER_HEIGHT);
+        drawActionIndicators(dc, width, height);
 
-        drawDeleteIcon(dc, getDeleteIconCenterX(width), getDeleteIconCenterY());
+        dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+        drawDeleteIcon(dc, getDeleteIconCenterX(width), getDeleteIconCenterY(height));
         dc.drawText(centerX, getTitleY(height), Graphics.FONT_MEDIUM, _title, Graphics.TEXT_JUSTIFY_CENTER);
+
         drawBackIcon(dc, getBackIconCenterX(width), getBackIconCenterY(height));
     }
 }

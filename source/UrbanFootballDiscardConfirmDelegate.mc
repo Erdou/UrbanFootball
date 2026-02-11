@@ -44,7 +44,7 @@ class UrbanFootballDiscardConfirmDelegate extends WatchUi.BehaviorDelegate {
             return true;
         }
 
-        if (_view.isTapOnDeleteAction(x, y, width)) {
+        if (_view.isTapOnDeleteAction(x, y, width, height)) {
             // Discard action will be implemented later.
             return true;
         }
