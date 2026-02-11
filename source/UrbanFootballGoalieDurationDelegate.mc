@@ -49,6 +49,8 @@ class UrbanFootballGoalieDurationDelegate extends WatchUi.BehaviorDelegate {
             _view.decrementMinutes();
         } else if (_view.isTapOnPlus(x, y, width, height)) {
             _view.incrementMinutes();
+        } else if (_view.isTapOnValue(x, y, width, height) || _view.isTapOnConfirm(x, y, width, height)) {
+            confirmSelection();
         }
 
         return true;
