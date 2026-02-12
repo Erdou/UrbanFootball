@@ -6,12 +6,10 @@ class UrbanFootballMainScreenRenderer {
     const PRIMARY_TEXT_COLOR = Graphics.COLOR_BLACK;
     const SECONDARY_TEXT_COLOR = Graphics.COLOR_DK_GRAY;
     const SCORE_HIGHLIGHT_COLOR = Graphics.COLOR_DK_GRAY;
-    const CANCEL_ICON_COLOR = Graphics.COLOR_RED;
     const SCORE_SINGLE_DIGIT_X_OFFSET = 62;
     const SCORE_DOUBLE_DIGIT_X_OFFSET = 80;
     const SCORE_LINE_Y_OFFSET = -50;
     const OVERLAY_RING_PEN_WIDTH = 6;
-    const CANCEL_ICON_PEN_WIDTH = 4;
 
     function initialize() {
     }
@@ -27,7 +25,6 @@ class UrbanFootballMainScreenRenderer {
         scoreB,
         highlightLeftScore,
         highlightRightScore,
-        showUndoCancelIcon,
         gameTimeText,
         goalieTimerEnabled,
         goalieTimeText,
@@ -63,11 +60,7 @@ class UrbanFootballMainScreenRenderer {
         var iconY = scoreY + ((scoreHeight - iconHeight) / 2);
 
         if (footIcon != null) {
-            if (showUndoCancelIcon) {
-                drawCancelIcon(dc, iconX, iconY, iconWidth, iconHeight);
-            } else {
-                dc.drawBitmap(iconX, iconY, footIcon);
-            }
+            dc.drawBitmap(iconX, iconY, footIcon);
         } else {
             dc.drawText(centerX, scoreY, Graphics.FONT_LARGE, "-", Graphics.TEXT_JUSTIFY_CENTER);
         }
@@ -101,31 +94,6 @@ class UrbanFootballMainScreenRenderer {
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(width - 20, 20, 5);
         }
-    }
-
-    function drawCancelIcon(dc, iconX, iconY, iconWidth, iconHeight) as Void {
-        var centerX = iconX + (iconWidth / 2);
-        var centerY = iconY + (iconHeight / 2);
-        var radius = iconWidth / 2;
-        if (iconHeight < iconWidth) {
-            radius = iconHeight / 2;
-        }
-        radius -= 2;
-        if (radius < 8) {
-            radius = 8;
-        }
-
-        var crossHalf = radius - 6;
-        if (crossHalf < 4) {
-            crossHalf = 4;
-        }
-
-        dc.setColor(CANCEL_ICON_COLOR, Graphics.COLOR_TRANSPARENT);
-        dc.setPenWidth(CANCEL_ICON_PEN_WIDTH);
-        dc.drawCircle(centerX, centerY, radius);
-        dc.drawLine(centerX - crossHalf, centerY - crossHalf, centerX + crossHalf, centerY + crossHalf);
-        dc.drawLine(centerX + crossHalf, centerY - crossHalf, centerX - crossHalf, centerY + crossHalf);
-        dc.setPenWidth(1);
     }
 
     function drawPauseAnimationOverlay(dc, width, height) as Void {

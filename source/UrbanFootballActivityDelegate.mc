@@ -99,6 +99,12 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         }
 
         if (_view.isScoreUndoWindowActive()) {
+            if (delta > 0 && _view.isScoreUndoSide(isLeft)) {
+                if (_view.undoLastScoreIncrease()) {
+                    vibrate(25, 60);
+                }
+                WatchUi.requestUpdate();
+            }
             return;
         }
 
@@ -208,20 +214,19 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         var width = System.getDeviceSettings().screenWidth;
         var height = System.getDeviceSettings().screenHeight;
 
-        if (_view.isScoreUndoWindowActive() && _view.isTapOnScoreCancelIcon(x, y)) {
-            if (_view.undoLastScoreIncrease()) {
-                vibrate(25, 60);
-            }
-            WatchUi.requestUpdate();
-            return true;
-        }
-
         if (_view.goalieTimerEnabled && y > height * 0.7) {
             resetGoalieTimer(true);
             return true;
         }
 
         if (_view.isScoreUndoWindowActive()) {
+            var tappedLeftScore = x < width / 2;
+            if (_view.isScoreUndoSide(tappedLeftScore)) {
+                if (_view.undoLastScoreIncrease()) {
+                    vibrate(25, 60);
+                }
+                WatchUi.requestUpdate();
+            }
             return true;
         }
 
