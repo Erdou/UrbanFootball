@@ -6,6 +6,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
 
     const RING_COLOR = Graphics.COLOR_RED;
     const RING_PEN_WIDTH = 6;
+    const RING_EDGE_BLEED = 2;
     const ITEM_START_Y = 98;
     const ITEM_SPACING = 40;
     const VISIBLE_ITEM_COUNT = 3;
@@ -225,7 +226,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
         if (height < minDimension) {
             minDimension = height;
         }
-        var ringRadius = (minDimension / 2) - (RING_PEN_WIDTH / 2);
+        var ringRadius = (minDimension / 2) - (RING_PEN_WIDTH / 2) + RING_EDGE_BLEED;
 
         dc.setColor(RING_COLOR, Graphics.COLOR_TRANSPARENT);
         dc.setPenWidth(RING_PEN_WIDTH);

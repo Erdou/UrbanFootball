@@ -10,6 +10,8 @@ class UrbanFootballMainScreenRenderer {
     const SCORE_DOUBLE_DIGIT_X_OFFSET = 80;
     const SCORE_LINE_Y_OFFSET = -50;
     const OVERLAY_RING_PEN_WIDTH = 6;
+    const OVERLAY_RING_EDGE_BLEED = 2;
+    const STATUS_DOT_RADIUS = 5;
 
     function initialize() {
     }
@@ -88,11 +90,15 @@ class UrbanFootballMainScreenRenderer {
 
         if (isRecording) {
             // Green: actively recording. Red: session exists but paused/stopped.
+            var statusDotX = width - STATUS_DOT_RADIUS;
+            var statusDotY = STATUS_DOT_RADIUS;
             dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
-            dc.fillCircle(width - 20, 20, 5);
+            dc.fillCircle(statusDotX, statusDotY, STATUS_DOT_RADIUS);
         } else if (activityStarted) {
+            var pausedDotX = width - STATUS_DOT_RADIUS;
+            var pausedDotY = STATUS_DOT_RADIUS;
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-            dc.fillCircle(width - 20, 20, 5);
+            dc.fillCircle(pausedDotX, pausedDotY, STATUS_DOT_RADIUS);
         }
     }
 
@@ -103,7 +109,7 @@ class UrbanFootballMainScreenRenderer {
         if (height < minDimension) {
             minDimension = height;
         }
-        var ringRadius = (minDimension / 2) - (OVERLAY_RING_PEN_WIDTH / 2);
+        var ringRadius = (minDimension / 2) - (OVERLAY_RING_PEN_WIDTH / 2) + OVERLAY_RING_EDGE_BLEED;
         var halfSize = 34;
 
         dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
