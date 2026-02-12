@@ -13,6 +13,9 @@ class UrbanFootballActivityView extends WatchUi.View {
     const GOALIE_ALERT_PULSE_STRENGTH = 30;
     const START_ANIMATION_DURATION_MS = 1400;
     const PAUSE_ANIMATION_DURATION_MS = 900;
+    const SCORE_UNDO_WINDOW_MS = 3000;
+    const SCORE_LINE_Y_OFFSET = -50;
+    const SCORE_ICON_HIT_PADDING = 12;
 
     var scoreA = 0;
     var scoreB = 0;
@@ -34,10 +37,14 @@ class UrbanFootballActivityView extends WatchUi.View {
     var _lastGoalieAlertAt = null;
     var _sessionTimeOffsetMs = 0;
     var _goaliePausedRemainingSeconds = null;
+    var _scoreUndoSide = null;
+    var _scoreUndoExpiresAt = null;
+    var _scoreIconTapBounds = null;
 
     var _refreshTimer;
     var _startAnimationTimer;
     var _pauseAnimationTimer;
+    var _scoreUndoTimer;
 
     var _heartRateRenderer;
     var _preStartRenderer;
@@ -62,10 +69,12 @@ class UrbanFootballActivityView extends WatchUi.View {
 
         _startAnimationTimer = new Timer.Timer();
         _pauseAnimationTimer = new Timer.Timer();
+        _scoreUndoTimer = new Timer.Timer();
     }
 
     function onTimerTick() as Void {
         // Central heartbeat for time-based UI updates and goalie overtime vibration.
+        maybeExpireScoreUndoWindow();
         maybePulseGoalieAlert();
         WatchUi.requestUpdate();
     }
@@ -134,6 +143,97 @@ class UrbanFootballActivityView extends WatchUi.View {
             _goaliePausedRemainingSeconds = goalieTimerDurationSeconds;
         }
         _lastGoalieAlertAt = null;
+    }
+
+    function startScoreUndoWindow(isLeft) as Void {
+        _scoreUndoSide = isLeft;
+        _scoreUndoExpiresAt = System.getTimer() + SCORE_UNDO_WINDOW_MS;
+        _scoreUndoTimer.start(method(:onScoreUndoEndTick), SCORE_UNDO_WINDOW_MS + 30, false);
+    }
+
+    function clearScoreUndoWindow() as Void {
+        _scoreUndoSide = null;
+        _scoreUndoExpiresAt = null;
+        _scoreUndoTimer.stop();
+    }
+
+    function maybeExpireScoreUndoWindow() as Void {
+        if (_scoreUndoExpiresAt == null) {
+            return;
+        }
+
+        if (!isScoreUndoWindowActive()) {
+            clearScoreUndoWindow();
+        }
+    }
+
+    function isScoreUndoWindowActive() {
+        return (_scoreUndoExpiresAt != null) && (System.getTimer() < _scoreUndoExpiresAt);
+    }
+
+    function shouldHighlightLeftScore() {
+        return isScoreUndoWindowActive() && (_scoreUndoSide != null) && _scoreUndoSide;
+    }
+
+    function shouldHighlightRightScore() {
+        return isScoreUndoWindowActive() && (_scoreUndoSide != null) && !_scoreUndoSide;
+    }
+
+    function shouldShowScoreCancelIcon() {
+        return isScoreUndoWindowActive() && (_scoreUndoSide != null);
+    }
+
+    function undoLastScoreIncrease() {
+        if (!isScoreUndoWindowActive() || _scoreUndoSide == null) {
+            return false;
+        }
+
+        if (_scoreUndoSide) {
+            if (scoreA > 0) {
+                scoreA -= 1;
+            }
+        } else {
+            if (scoreB > 0) {
+                scoreB -= 1;
+            }
+        }
+
+        clearScoreUndoWindow();
+        return true;
+    }
+
+    function isTapOnScoreCancelIcon(x, y) {
+        if (!isScoreUndoWindowActive() || _scoreIconTapBounds == null) {
+            return false;
+        }
+
+        var left = _scoreIconTapBounds["left"];
+        var right = _scoreIconTapBounds["right"];
+        var top = _scoreIconTapBounds["top"];
+        var bottom = _scoreIconTapBounds["bottom"];
+        return (x >= left) && (x <= right) && (y >= top) && (y <= bottom);
+    }
+
+    function updateScoreIconTapBounds(width, height, scoreHeight) as Void {
+        var iconWidth = 56;
+        var iconHeight = 56;
+        if (_footIcon != null) {
+            iconWidth = _footIcon.getWidth();
+            iconHeight = _footIcon.getHeight();
+        }
+
+        var centerX = width / 2;
+        var centerY = height / 2;
+        var scoreY = centerY + SCORE_LINE_Y_OFFSET;
+        var iconX = centerX - (iconWidth / 2);
+        var iconY = scoreY + ((scoreHeight - iconHeight) / 2);
+
+        _scoreIconTapBounds = {
+            "left" => iconX - SCORE_ICON_HIT_PADDING,
+            "right" => iconX + iconWidth + SCORE_ICON_HIT_PADDING,
+            "top" => iconY - SCORE_ICON_HIT_PADDING,
+            "bottom" => iconY + iconHeight + SCORE_ICON_HIT_PADDING
+        };
     }
 
     function maybePulseGoalieAlert() as Void {
@@ -252,6 +352,7 @@ class UrbanFootballActivityView extends WatchUi.View {
         goalieTimerStart = System.getTimer();
         _goaliePausedRemainingSeconds = null;
         _lastGoalieAlertAt = null;
+        clearScoreUndoWindow();
         triggerStartAnimation();
     }
 
@@ -315,6 +416,8 @@ class UrbanFootballActivityView extends WatchUi.View {
         _startAnimationUntil = null;
         _pauseAnimationUntil = null;
         _lastGoalieAlertAt = null;
+        clearScoreUndoWindow();
+        _scoreIconTapBounds = null;
     }
 
     function onStartAnimationEndTick() as Void {
@@ -322,6 +425,11 @@ class UrbanFootballActivityView extends WatchUi.View {
     }
 
     function onPauseAnimationEndTick() as Void {
+        WatchUi.requestUpdate();
+    }
+
+    function onScoreUndoEndTick() as Void {
+        maybeExpireScoreUndoWindow();
         WatchUi.requestUpdate();
     }
 
@@ -344,6 +452,7 @@ class UrbanFootballActivityView extends WatchUi.View {
     }
 
     function onUpdate(dc) {
+        maybeExpireScoreUndoWindow();
         var width = dc.getWidth();
         var height = dc.getHeight();
         var remainingSeconds = getGoalieRemainingSeconds();
@@ -353,12 +462,15 @@ class UrbanFootballActivityView extends WatchUi.View {
         var showPreStartScreen = !activityStarted || isStartAnimationActive();
 
         if (showPreStartScreen) {
+            _scoreIconTapBounds = null;
             _preStartRenderer.drawScreen(dc, width, height, _footIcon, _preStartTitle, goalieTimerEnabled, formattedGoalieTimeText, !activityStarted);
         } else {
             var activityInfo = Activity.getActivityInfo();
             var hrValue = _heartRateRenderer.getHeartRateValue(activityInfo);
             var gameTime = formatGameTime(activityInfo);
             var gameTimeText = formatGameLine(gameTime);
+            var scoreHeight = dc.getFontHeight(Graphics.FONT_NUMBER_HOT);
+            updateScoreIconTapBounds(width, height, scoreHeight);
             _mainScreenRenderer.drawScreen(
                 dc,
                 width,
@@ -368,6 +480,9 @@ class UrbanFootballActivityView extends WatchUi.View {
                 _footIcon,
                 scoreA,
                 scoreB,
+                shouldHighlightLeftScore(),
+                shouldHighlightRightScore(),
+                shouldShowScoreCancelIcon(),
                 gameTimeText,
                 goalieTimerEnabled,
                 formattedGoalieTimeText,

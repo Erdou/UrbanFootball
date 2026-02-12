@@ -5,7 +5,13 @@ class UrbanFootballMainScreenRenderer {
     const MAIN_BG_COLOR = Graphics.COLOR_WHITE;
     const PRIMARY_TEXT_COLOR = Graphics.COLOR_BLACK;
     const SECONDARY_TEXT_COLOR = Graphics.COLOR_DK_GRAY;
+    const SCORE_HIGHLIGHT_COLOR = Graphics.COLOR_DK_GRAY;
+    const CANCEL_ICON_COLOR = Graphics.COLOR_RED;
+    const SCORE_SINGLE_DIGIT_X_OFFSET = 62;
+    const SCORE_DOUBLE_DIGIT_X_OFFSET = 80;
+    const SCORE_LINE_Y_OFFSET = -50;
     const OVERLAY_RING_PEN_WIDTH = 6;
+    const CANCEL_ICON_PEN_WIDTH = 4;
 
     function initialize() {
     }
@@ -19,6 +25,9 @@ class UrbanFootballMainScreenRenderer {
         footIcon,
         scoreA,
         scoreB,
+        highlightLeftScore,
+        highlightRightScore,
+        showUndoCancelIcon,
         gameTimeText,
         goalieTimerEnabled,
         goalieTimeText,
@@ -29,23 +38,36 @@ class UrbanFootballMainScreenRenderer {
         var centerX = width / 2;
         var centerY = height / 2;
         var scoreFont = Graphics.FONT_NUMBER_HOT;
-        var scoreY = centerY - 50;
+        var scoreY = centerY + SCORE_LINE_Y_OFFSET;
         var scoreHeight = dc.getFontHeight(scoreFont);
         var hasTwoDigitScore = (scoreA >= 10 || scoreB >= 10);
-        var scoreXOffset = hasTwoDigitScore ? 68 : 50;
+        var scoreXOffset = hasTwoDigitScore ? SCORE_DOUBLE_DIGIT_X_OFFSET : SCORE_SINGLE_DIGIT_X_OFFSET;
 
         dc.setColor(MAIN_BG_COLOR, MAIN_BG_COLOR);
         dc.clear();
 
         heartRateRenderer.drawHeader(dc, width, height, hrValue, PRIMARY_TEXT_COLOR);
 
-        dc.setColor(PRIMARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(highlightLeftScore ? SCORE_HIGHLIGHT_COLOR : PRIMARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX - scoreXOffset, scoreY, scoreFont, scoreA.toString(), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.setColor(highlightRightScore ? SCORE_HIGHLIGHT_COLOR : PRIMARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX + scoreXOffset, scoreY, scoreFont, scoreB.toString(), Graphics.TEXT_JUSTIFY_CENTER);
 
+        var iconWidth = 40;
+        var iconHeight = 40;
         if (footIcon != null) {
-            var iconY = scoreY + ((scoreHeight - footIcon.getHeight()) / 2);
-            dc.drawBitmap(centerX - (footIcon.getWidth() / 2), iconY, footIcon);
+            iconWidth = footIcon.getWidth();
+            iconHeight = footIcon.getHeight();
+        }
+        var iconX = centerX - (iconWidth / 2);
+        var iconY = scoreY + ((scoreHeight - iconHeight) / 2);
+
+        if (footIcon != null) {
+            if (showUndoCancelIcon) {
+                drawCancelIcon(dc, iconX, iconY, iconWidth, iconHeight);
+            } else {
+                dc.drawBitmap(iconX, iconY, footIcon);
+            }
         } else {
             dc.drawText(centerX, scoreY, Graphics.FONT_LARGE, "-", Graphics.TEXT_JUSTIFY_CENTER);
         }
@@ -79,6 +101,31 @@ class UrbanFootballMainScreenRenderer {
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(width - 20, 20, 5);
         }
+    }
+
+    function drawCancelIcon(dc, iconX, iconY, iconWidth, iconHeight) as Void {
+        var centerX = iconX + (iconWidth / 2);
+        var centerY = iconY + (iconHeight / 2);
+        var radius = iconWidth / 2;
+        if (iconHeight < iconWidth) {
+            radius = iconHeight / 2;
+        }
+        radius -= 2;
+        if (radius < 8) {
+            radius = 8;
+        }
+
+        var crossHalf = radius - 6;
+        if (crossHalf < 4) {
+            crossHalf = 4;
+        }
+
+        dc.setColor(CANCEL_ICON_COLOR, Graphics.COLOR_TRANSPARENT);
+        dc.setPenWidth(CANCEL_ICON_PEN_WIDTH);
+        dc.drawCircle(centerX, centerY, radius);
+        dc.drawLine(centerX - crossHalf, centerY - crossHalf, centerX + crossHalf, centerY + crossHalf);
+        dc.drawLine(centerX + crossHalf, centerY - crossHalf, centerX - crossHalf, centerY + crossHalf);
+        dc.setPenWidth(1);
     }
 
     function drawPauseAnimationOverlay(dc, width, height) as Void {

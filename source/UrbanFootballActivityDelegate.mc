@@ -98,6 +98,12 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
             return;
         }
 
+        if (_view.isScoreUndoWindowActive()) {
+            return;
+        }
+
+        var previousScore = isLeft ? _view.scoreA : _view.scoreB;
+
         if (isLeft) {
             _view.scoreA += delta;
             if (_view.scoreA < 0) {
@@ -112,6 +118,15 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
             } else if (_view.scoreB > MAX_SCORE) {
                 _view.scoreB = MAX_SCORE;
             }
+        }
+
+        var updatedScore = isLeft ? _view.scoreA : _view.scoreB;
+        if (updatedScore == previousScore) {
+            return;
+        }
+
+        if (delta > 0) {
+            _view.startScoreUndoWindow(isLeft);
         }
 
         if (withVibration) {
@@ -193,8 +208,20 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         var width = System.getDeviceSettings().screenWidth;
         var height = System.getDeviceSettings().screenHeight;
 
+        if (_view.isScoreUndoWindowActive() && _view.isTapOnScoreCancelIcon(x, y)) {
+            if (_view.undoLastScoreIncrease()) {
+                vibrate(25, 60);
+            }
+            WatchUi.requestUpdate();
+            return true;
+        }
+
         if (_view.goalieTimerEnabled && y > height * 0.7) {
             resetGoalieTimer(true);
+            return true;
+        }
+
+        if (_view.isScoreUndoWindowActive()) {
             return true;
         }
 
@@ -326,6 +353,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
                 _view.session.stop();
                 _view.pauseGoalieTimer();
                 _view.isRecording = false;
+                _view.clearScoreUndoWindow();
                 _view.triggerPauseAnimation();
                 playPauseFeedback();
                 showPauseMenuAfterOverlay();
