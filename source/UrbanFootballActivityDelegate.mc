@@ -10,6 +10,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
 
     const MAX_SCORE = 99;
     const LONG_PRESS_THRESHOLD_MS = 550;
+    const DOWN_HOLD_DECREMENT_THRESHOLD_MS = 350;
     const BACK_LONG_PRESS_THRESHOLD_MS = 700;
     const LONG_PRESS_DEDUPE_MS = 300;
     const BACK_RESET_DEDUPE_MS = 250;
@@ -22,7 +23,9 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
     var _consumeNextUpRelease = false;
     var _suppressNextOnBack = false;
     var _lastBackResetAt = -BACK_RESET_DEDUPE_MS;
+    var _rightLongPressTriggered = false;
     var _pauseMenuTimer = null;
+    var _rightHoldTimer = null;
     var _sessionNameGeneric = null;
     var _sessionNameIndoor = null;
     var _sessionNameOutdoor = null;
@@ -31,6 +34,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         BehaviorDelegate.initialize();
         _view = view;
         _pauseMenuTimer = new Timer.Timer();
+        _rightHoldTimer = new Timer.Timer();
         _sessionNameGeneric = WatchUi.loadResource(Rez.Strings.sessionNameGeneric);
         _sessionNameIndoor = WatchUi.loadResource(Rez.Strings.sessionNameIndoor);
         _sessionNameOutdoor = WatchUi.loadResource(Rez.Strings.sessionNameOutdoor);
@@ -203,6 +207,15 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         app.openGoalieModeView(true);
     }
 
+    function onRightHoldThresholdReached() as Void {
+        if (_rightButtonDownAt == null || _rightLongPressTriggered) {
+            return;
+        }
+
+        _rightLongPressTriggered = true;
+        adjustScore(false, -1, true);
+    }
+
     function onTap(clickEvent) {
         if (!_view.activityStarted || !_view.isRecording || _view.isPauseAnimationActive()) {
             return true;
@@ -251,6 +264,8 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
 
         if (key == WatchUi.KEY_DOWN) {
             _rightButtonDownAt = now;
+            _rightLongPressTriggered = false;
+            _rightHoldTimer.start(method(:onRightHoldThresholdReached), DOWN_HOLD_DECREMENT_THRESHOLD_MS, false);
             return true;
         }
 
@@ -287,12 +302,16 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         if (key == WatchUi.KEY_DOWN) {
             var rightLongPress = (_rightButtonDownAt != null) && ((now - _rightButtonDownAt) >= LONG_PRESS_THRESHOLD_MS);
             _rightButtonDownAt = null;
+            _rightHoldTimer.stop();
 
-            if (rightLongPress) {
-                adjustScore(false, -1, true);
+            if (_rightLongPressTriggered || rightLongPress) {
+                if (!_rightLongPressTriggered) {
+                    adjustScore(false, -1, true);
+                }
             } else {
                 adjustScore(false, 1, false);
             }
+            _rightLongPressTriggered = false;
             return true;
         }
 
