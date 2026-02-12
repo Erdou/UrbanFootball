@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">المؤقت</string>
     <string id="pauseMenuResume">استئناف</string>
     <string id="pauseMenuSave">حفظ</string>
-    <string id="pauseMenuResumeLater">استئناف لاحقاً</string>
     <string id="pauseMenuDiscard">تجاهل</string>
     <string id="pauseSaveConfirmTitle">حفظ؟</string>
     <string id="pauseDiscardConfirmTitle">تجاهل؟</string>

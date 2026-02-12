@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">タイマー</string>
     <string id="pauseMenuResume">再開</string>
     <string id="pauseMenuSave">保存</string>
-    <string id="pauseMenuResumeLater">後で再開</string>
     <string id="pauseMenuDiscard">破棄</string>
     <string id="pauseSaveConfirmTitle">保存しますか？</string>
     <string id="pauseDiscardConfirmTitle">破棄しますか？</string>

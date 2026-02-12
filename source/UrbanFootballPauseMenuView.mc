@@ -7,6 +7,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
     const RING_COLOR = Graphics.COLOR_RED;
     const RING_PEN_WIDTH = 6;
     const RING_EDGE_BLEED = 2;
+    const MENU_ITEM_COUNT = 3;
     const ITEM_START_Y = 98;
     const ITEM_SPACING = 40;
     const VISIBLE_ITEM_COUNT = 3;
@@ -14,7 +15,6 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
     var _selectedIndex = 0;
     var _resumeLabel = null;
     var _saveLabel = null;
-    var _resumeLaterLabel = null;
     var _discardLabel = null;
     var _timerTitle = null;
 
@@ -23,7 +23,6 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
 
         _resumeLabel = WatchUi.loadResource(Rez.Strings.pauseMenuResume);
         _saveLabel = WatchUi.loadResource(Rez.Strings.pauseMenuSave);
-        _resumeLaterLabel = WatchUi.loadResource(Rez.Strings.pauseMenuResumeLater);
         _discardLabel = WatchUi.loadResource(Rez.Strings.pauseMenuDiscard);
         _timerTitle = WatchUi.loadResource(Rez.Strings.pauseMenuTimerTitle);
     }
@@ -31,8 +30,8 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
     function moveSelection(step) as Void {
         _selectedIndex += step;
         if (_selectedIndex < 0) {
-            _selectedIndex = 3;
-        } else if (_selectedIndex > 3) {
+            _selectedIndex = MENU_ITEM_COUNT - 1;
+        } else if (_selectedIndex >= MENU_ITEM_COUNT) {
             _selectedIndex = 0;
         }
 
@@ -45,7 +44,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
 
     function selectFromTap(y) as Void {
         var scrollOffset = getScrollOffset();
-        var maxOffset = 4 - VISIBLE_ITEM_COUNT;
+        var maxOffset = MENU_ITEM_COUNT - VISIBLE_ITEM_COUNT;
         var closestIndex = 0;
         var closestDistance = 9999;
         for (var i = 0; i < VISIBLE_ITEM_COUNT; i += 1) {
@@ -72,8 +71,8 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
             }
         }
 
-        if (closestIndex > 3) {
-            closestIndex = 3;
+        if (closestIndex >= MENU_ITEM_COUNT) {
+            closestIndex = MENU_ITEM_COUNT - 1;
         }
         _selectedIndex = closestIndex;
         WatchUi.requestUpdate();
@@ -87,19 +86,15 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
         return _selectedIndex == 1;
     }
 
-    function isResumeLaterSelection() {
-        return _selectedIndex == 2;
-    }
-
     function isDiscardSelection() {
-        return _selectedIndex == 3;
+        return _selectedIndex == 2;
     }
 
     function setSelectionIndex(index) as Void {
         if (index == null || index < 0) {
             _selectedIndex = 0;
-        } else if (index > 3) {
-            _selectedIndex = 3;
+        } else if (index >= MENU_ITEM_COUNT) {
+            _selectedIndex = MENU_ITEM_COUNT - 1;
         } else {
             _selectedIndex = index;
         }
@@ -110,8 +105,6 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
             return _resumeLabel;
         } else if (index == 1) {
             return _saveLabel;
-        } else if (index == 2) {
-            return _resumeLaterLabel;
         }
         return _discardLabel;
     }
@@ -122,7 +115,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
             return 0;
         }
 
-        var maxOffset = 4 - VISIBLE_ITEM_COUNT;
+        var maxOffset = MENU_ITEM_COUNT - VISIBLE_ITEM_COUNT;
         if (offset > maxOffset) {
             return maxOffset;
         }
@@ -180,15 +173,6 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
         dc.fillRectangle(x - (trayWidth / 2), y + half + 2, trayWidth, 3);
     }
 
-    function drawResumeLaterIcon(dc, x, y, size) as Void {
-        var radius = size / 2;
-        dc.setPenWidth(2);
-        dc.drawCircle(x, y, radius);
-        dc.setPenWidth(1);
-        dc.fillRectangle(x - 1, y - (radius / 2), 2, radius / 2 + 2);
-        dc.fillRectangle(x, y - 1, radius / 2 + 1, 2);
-    }
-
     function drawDiscardIcon(dc, x, y, size) as Void {
         var half = size / 2;
         dc.setPenWidth(3);
@@ -210,8 +194,6 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
             drawPlayIcon(dc, iconX, iconCenterY, 18);
         } else if (iconType == 1) {
             drawSaveIcon(dc, iconX, iconCenterY, 18);
-        } else if (iconType == 2) {
-            drawResumeLaterIcon(dc, iconX, iconCenterY, 16);
         } else {
             drawDiscardIcon(dc, iconX, iconCenterY, 16);
         }
@@ -241,7 +223,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
         var rowFont = Graphics.FONT_MEDIUM;
         var rowHeight = dc.getFontHeight(rowFont);
         var scrollOffset = getScrollOffset();
-        var maxOffset = 4 - VISIBLE_ITEM_COUNT;
+        var maxOffset = MENU_ITEM_COUNT - VISIBLE_ITEM_COUNT;
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
@@ -255,7 +237,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
         var textX = 78;
         for (var i = 0; i < VISIBLE_ITEM_COUNT; i += 1) {
             var itemIndex = scrollOffset + i;
-            if (itemIndex > 3) {
+            if (itemIndex >= MENU_ITEM_COUNT) {
                 break;
             }
             var rowY = ITEM_START_Y + (i * ITEM_SPACING);

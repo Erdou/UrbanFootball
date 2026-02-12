@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">计时器</string>
     <string id="pauseMenuResume">继续</string>
     <string id="pauseMenuSave">保存</string>
-    <string id="pauseMenuResumeLater">稍后继续</string>
     <string id="pauseMenuDiscard">忽略</string>
     <string id="pauseSaveConfirmTitle">保存？</string>
     <string id="pauseDiscardConfirmTitle">忽略？</string>

@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">STOPER</string>
     <string id="pauseMenuResume">Wznów</string>
     <string id="pauseMenuSave">Zapisz</string>
-    <string id="pauseMenuResumeLater">Wznów później</string>
     <string id="pauseMenuDiscard">Odrzuć</string>
     <string id="pauseSaveConfirmTitle">Zapisać?</string>
     <string id="pauseDiscardConfirmTitle">Odrzucić?</string>

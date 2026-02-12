@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">ČASOVNIK</string>
     <string id="pauseMenuResume">Nadaljuj</string>
     <string id="pauseMenuSave">Shrani</string>
-    <string id="pauseMenuResumeLater">Nadaljuj pozneje</string>
     <string id="pauseMenuDiscard">Zavrzi</string>
     <string id="pauseSaveConfirmTitle">Shrani?</string>
     <string id="pauseDiscardConfirmTitle">Zavrzi?</string>

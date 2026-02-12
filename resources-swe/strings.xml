@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">TIMER</string>
     <string id="pauseMenuResume">Återuppta</string>
     <string id="pauseMenuSave">Spara</string>
-    <string id="pauseMenuResumeLater">Återuppta senare</string>
     <string id="pauseMenuDiscard">Kassera</string>
     <string id="pauseSaveConfirmTitle">Spara?</string>
     <string id="pauseDiscardConfirmTitle">Kassera?</string>

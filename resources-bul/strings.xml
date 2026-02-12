@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">ТАЙМЕР</string>
     <string id="pauseMenuResume">Продължи</string>
     <string id="pauseMenuSave">Запази</string>
-    <string id="pauseMenuResumeLater">Продължи по-късно</string>
     <string id="pauseMenuDiscard">Отхвърли</string>
     <string id="pauseSaveConfirmTitle">Запазване?</string>
     <string id="pauseDiscardConfirmTitle">Отхвърляне?</string>

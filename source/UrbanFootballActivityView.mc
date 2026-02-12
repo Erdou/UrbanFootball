@@ -1,7 +1,6 @@
 using Toybox.Activity;
 using Toybox.Attention;
 using Toybox.Graphics;
-using Toybox.Lang;
 using Toybox.System;
 using Toybox.Timer;
 using Toybox.WatchUi;
@@ -33,7 +32,6 @@ class UrbanFootballActivityView extends WatchUi.View {
     var _startAnimationUntil = null;
     var _pauseAnimationUntil = null;
     var _lastGoalieAlertAt = null;
-    var _sessionTimeOffsetMs = 0;
     var _goaliePausedRemainingSeconds = null;
     var _scoreUndoSide = null;
     var _scoreUndoExpiresAt = null;
@@ -293,7 +291,7 @@ class UrbanFootballActivityView extends WatchUi.View {
             liveSessionMs = 0;
         }
 
-        return _sessionTimeOffsetMs + liveSessionMs;
+        return liveSessionMs;
     }
 
     function triggerStartAnimation() as Void {
@@ -311,75 +309,11 @@ class UrbanFootballActivityView extends WatchUi.View {
     function markActivityStarted() as Void {
         // Goalie timing starts from real activity start, not from screen entry.
         activityStarted = true;
-        _sessionTimeOffsetMs = 0;
         goalieTimerStart = System.getTimer();
         _goaliePausedRemainingSeconds = null;
         _lastGoalieAlertAt = null;
         clearScoreUndoWindow();
         triggerStartAnimation();
-    }
-
-    function setSessionTimeOffsetMs(offsetMs) as Void {
-        if (offsetMs == null || offsetMs < 0) {
-            _sessionTimeOffsetMs = 0;
-        } else {
-            _sessionTimeOffsetMs = offsetMs;
-        }
-    }
-
-    function getSessionTimeOffsetMs() {
-        return _sessionTimeOffsetMs;
-    }
-
-    function getCurrentGameTimeForPersistence() {
-        return getCurrentGameTimeMs(Activity.getActivityInfo());
-    }
-
-    function applyResumeLaterState(state as Lang.Dictionary) as Void {
-        var restoredScoreA = state["scoreA"];
-        if (restoredScoreA != null) {
-            scoreA = restoredScoreA;
-        } else {
-            scoreA = 0;
-        }
-
-        var restoredScoreB = state["scoreB"];
-        if (restoredScoreB != null) {
-            scoreB = restoredScoreB;
-        } else {
-            scoreB = 0;
-        }
-
-        var restoredGoalieEnabled = state["goalieTimerEnabled"];
-        goalieTimerEnabled = restoredGoalieEnabled != null ? restoredGoalieEnabled : true;
-
-        var restoredGoalieDurationSeconds = state["goalieTimerDurationSeconds"];
-        if (restoredGoalieDurationSeconds != null && restoredGoalieDurationSeconds > 0) {
-            goalieTimerDurationSeconds = restoredGoalieDurationSeconds;
-        } else {
-            goalieTimerDurationSeconds = 420;
-        }
-
-        activityStarted = true;
-        isRecording = false;
-        session = null;
-
-        var restoredGoalieRemainingSeconds = state["goalieRemainingSeconds"];
-        if (restoredGoalieRemainingSeconds == null) {
-            restoredGoalieRemainingSeconds = goalieTimerDurationSeconds;
-        }
-
-        var elapsedGoalieSeconds = goalieTimerDurationSeconds - restoredGoalieRemainingSeconds;
-        goalieTimerStart = System.getTimer() - (elapsedGoalieSeconds * 1000);
-        _goaliePausedRemainingSeconds = restoredGoalieRemainingSeconds;
-
-        var restoredGameTimeMs = state["gameTimeMs"];
-        setSessionTimeOffsetMs(restoredGameTimeMs);
-
-        _startAnimationUntil = null;
-        _pauseAnimationUntil = null;
-        _lastGoalieAlertAt = null;
-        clearScoreUndoWindow();
     }
 
     function onStartAnimationEndTick() as Void {

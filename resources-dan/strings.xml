@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">TIMER</string>
     <string id="pauseMenuResume">Fortsæt</string>
     <string id="pauseMenuSave">Gem</string>
-    <string id="pauseMenuResumeLater">Fortsæt senere</string>
     <string id="pauseMenuDiscard">Kassér</string>
     <string id="pauseSaveConfirmTitle">Gem?</string>
     <string id="pauseDiscardConfirmTitle">Kassér?</string>

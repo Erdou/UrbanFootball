@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">CRONOMETRU</string>
     <string id="pauseMenuResume">Reia</string>
     <string id="pauseMenuSave">Salvează</string>
-    <string id="pauseMenuResumeLater">Reia mai târziu</string>
     <string id="pauseMenuDiscard">Ignoră</string>
     <string id="pauseSaveConfirmTitle">Salvezi?</string>
     <string id="pauseDiscardConfirmTitle">Ignori?</string>

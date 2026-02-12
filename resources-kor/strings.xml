@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">타이머</string>
     <string id="pauseMenuResume">재개</string>
     <string id="pauseMenuSave">저장</string>
-    <string id="pauseMenuResumeLater">나중에 재개</string>
     <string id="pauseMenuDiscard">무시</string>
     <string id="pauseSaveConfirmTitle">저장할까요?</string>
     <string id="pauseDiscardConfirmTitle">무시할까요?</string>

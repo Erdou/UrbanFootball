@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">ΧΡΟΝΟΜΕΤΡΟ</string>
     <string id="pauseMenuResume">Συνέχεια</string>
     <string id="pauseMenuSave">Αποθήκευση</string>
-    <string id="pauseMenuResumeLater">Συνέχεια αργότερα</string>
     <string id="pauseMenuDiscard">Απόρριψη</string>
     <string id="pauseSaveConfirmTitle">Αποθήκευση;</string>
     <string id="pauseDiscardConfirmTitle">Απόρριψη;</string>

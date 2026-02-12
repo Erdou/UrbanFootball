@@ -383,11 +383,6 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
                 showPauseMenuAfterOverlay();
             } else {
                 var firstStart = !_view.activityStarted;
-                var baseApp = Application.getApp();
-                if (baseApp instanceof UrbanFootballApp) {
-                    (baseApp as UrbanFootballApp).clearResumeLaterState();
-                }
-
                 _view.session.start();
                 _view.isRecording = true;
                 if (firstStart) {

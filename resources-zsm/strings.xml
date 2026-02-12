@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">PEMASA</string>
     <string id="pauseMenuResume">Sambung</string>
     <string id="pauseMenuSave">Simpan</string>
-    <string id="pauseMenuResumeLater">Sambung kemudian</string>
     <string id="pauseMenuDiscard">Buang</string>
     <string id="pauseSaveConfirmTitle">Simpan?</string>
     <string id="pauseDiscardConfirmTitle">Buang?</string>

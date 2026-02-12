@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">ตัวจับเวลา</string>
     <string id="pauseMenuResume">เล่นต่อ</string>
     <string id="pauseMenuSave">บันทึก</string>
-    <string id="pauseMenuResumeLater">เล่นต่อภายหลัง</string>
     <string id="pauseMenuDiscard">ละทิ้ง</string>
     <string id="pauseSaveConfirmTitle">บันทึก?</string>
     <string id="pauseDiscardConfirmTitle">ละทิ้ง?</string>

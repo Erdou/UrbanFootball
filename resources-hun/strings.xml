@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">IDŐZÍTŐ</string>
     <string id="pauseMenuResume">Folytatás</string>
     <string id="pauseMenuSave">Mentés</string>
-    <string id="pauseMenuResumeLater">Folytatás később</string>
     <string id="pauseMenuDiscard">Elvetés</string>
     <string id="pauseSaveConfirmTitle">Mentés?</string>
     <string id="pauseDiscardConfirmTitle">Elvetés?</string>

@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">TIMER</string>
     <string id="pauseMenuResume">Fortsett</string>
     <string id="pauseMenuSave">Lagre</string>
-    <string id="pauseMenuResumeLater">Fortsett senere</string>
     <string id="pauseMenuDiscard">Forkast</string>
     <string id="pauseSaveConfirmTitle">Lagre?</string>
     <string id="pauseDiscardConfirmTitle">Forkaste?</string>

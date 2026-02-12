@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">TAIMER</string>
     <string id="pauseMenuResume">Jätka</string>
     <string id="pauseMenuSave">Salvesta</string>
-    <string id="pauseMenuResumeLater">Jätka hiljem</string>
     <string id="pauseMenuDiscard">Hülga</string>
     <string id="pauseSaveConfirmTitle">Salvestada?</string>
     <string id="pauseDiscardConfirmTitle">Hüljata?</string>

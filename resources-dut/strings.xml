@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">TIMER</string>
     <string id="pauseMenuResume">Hervatten</string>
     <string id="pauseMenuSave">Opslaan</string>
-    <string id="pauseMenuResumeLater">Later hervatten</string>
     <string id="pauseMenuDiscard">Verwerpen</string>
     <string id="pauseSaveConfirmTitle">Opslaan?</string>
     <string id="pauseDiscardConfirmTitle">Verwerpen?</string>

@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">CRONÔMETRO</string>
     <string id="pauseMenuResume">Retomar</string>
     <string id="pauseMenuSave">Salvar</string>
-    <string id="pauseMenuResumeLater">Retomar depois</string>
     <string id="pauseMenuDiscard">Descartar</string>
     <string id="pauseSaveConfirmTitle">Salvar?</string>
     <string id="pauseDiscardConfirmTitle">Descartar?</string>

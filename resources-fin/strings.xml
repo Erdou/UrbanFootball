@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">AJASTIN</string>
     <string id="pauseMenuResume">Jatka</string>
     <string id="pauseMenuSave">Tallenna</string>
-    <string id="pauseMenuResumeLater">Jatka myöhemmin</string>
     <string id="pauseMenuDiscard">Hylkää</string>
     <string id="pauseSaveConfirmTitle">Tallennetaanko?</string>
     <string id="pauseDiscardConfirmTitle">Hylätäänkö?</string>

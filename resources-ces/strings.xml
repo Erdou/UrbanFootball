@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">ČASOVAČ</string>
     <string id="pauseMenuResume">Pokračovat</string>
     <string id="pauseMenuSave">Uložit</string>
-    <string id="pauseMenuResumeLater">Pokračovat později</string>
     <string id="pauseMenuDiscard">Zahodit</string>
     <string id="pauseSaveConfirmTitle">Uložit?</string>
     <string id="pauseDiscardConfirmTitle">Zahodit?</string>

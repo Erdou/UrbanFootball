@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">CHRONOMÈTRE</string>
     <string id="pauseMenuResume">Reprendre</string>
     <string id="pauseMenuSave">Enregistrer</string>
-    <string id="pauseMenuResumeLater">Reprendre plus tard</string>
     <string id="pauseMenuDiscard">Ignorer</string>
     <string id="pauseSaveConfirmTitle">Enregistrer ?</string>
     <string id="pauseDiscardConfirmTitle">Ignorer ?</string>

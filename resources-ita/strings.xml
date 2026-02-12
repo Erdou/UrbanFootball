@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">TIMER</string>
     <string id="pauseMenuResume">Riprendi</string>
     <string id="pauseMenuSave">Salva</string>
-    <string id="pauseMenuResumeLater">Riprendi dopo</string>
     <string id="pauseMenuDiscard">Scarta</string>
     <string id="pauseSaveConfirmTitle">Salvare?</string>
     <string id="pauseDiscardConfirmTitle">Scartare?</string>

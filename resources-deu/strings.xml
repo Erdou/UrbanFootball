@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">TIMER</string>
     <string id="pauseMenuResume">Fortsetzen</string>
     <string id="pauseMenuSave">Speichern</string>
-    <string id="pauseMenuResumeLater">Später fortsetzen</string>
     <string id="pauseMenuDiscard">Verwerfen</string>
     <string id="pauseSaveConfirmTitle">Speichern?</string>
     <string id="pauseDiscardConfirmTitle">Verwerfen?</string>

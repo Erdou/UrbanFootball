@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">ZAMANLAYICI</string>
     <string id="pauseMenuResume">Devam et</string>
     <string id="pauseMenuSave">Kaydet</string>
-    <string id="pauseMenuResumeLater">Daha sonra devam et</string>
     <string id="pauseMenuDiscard">Yok say</string>
     <string id="pauseSaveConfirmTitle">Kaydedilsin mi?</string>
     <string id="pauseDiscardConfirmTitle">Yok sayılsın mı?</string>

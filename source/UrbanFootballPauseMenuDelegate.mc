@@ -23,11 +23,6 @@ class UrbanFootballPauseMenuDelegate extends WatchUi.BehaviorDelegate {
             return;
         }
 
-        if (_view.isResumeLaterSelection()) {
-            _app.resumeLaterFromPauseMenu();
-            return;
-        }
-
         if (_view.isDiscardSelection()) {
             _app.openDiscardConfirmView();
             return;

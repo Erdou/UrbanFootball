@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">TEMPORIZADOR</string>
     <string id="pauseMenuResume">Reanudar</string>
     <string id="pauseMenuSave">Guardar</string>
-    <string id="pauseMenuResumeLater">Reanudar más tarde</string>
     <string id="pauseMenuDiscard">Descartar</string>
     <string id="pauseSaveConfirmTitle">¿Guardar?</string>
     <string id="pauseDiscardConfirmTitle">¿Descartar?</string>

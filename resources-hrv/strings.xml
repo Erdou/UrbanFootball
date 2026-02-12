@@ -22,7 +22,6 @@
     <string id="pauseMenuTimerTitle">MJERAČ</string>
     <string id="pauseMenuResume">Nastavi</string>
     <string id="pauseMenuSave">Spremi</string>
-    <string id="pauseMenuResumeLater">Nastavi kasnije</string>
     <string id="pauseMenuDiscard">Odbaci</string>
     <string id="pauseSaveConfirmTitle">Spremiti?</string>
     <string id="pauseDiscardConfirmTitle">Odbaciti?</string>
