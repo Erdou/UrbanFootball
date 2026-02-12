@@ -1,6 +1,7 @@
 # Build artifacts
 bin/
 build/
+export/
 gen/
 *.prg
 *.prg.debug.xml
