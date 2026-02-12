@@ -13,6 +13,7 @@ class UrbanFootballActivityView extends WatchUi.View {
     const START_ANIMATION_DURATION_MS = 1400;
     const PAUSE_ANIMATION_DURATION_MS = 900;
     const SCORE_UNDO_WINDOW_MS = 3000;
+    const SCORE_ADJUST_MODE_TIMEOUT_MS = 5000;
 
     var scoreA = 0;
     var scoreB = 0;
@@ -35,11 +36,14 @@ class UrbanFootballActivityView extends WatchUi.View {
     var _goaliePausedRemainingSeconds = null;
     var _scoreUndoSide = null;
     var _scoreUndoExpiresAt = null;
+    var _scoreAdjustModeSide = null;
+    var _scoreAdjustModeExpiresAt = null;
 
     var _refreshTimer;
     var _startAnimationTimer;
     var _pauseAnimationTimer;
     var _scoreUndoTimer;
+    var _scoreAdjustModeTimer;
 
     var _heartRateRenderer;
     var _preStartRenderer;
@@ -65,11 +69,13 @@ class UrbanFootballActivityView extends WatchUi.View {
         _startAnimationTimer = new Timer.Timer();
         _pauseAnimationTimer = new Timer.Timer();
         _scoreUndoTimer = new Timer.Timer();
+        _scoreAdjustModeTimer = new Timer.Timer();
     }
 
     function onTimerTick() as Void {
         // Central heartbeat for time-based UI updates and goalie overtime vibration.
         maybeExpireScoreUndoWindow();
+        maybeExpireScoreAdjustMode();
         maybePulseGoalieAlert();
         WatchUi.requestUpdate();
     }
@@ -160,6 +166,67 @@ class UrbanFootballActivityView extends WatchUi.View {
         if (!isScoreUndoWindowActive()) {
             clearScoreUndoWindow();
         }
+    }
+
+    function enterScoreAdjustMode(isLeft) as Void {
+        clearScoreUndoWindow();
+
+        var selectedSide = isLeft;
+        if (selectedSide == null) {
+            selectedSide = true;
+        }
+
+        _scoreAdjustModeSide = selectedSide;
+        _scoreAdjustModeExpiresAt = System.getTimer() + SCORE_ADJUST_MODE_TIMEOUT_MS;
+        _scoreAdjustModeTimer.start(method(:onScoreAdjustModeEndTick), SCORE_ADJUST_MODE_TIMEOUT_MS + 30, false);
+        WatchUi.requestUpdate();
+    }
+
+    function clearScoreAdjustMode() as Void {
+        _scoreAdjustModeSide = null;
+        _scoreAdjustModeExpiresAt = null;
+        _scoreAdjustModeTimer.stop();
+    }
+
+    function refreshScoreAdjustModeTimeout() as Void {
+        if (!isScoreAdjustModeActive()) {
+            return;
+        }
+
+        _scoreAdjustModeExpiresAt = System.getTimer() + SCORE_ADJUST_MODE_TIMEOUT_MS;
+        _scoreAdjustModeTimer.start(method(:onScoreAdjustModeEndTick), SCORE_ADJUST_MODE_TIMEOUT_MS + 30, false);
+    }
+
+    function switchScoreAdjustModeSide() as Void {
+        if (!isScoreAdjustModeActive() || _scoreAdjustModeSide == null) {
+            return;
+        }
+
+        _scoreAdjustModeSide = !_scoreAdjustModeSide;
+        refreshScoreAdjustModeTimeout();
+        WatchUi.requestUpdate();
+    }
+
+    function maybeExpireScoreAdjustMode() as Void {
+        if (_scoreAdjustModeExpiresAt == null) {
+            return;
+        }
+
+        if (!isScoreAdjustModeActive()) {
+            clearScoreAdjustMode();
+        }
+    }
+
+    function isScoreAdjustModeActive() {
+        return (_scoreAdjustModeExpiresAt != null) && (System.getTimer() < _scoreAdjustModeExpiresAt);
+    }
+
+    function isScoreAdjustModeLeftSide() {
+        return isScoreAdjustModeActive() && (_scoreAdjustModeSide != null) && _scoreAdjustModeSide;
+    }
+
+    function isScoreAdjustModeRightSide() {
+        return isScoreAdjustModeActive() && (_scoreAdjustModeSide != null) && !_scoreAdjustModeSide;
     }
 
     function isScoreUndoWindowActive() {
@@ -313,6 +380,7 @@ class UrbanFootballActivityView extends WatchUi.View {
         _goaliePausedRemainingSeconds = null;
         _lastGoalieAlertAt = null;
         clearScoreUndoWindow();
+        clearScoreAdjustMode();
         triggerStartAnimation();
     }
 
@@ -326,6 +394,11 @@ class UrbanFootballActivityView extends WatchUi.View {
 
     function onScoreUndoEndTick() as Void {
         maybeExpireScoreUndoWindow();
+        WatchUi.requestUpdate();
+    }
+
+    function onScoreAdjustModeEndTick() as Void {
+        maybeExpireScoreAdjustMode();
         WatchUi.requestUpdate();
     }
 
@@ -349,6 +422,7 @@ class UrbanFootballActivityView extends WatchUi.View {
 
     function onUpdate(dc) {
         maybeExpireScoreUndoWindow();
+        maybeExpireScoreAdjustMode();
         var width = dc.getWidth();
         var height = dc.getHeight();
         var remainingSeconds = getGoalieRemainingSeconds();
@@ -375,6 +449,8 @@ class UrbanFootballActivityView extends WatchUi.View {
                 scoreB,
                 shouldHighlightLeftScore(),
                 shouldHighlightRightScore(),
+                isScoreAdjustModeLeftSide(),
+                isScoreAdjustModeRightSide(),
                 gameTimeText,
                 goalieTimerEnabled,
                 formattedGoalieTimeText,

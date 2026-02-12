@@ -6,6 +6,7 @@ class UrbanFootballMainScreenRenderer {
     const PRIMARY_TEXT_COLOR = Graphics.COLOR_BLACK;
     const SECONDARY_TEXT_COLOR = Graphics.COLOR_DK_GRAY;
     const SCORE_HIGHLIGHT_COLOR = Graphics.COLOR_DK_GRAY;
+    const SCORE_TOGGLE_COLOR = 0xFF8C00;
     const SCORE_SINGLE_DIGIT_X_OFFSET = 62;
     const SCORE_DOUBLE_DIGIT_X_OFFSET = 80;
     const SCORE_LINE_Y_OFFSET = -50;
@@ -27,6 +28,8 @@ class UrbanFootballMainScreenRenderer {
         scoreB,
         highlightLeftScore,
         highlightRightScore,
+        toggleLeftScore,
+        toggleRightScore,
         gameTimeText,
         goalieTimerEnabled,
         goalieTimeText,
@@ -47,9 +50,23 @@ class UrbanFootballMainScreenRenderer {
 
         heartRateRenderer.drawHeader(dc, width, height, hrValue, PRIMARY_TEXT_COLOR);
 
-        dc.setColor(highlightLeftScore ? SCORE_HIGHLIGHT_COLOR : PRIMARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
+        var leftScoreColor = PRIMARY_TEXT_COLOR;
+        if (highlightLeftScore) {
+            leftScoreColor = SCORE_HIGHLIGHT_COLOR;
+        }
+        if (toggleLeftScore) {
+            leftScoreColor = SCORE_TOGGLE_COLOR;
+        }
+        dc.setColor(leftScoreColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX - scoreXOffset, scoreY, scoreFont, scoreA.toString(), Graphics.TEXT_JUSTIFY_CENTER);
-        dc.setColor(highlightRightScore ? SCORE_HIGHLIGHT_COLOR : PRIMARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
+        var rightScoreColor = PRIMARY_TEXT_COLOR;
+        if (highlightRightScore) {
+            rightScoreColor = SCORE_HIGHLIGHT_COLOR;
+        }
+        if (toggleRightScore) {
+            rightScoreColor = SCORE_TOGGLE_COLOR;
+        }
+        dc.setColor(rightScoreColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX + scoreXOffset, scoreY, scoreFont, scoreB.toString(), Graphics.TEXT_JUSTIFY_CENTER);
 
         var iconWidth = 40;

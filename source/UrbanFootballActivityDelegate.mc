@@ -10,22 +10,18 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
 
     const MAX_SCORE = 99;
     const LONG_PRESS_THRESHOLD_MS = 550;
-    const DOWN_HOLD_DECREMENT_THRESHOLD_MS = 350;
     const BACK_LONG_PRESS_THRESHOLD_MS = 700;
     const LONG_PRESS_DEDUPE_MS = 300;
     const BACK_RESET_DEDUPE_MS = 250;
 
     var _view;
     var _leftButtonDownAt = null;
-    var _rightButtonDownAt = null;
     var _backButtonDownAt = null;
     var _lastLeftLongPressAt = -LONG_PRESS_DEDUPE_MS;
     var _consumeNextUpRelease = false;
     var _suppressNextOnBack = false;
     var _lastBackResetAt = -BACK_RESET_DEDUPE_MS;
-    var _rightLongPressTriggered = false;
     var _pauseMenuTimer = null;
-    var _rightHoldTimer = null;
     var _sessionNameGeneric = null;
     var _sessionNameIndoor = null;
     var _sessionNameOutdoor = null;
@@ -34,7 +30,6 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         BehaviorDelegate.initialize();
         _view = view;
         _pauseMenuTimer = new Timer.Timer();
-        _rightHoldTimer = new Timer.Timer();
         _sessionNameGeneric = WatchUi.loadResource(Rez.Strings.sessionNameGeneric);
         _sessionNameIndoor = WatchUi.loadResource(Rez.Strings.sessionNameIndoor);
         _sessionNameOutdoor = WatchUi.loadResource(Rez.Strings.sessionNameOutdoor);
@@ -145,7 +140,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         WatchUi.requestUpdate();
     }
 
-    function handleLeftLongPress() {
+    function handleToggleModeLongPress() {
         var now = System.getTimer();
         // Ignore repeated key-repeat events while the same long press is held.
         if ((now - _lastLeftLongPressAt) < LONG_PRESS_DEDUPE_MS) {
@@ -153,7 +148,23 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         }
 
         _lastLeftLongPressAt = now;
-        adjustScore(true, -1, true);
+        if (_view.isScoreAdjustModeActive()) {
+            _view.clearScoreAdjustMode();
+        } else {
+            _view.enterScoreAdjustMode(true);
+        }
+        WatchUi.requestUpdate();
+    }
+
+    function decreaseSelectedScoreFromToggleMode(withVibration) as Void {
+        if (!_view.isScoreAdjustModeActive()) {
+            return;
+        }
+
+        var selectedLeft = _view.isScoreAdjustModeLeftSide();
+        adjustScore(selectedLeft, -1, withVibration);
+        _view.refreshScoreAdjustModeTimeout();
+        WatchUi.requestUpdate();
     }
 
     function resetGoalieTimer(withVibration) {
@@ -207,15 +218,6 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         app.openGoalieModeView(true);
     }
 
-    function onRightHoldThresholdReached() as Void {
-        if (_rightButtonDownAt == null || _rightLongPressTriggered) {
-            return;
-        }
-
-        _rightLongPressTriggered = true;
-        adjustScore(false, -1, true);
-    }
-
     function onTap(clickEvent) {
         if (!_view.activityStarted || !_view.isRecording || _view.isPauseAnimationActive()) {
             return true;
@@ -229,6 +231,10 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
 
         if (_view.goalieTimerEnabled && y > height * 0.7) {
             resetGoalieTimer(true);
+            return true;
+        }
+
+        if (_view.isScoreAdjustModeActive()) {
             return true;
         }
 
@@ -263,9 +269,6 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         }
 
         if (key == WatchUi.KEY_DOWN) {
-            _rightButtonDownAt = now;
-            _rightLongPressTriggered = false;
-            _rightHoldTimer.start(method(:onRightHoldThresholdReached), DOWN_HOLD_DECREMENT_THRESHOLD_MS, false);
             return true;
         }
 
@@ -292,7 +295,9 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
             _leftButtonDownAt = null;
 
             if (leftLongPress) {
-                handleLeftLongPress();
+                handleToggleModeLongPress();
+            } else if (_view.isScoreAdjustModeActive()) {
+                _view.switchScoreAdjustModeSide();
             } else {
                 adjustScore(true, 1, false);
             }
@@ -300,22 +305,21 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         }
 
         if (key == WatchUi.KEY_DOWN) {
-            var rightLongPress = (_rightButtonDownAt != null) && ((now - _rightButtonDownAt) >= LONG_PRESS_THRESHOLD_MS);
-            _rightButtonDownAt = null;
-            _rightHoldTimer.stop();
-
-            if (_rightLongPressTriggered || rightLongPress) {
-                if (!_rightLongPressTriggered) {
-                    adjustScore(false, -1, true);
-                }
+            if (_view.isScoreAdjustModeActive()) {
+                decreaseSelectedScoreFromToggleMode(true);
             } else {
                 adjustScore(false, 1, false);
             }
-            _rightLongPressTriggered = false;
             return true;
         }
 
         if (key == WatchUi.KEY_ESC) {
+            if (_view.isScoreAdjustModeActive()) {
+                _view.clearScoreAdjustMode();
+                WatchUi.requestUpdate();
+                return true;
+            }
+
             var backLongPress = (_backButtonDownAt != null) && ((now - _backButtonDownAt) >= BACK_LONG_PRESS_THRESHOLD_MS);
             _backButtonDownAt = null;
 
@@ -335,13 +339,19 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
     function onMenu() {
         _consumeNextUpRelease = true;
         _leftButtonDownAt = null;
-        handleLeftLongPress();
+        handleToggleModeLongPress();
         return true;
     }
 
     function onBack() {
         if (_suppressNextOnBack) {
             _suppressNextOnBack = false;
+            return true;
+        }
+
+        if (_view.isScoreAdjustModeActive()) {
+            _view.clearScoreAdjustMode();
+            WatchUi.requestUpdate();
             return true;
         }
 
@@ -360,11 +370,16 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         if (key == WatchUi.KEY_MENU) {
             _consumeNextUpRelease = true;
             _leftButtonDownAt = null;
-            handleLeftLongPress();
+            handleToggleModeLongPress();
             return true;
         }
 
         if ((key == WatchUi.KEY_ENTER || key == WatchUi.KEY_START) && keyType == WatchUi.PRESS_TYPE_ACTION) {
+            if (_view.isScoreAdjustModeActive()) {
+                decreaseSelectedScoreFromToggleMode(true);
+                return true;
+            }
+
             if (_view.isPauseAnimationActive() || _view.isStartAnimationActive()) {
                 return true;
             }
@@ -378,6 +393,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
                 _view.pauseGoalieTimer();
                 _view.isRecording = false;
                 _view.clearScoreUndoWindow();
+                _view.clearScoreAdjustMode();
                 _view.triggerPauseAnimation();
                 playPauseFeedback();
                 showPauseMenuAfterOverlay();
@@ -385,6 +401,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
                 var firstStart = !_view.activityStarted;
                 _view.session.start();
                 _view.isRecording = true;
+                _view.clearScoreAdjustMode();
                 if (firstStart) {
                     // First start initializes runtime counters and launch overlay once.
                     _view.markActivityStarted();

@@ -1,4 +1,5 @@
 using Toybox.Application;
+using Toybox.Attention;
 using Toybox.Position;
 using Toybox.System;
 using Toybox.Timer;
@@ -194,6 +195,24 @@ class UrbanFootballApp extends Application.AppBase {
         openPauseMenuViewWithSelection(2);
     }
 
+    function playConfirmationFeedback(tone, vibeDurationMs, vibeStrength) as Void {
+        if (Attention has :playTone) {
+            try {
+                Attention.playTone(tone);
+            } catch (ex) {
+                // Keep flow safe if a given tone is unavailable on this device.
+            }
+        }
+
+        if (Attention has :vibrate) {
+            try {
+                Attention.vibrate([new Attention.VibeProfile(vibeDurationMs, vibeStrength)]);
+            } catch (ex) {
+                // Keep flow safe if haptics are unavailable on this device.
+            }
+        }
+    }
+
     function saveFromPauseMenu() as Void {
         if (_mainView != null && _mainView.session != null) {
             try {
@@ -225,6 +244,7 @@ class UrbanFootballApp extends Application.AppBase {
         }
 
         WatchUi.switchToView(_savedView, _savedDelegate, WatchUi.SLIDE_IMMEDIATE);
+        playConfirmationFeedback(Attention.TONE_SUCCESS, 22, 62);
         _saveExitTimer.start(method(:onSaveExitTimer), DISCARD_EXIT_DELAY_MS, false);
     }
 
@@ -259,6 +279,7 @@ class UrbanFootballApp extends Application.AppBase {
         }
 
         WatchUi.switchToView(_discardedView, _discardedDelegate, WatchUi.SLIDE_IMMEDIATE);
+        playConfirmationFeedback(Attention.TONE_FAILURE, 22, 62);
         _discardExitTimer.start(method(:onDiscardExitTimer), DISCARD_EXIT_DELAY_MS, false);
     }
 
