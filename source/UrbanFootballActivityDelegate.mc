@@ -365,7 +365,7 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
         }
 
         if ((key == WatchUi.KEY_ENTER || key == WatchUi.KEY_START) && keyType == WatchUi.PRESS_TYPE_ACTION) {
-            if (_view.isPauseAnimationActive()) {
+            if (_view.isPauseAnimationActive() || _view.isStartAnimationActive()) {
                 return true;
             }
 
