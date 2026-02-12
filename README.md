@@ -31,12 +31,12 @@ Urban Football is a Garmin Connect IQ watch app for football sessions. It combin
 3. Build and run in simulator:
    ```bash
    java -jar "$CIQ_SDK/bin/monkeybrains.jar" \
-     -o bin/FootballApp.prg -f monkey.jungle -y <path-to-dev-key> \
+     -o bin/UrbanFootball.prg -f monkey.jungle -y <path-to-dev-key> \
      -d fenix7pro_sim -w
    ```
 4. Optional simulator run command:
    ```bash
-   monkeydo bin/FootballApp.prg fenix7pro
+   monkeydo bin/UrbanFootball.prg fenix7pro
    ```
 
 ## Controls

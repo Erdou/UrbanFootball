@@ -15,12 +15,12 @@ export CIQ_SDK="$HOME/Library/Application Support/Garmin/ConnectIQ/Sdks/connecti
 Compile and launch in simulator:
 ```bash
 java -jar "$CIQ_SDK/bin/monkeybrains.jar" \
-  -o bin/FootballApp.prg -f monkey.jungle -y <path-to-dev-key> \
+  -o bin/UrbanFootball.prg -f monkey.jungle -y <path-to-dev-key> \
   -d fenix7pro_sim -w
 ```
 Optional run command (if `monkeydo` is available):
 ```bash
-monkeydo bin/FootballApp.prg fenix7pro
+monkeydo bin/UrbanFootball.prg fenix7pro
 ```
 Clean generated output:
 ```bash
