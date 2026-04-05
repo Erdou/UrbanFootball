@@ -1,0 +1,6 @@
+<settings>
+    <setting propertyKey="@Properties.disableTouchscreen"
+             title="@Strings.settingDisableTouchscreenTitle">
+        <settingConfig type="boolean" />
+    </setting>
+</settings>

@@ -219,6 +219,10 @@ class UrbanFootballActivityDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onTap(clickEvent) {
+        var baseApp = Application.getApp();
+        if (baseApp instanceof UrbanFootballApp && (baseApp as UrbanFootballApp).isTouchscreenDisabled()) {
+            return true;
+        }
         if (!_view.activityStarted || !_view.isRecording || _view.isPauseAnimationActive()) {
             return true;
         }

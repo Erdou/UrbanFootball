@@ -70,6 +70,9 @@ class UrbanFootballPauseMenuDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onTap(clickEvent) {
+        if (_app.isTouchscreenDisabled()) {
+            return true;
+        }
         var coords = clickEvent.getCoordinates();
         var y = coords[1];
         _view.selectFromTap(y);

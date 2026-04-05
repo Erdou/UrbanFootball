@@ -30,4 +30,5 @@
     <string id="sessionNameGeneric">Urban Football</string>
     <string id="sessionNameIndoor">Urban Football 室內</string>
     <string id="sessionNameOutdoor">Urban Football 室外</string>
+    <string id="settingDisableTouchscreenTitle">停用觸控螢幕</string>
 </strings>

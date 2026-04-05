@@ -30,4 +30,5 @@
     <string id="sessionNameGeneric">Urban Football</string>
     <string id="sessionNameIndoor">Urban Football 屋内</string>
     <string id="sessionNameOutdoor">Urban Football 屋外</string>
+    <string id="settingDisableTouchscreenTitle">タッチスクリーンを無効にする</string>
 </strings>

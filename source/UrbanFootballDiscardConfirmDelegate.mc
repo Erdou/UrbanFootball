@@ -54,6 +54,9 @@ class UrbanFootballDiscardConfirmDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onTap(clickEvent) {
+        if (_app.isTouchscreenDisabled()) {
+            return true;
+        }
         var coords = clickEvent.getCoordinates();
         var x = coords[0];
         var y = coords[1];

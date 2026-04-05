@@ -37,6 +37,9 @@ class UrbanFootballEnvironmentDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onTap(clickEvent) {
+        if (_app.isTouchscreenDisabled()) {
+            return true;
+        }
         var coords = clickEvent.getCoordinates();
         var y = coords[1];
         _selectorView.selectFromTap(y);

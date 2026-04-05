@@ -30,4 +30,5 @@
     <string id="sessionNameGeneric">Urban Football</string>
     <string id="sessionNameIndoor">Urban Football Notri</string>
     <string id="sessionNameOutdoor">Urban Football Zunaj</string>
+    <string id="settingDisableTouchscreenTitle">Onemogoči zaslon na dotik</string>
 </strings>

@@ -30,4 +30,5 @@
     <string id="sessionNameGeneric">Urban Football</string>
     <string id="sessionNameIndoor">Urban Football Sisätila</string>
     <string id="sessionNameOutdoor">Urban Football Ulkona</string>
+    <string id="settingDisableTouchscreenTitle">Poista kosketusnäyttö käytöstä</string>
 </strings>

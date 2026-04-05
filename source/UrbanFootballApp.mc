@@ -27,9 +27,35 @@ class UrbanFootballApp extends Application.AppBase {
     var _saveExitTimer = null;
     var _discardExitTimer = null;
     var _goalieSettingsReturnToMain = false;
+    var _touchscreenDisabled = false;
 
     function initialize() {
         AppBase.initialize();
+    }
+
+    function onStart(state) {
+        loadSettings();
+    }
+
+    function loadSettings() as Void {
+        try {
+            var value = Application.Properties.getValue("disableTouchscreen");
+            if (value != null && value instanceof Toybox.Lang.Boolean) {
+                _touchscreenDisabled = value;
+            } else {
+                _touchscreenDisabled = false;
+            }
+        } catch (ex) {
+            _touchscreenDisabled = false;
+        }
+    }
+
+    function onSettingsChanged() as Void {
+        loadSettings();
+    }
+
+    function isTouchscreenDisabled() {
+        return _touchscreenDisabled;
     }
 
     function onStop(state) {

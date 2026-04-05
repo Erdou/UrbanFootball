@@ -30,4 +30,5 @@
     <string id="sessionNameGeneric">Urban Football</string>
     <string id="sessionNameIndoor">Urban Football В приміщенні</string>
     <string id="sessionNameOutdoor">Urban Football Надворі</string>
+    <string id="settingDisableTouchscreenTitle">Вимкнути сенсорний екран</string>
 </strings>
