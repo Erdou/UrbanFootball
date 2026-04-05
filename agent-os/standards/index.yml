@@ -1,2 +1,15 @@
 # Agent OS Standards Index
 
+ui:
+  custom-icon-drawing:
+    description: Draw icons with primitives for scalability across devices
+  input-state-machine:
+    description: Long-press detection, ESC/onBack consume flags, dedupe patterns
+  renderer-pattern:
+    description: Stateless renderer classes for non-trivial drawing logic
+  responsive-layout:
+    description: Two-tier layout with height < 280 breakpoint for small screens
+  timer-state-expiration:
+    description: Dual-trigger pattern for time-limited UI states
+  view-caching-strategy:
+    description: When to cache vs. recreate View-Delegate pairs
