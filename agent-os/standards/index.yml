@@ -1,5 +1,15 @@
 # Agent OS Standards Index
 
+app-lifecycle:
+  app-as-coordinator:
+    description: App owns all navigation and settings state; delegates communicate through it
+  config-flow-return-flag:
+    description: Boolean flag determines back navigation target for goalie settings
+  defensive-gps-mode:
+    description: Double-applied GPS with capability checks, try/catch, SDK callback
+  haptic-feedback-conventions:
+    description: Two-tier haptic helpers — defensive for critical flows, simple for gameplay
+
 game-logic:
   activity-session-lifecycle:
     description: Session persists across settings trips; first-start vs resume behaviors
