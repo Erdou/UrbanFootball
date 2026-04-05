@@ -109,7 +109,7 @@ In both confirmation screens, press **DOWN** or **BACK** to go back to the pause
 
 ## Quick Reference
 
-For a printable one-page cheat sheet of every button and tap zone, see the [Watch Controls Cheat Sheet](cheat-sheets/en.md) (available in [36 languages](cheat-sheets/)).
+For the full Garmin store listing with features and controls, see the [Store Listing](store-listing/en.md) (available in [36 languages](store-listing/)).
 
 ---
 
