@@ -14,6 +14,14 @@ game-logic:
   score-undo-window:
     description: 3-second temporal undo after increment, side-locked
 
+resources:
+  localization-scope:
+    description: Only strings localized (35 langs); layouts, menus, drawables universal
+  resource-loading-convention:
+    description: Load all resources once in initialize(), cache as instance vars
+  string-key-naming:
+    description: Context-prefixed string IDs with semantic suffixes
+
 ui:
   custom-icon-drawing:
     description: Draw icons with primitives for scalability across devices
