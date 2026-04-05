@@ -1,27 +1,27 @@
-# Shpargalka z keruvannya godynnikom
+# Шпаргалка з керування годинником
 
-## Fizychni knopki
+## Фізичні кнопки
 
-| Knopka | Diya | Shcho robit |
+| Кнопка | Дія | Що робить |
 |---|---|---|
-| **START/STOP** (top-right) | Natysni | Rozpochaty abo pryzupynyty zapys |
-| **START/STOP** (top-right) | Natysni (v menyu pauzy) | Pidtverdyty obraniy variant (Vidnovyty/Zberegty/Vidkhylyty) |
-| **UP/MENU** (top-left) | Natysni | +1 liviy rakhunok |
-| **UP/MENU** (top-left) | Dovge natyskannya | Uviyty v rezhim korektsiyi rakhunku (obrana liva storona) |
-| **UP/MENU** (top-left) | Natysni (v rezhimi korektsiyi) | Peremykannya mizh livoyu/pravoyu storonoyu |
-| **DOWN** (bottom-left) | Natysni | +1 praviy rakhunok |
-| **DOWN** (bottom-left) | Natysni (v rezhimi korektsiyi) | −1 na obraniy storoni |
-| **DOWN** (bottom-left) | Natysni (na ekrani pidtverdzhennya) | Nazad do menyu pauzy |
-| **BACK/LAP** (bottom-right) | Natysni | Skynuty taymer vorotarya |
-| **BACK/LAP** (bottom-right) | Dovge natyskannya | Vidkryty nalashtuvannya taymera vorotarya |
-| **BACK/LAP** (bottom-right) | Natysni (v rezhimi korektsiyi) | Vyyty z rezhimu korektsiyi rakhunku |
-| **BACK/LAP** (bottom-right) | Natysni (na ekrani pidtverdzhennya) | Nazad do menyu pauzy |
+| **START/STOP** (top-right) | Натисніть | Розпочати або призупинити запис |
+| **START/STOP** (top-right) | Натисніть (в меню паузи) | Підтвердити обраний варіант (Відновити/Зберегти/Відхилити) |
+| **UP/MENU** (top-left) | Натисніть | +1 лівий рахунок |
+| **UP/MENU** (top-left) | Довге натискання | Увійти в режим корекції рахунку (обрана ліва сторона) |
+| **UP/MENU** (top-left) | Натисніть (в режимі корекції) | Перемикання між лівою/правою стороною |
+| **DOWN** (bottom-left) | Натисніть | +1 правий рахунок |
+| **DOWN** (bottom-left) | Натисніть (в режимі корекції) | −1 на обраній стороні |
+| **DOWN** (bottom-left) | Натисніть (на екрані підтвердження) | Назад до меню паузи |
+| **BACK/LAP** (bottom-right) | Натисніть | Скинути таймер воротаря |
+| **BACK/LAP** (bottom-right) | Довге натискання | Відкрити налаштування таймера воротаря |
+| **BACK/LAP** (bottom-right) | Натисніть (в режимі корекції) | Вийти з режиму корекції рахунку |
+| **BACK/LAP** (bottom-right) | Натисніть (на екрані підтвердження) | Назад до меню паузи |
 
-## Zony sensornoho ekrana
+## Зони сенсорного екрана
 
-| Zona | Diya | Shcho robit |
+| Зона | Дія | Що робить |
 |---|---|---|
-| Liva polovyna ekrana | Torknis | +1 liviy rakhunok |
-| Prava polovyna ekrana | Torknis | +1 praviy rakhunok |
-| Nyzhni ~30% ekrana | Torknis | Skynuty taymer vorotarya |
-| Pidsichena storona (protyahom 3s vikna skasuvannya) | Torknis | Skasuvaty ostanniy rakhunok |
+| Ліва половина екрана | Торкніться | +1 лівий рахунок |
+| Права половина екрана | Торкніться | +1 правий рахунок |
+| Нижні ~30% екрана | Торкніться | Скинути таймер воротаря |
+| Підсвічена сторона (протягом 3s вікна скасування) | Торкніться | Скасувати останній рахунок |

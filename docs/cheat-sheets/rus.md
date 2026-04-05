@@ -1,27 +1,27 @@
-# Shpargalka po upravleniyu chasami
+# Шпаргалка по управлению часами
 
-## Fizicheskie knopki
+## Физические кнопки
 
-| Knopka | Deystvie | Chto delaet |
+| Кнопка | Действие | Что делает |
 |---|---|---|
-| **START/STOP** (top-right) | Nazhmite | Nachat ili priostanovit zapis |
-| **START/STOP** (top-right) | Nazhmite (v menyu pauzy) | Podtverdit vybrannyy variant (Vozobnovit/Sokhranit/Otmenit) |
-| **UP/MENU** (top-left) | Nazhmite | +1 levyy schet |
-| **UP/MENU** (top-left) | Dlitelnoe nazhatie | Voyti v rezhim korrektsii scheta (vybrana levaya storona) |
-| **UP/MENU** (top-left) | Nazhmite (v rezhime korrektsii) | Pereklyuchenie mezhdu levoy/pravoy storonoy |
-| **DOWN** (bottom-left) | Nazhmite | +1 pravyy schet |
-| **DOWN** (bottom-left) | Nazhmite (v rezhime korrektsii) | −1 na vybrannoy storone |
-| **DOWN** (bottom-left) | Nazhmite (na ekrane podtverzhdeniya) | Nazad v menyu pauzy |
-| **BACK/LAP** (bottom-right) | Nazhmite | Sbrosit taymer vratarya |
-| **BACK/LAP** (bottom-right) | Dlitelnoe nazhatie | Otkryt nastroyki taymera vratarya |
-| **BACK/LAP** (bottom-right) | Nazhmite (v rezhime korrektsii) | Vyйti iz rezhima korrektsii scheta |
-| **BACK/LAP** (bottom-right) | Nazhmite (na ekrane podtverzhdeniya) | Nazad v menyu pauzy |
+| **START/STOP** (top-right) | Нажмите | Начать или приостановить запись |
+| **START/STOP** (top-right) | Нажмите (в меню паузы) | Подтвердить выбранный вариант (Возобновить/Сохранить/Отменить) |
+| **UP/MENU** (top-left) | Нажмите | +1 левый счёт |
+| **UP/MENU** (top-left) | Долгое нажатие | Войти в режим коррекции счёта (выбрана левая сторона) |
+| **UP/MENU** (top-left) | Нажмите (в режиме коррекции) | Переключение между левой/правой стороной |
+| **DOWN** (bottom-left) | Нажмите | +1 правый счёт |
+| **DOWN** (bottom-left) | Нажмите (в режиме коррекции) | −1 на выбранной стороне |
+| **DOWN** (bottom-left) | Нажмите (на экране подтверждения) | Назад в меню паузы |
+| **BACK/LAP** (bottom-right) | Нажмите | Сбросить таймер вратаря |
+| **BACK/LAP** (bottom-right) | Долгое нажатие | Открыть настройки таймера вратаря |
+| **BACK/LAP** (bottom-right) | Нажмите (в режиме коррекции) | Выйти из режима коррекции счёта |
+| **BACK/LAP** (bottom-right) | Нажмите (на экране подтверждения) | Назад в меню паузы |
 
-## Zony sensornogo ekrana
+## Зоны сенсорного экрана
 
-| Zona | Deystvie | Chto delaet |
+| Зона | Действие | Что делает |
 |---|---|---|
-| Levaya polovina ekrana | Kosnites | +1 levyy schet |
-| Pravaya polovina ekrana | Kosnites | +1 pravyy schet |
-| Nizhnie ~30% ekrana | Kosnites | Sbrosit taymer vratarya |
-| Podsvechennaya storona (v techenie 3s okna otmeny) | Kosnites | Otmenit posledniy schet |
+| Левая половина экрана | Коснитесь | +1 левый счёт |
+| Правая половина экрана | Коснитесь | +1 правый счёт |
+| Нижние ~30% экрана | Коснитесь | Сбросить таймер вратаря |
+| Подсвеченная сторона (в течение 3s окна отмены) | Коснитесь | Отменить последний счёт |

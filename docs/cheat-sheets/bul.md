@@ -1,27 +1,27 @@
-# Kratko rakovodstvo za upravlenie na chasovnika
+# Кратко ръководство за управление на часовника
 
-## Fizicheski butoni
+## Физически бутони
 
-| Buton | Deystvie | Kakvo pravi |
+| Бутон | Действие | Какво прави |
 |---|---|---|
-| **START/STOP** (top-right) | Natisni | Startirай или pauziray zapisa |
-| **START/STOP** (top-right) | Natisni (v menyuto za pauza) | Potvardi izbranata optsiya (Vazobnovyavane/Zapazване/Otхvarlyane) |
-| **UP/MENU** (top-left) | Natisni | +1 lyav rezulat |
-| **UP/MENU** (top-left) | Dalgo natiskane | Vlizane v rezhim za korigirane na rezulata (izbrana lyava strana) |
-| **UP/MENU** (top-left) | Natisni (v rezhim za korigirane) | Prevklyuchvane mezhdu lyava/dyasna strana |
-| **DOWN** (bottom-left) | Natisni | +1 dyasen rezultat |
-| **DOWN** (bottom-left) | Natisni (v rezhim za korigirane) | −1 na izbranata strana |
-| **DOWN** (bottom-left) | Natisni (na ekrana za potvarzhdenie) | Nazad kam menyuto za pauza |
-| **BACK/LAP** (bottom-right) | Natisni | Nulиray taymer na vrataря |
-| **BACK/LAP** (bottom-right) | Dalgo natiskane | Otvori nastroykite na taymera na vratarya |
-| **BACK/LAP** (bottom-right) | Natisni (v rezhim za korigirane) | Izhod ot rezhim za korigirane na rezultata |
-| **BACK/LAP** (bottom-right) | Natisni (na ekrana za potvarzhdenie) | Nazad kam menyuto za pauza |
+| **START/STOP** (top-right) | Натиснете | Стартиране или пауза на записа |
+| **START/STOP** (top-right) | Натиснете (в менюто за пауза) | Потвърдете избраната опция (Възобновяване/Запазване/Отхвърляне) |
+| **UP/MENU** (top-left) | Натиснете | +1 ляв резултат |
+| **UP/MENU** (top-left) | Дълго натискане | Влизане в режим за коригиране на резултата (избрана лява страна) |
+| **UP/MENU** (top-left) | Натиснете (в режим за коригиране) | Превключване между лява/дясна страна |
+| **DOWN** (bottom-left) | Натиснете | +1 десен резултат |
+| **DOWN** (bottom-left) | Натиснете (в режим за коригиране) | −1 на избраната страна |
+| **DOWN** (bottom-left) | Натиснете (на екрана за потвърждение) | Назад към менюто за пауза |
+| **BACK/LAP** (bottom-right) | Натиснете | Нулиране на таймера на вратаря |
+| **BACK/LAP** (bottom-right) | Дълго натискане | Отваряне на настройките на таймера на вратаря |
+| **BACK/LAP** (bottom-right) | Натиснете (в режим за коригиране) | Изход от режима за коригиране на резултата |
+| **BACK/LAP** (bottom-right) | Натиснете (на екрана за потвърждение) | Назад към менюто за пауза |
 
-## Zoni na senzorniya ekran
+## Зони на сензорния екран
 
-| Zona | Deystvie | Kakvo pravi |
+| Зона | Действие | Какво прави |
 |---|---|---|
-| Lyava polovina na ekrana | Dokosni | +1 lyav rezultat |
-| Dyasna polovina na ekrana | Dokosni | +1 dyasen rezultat |
-| Dolnite ~30% na ekrana | Dokosni | Nuliray taymera na vratarya |
-| Otsvetena strana (po vreme na 3s prozortsa za otmyana) | Dokosni | Otmeni posledniya rezultat |
+| Лява половина на екрана | Докоснете | +1 ляв резултат |
+| Дясна половина на екрана | Докоснете | +1 десен резултат |
+| Долните ~30% на екрана | Докоснете | Нулиране на таймера на вратаря |
+| Осветената страна (по време на 3s прозореца за отмяна) | Докоснете | Отмяна на последния резултат |
