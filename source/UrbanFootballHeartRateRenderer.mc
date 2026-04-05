@@ -83,9 +83,6 @@ class UrbanFootballHeartRateRenderer {
         dc.setColor(primaryTextColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX + 18, 30, Graphics.FONT_LARGE, hrText, Graphics.TEXT_JUSTIFY_CENTER);
 
-        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.setPenWidth(2);
-        dc.drawLine(34, HR_HEADER_DIVIDER_Y, width - 34, HR_HEADER_DIVIDER_Y);
         dc.setPenWidth(1);
     }
 

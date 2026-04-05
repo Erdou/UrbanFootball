@@ -85,12 +85,24 @@ class UrbanFootballMainScreenRenderer {
         }
 
         var gameTimeY = centerY + 38;
+        if (height > 280) {
+            var scoreBottom = scoreY + scoreHeight;
+            var minGap = height * 2 / 100;
+            if (minGap < 4) { minGap = 4; }
+            gameTimeY = scoreBottom + minGap;
+        }
         dc.setColor(SECONDARY_TEXT_COLOR, Graphics.COLOR_TRANSPARENT);
         dc.drawText(centerX, gameTimeY, Graphics.FONT_TINY, gameTimeText, Graphics.TEXT_JUSTIFY_CENTER);
 
         if (goalieTimerEnabled) {
             var goalieFont = Graphics.FONT_SMALL;
             var goalieY = centerY + 74;
+            if (height > 280) {
+                var gameTimeFontHeight = dc.getFontHeight(Graphics.FONT_TINY);
+                var minGap = height * 2 / 100;
+                if (minGap < 4) { minGap = 4; }
+                goalieY = gameTimeY + gameTimeFontHeight + minGap;
+            }
             var goalieMaxY = height - dc.getFontHeight(goalieFont) - 24;
             if (goalieY > goalieMaxY) {
                 goalieY = goalieMaxY;
