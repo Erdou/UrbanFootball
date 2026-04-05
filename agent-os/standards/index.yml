@@ -1,5 +1,19 @@
 # Agent OS Standards Index
 
+game-logic:
+  activity-session-lifecycle:
+    description: Session persists across settings trips; first-start vs resume behaviors
+  goalie-timer-state-machine:
+    description: Clock-reference countdown that survives app suspend/resume
+  overtime-pulse-alert:
+    description: Interval-deduped vibration pulses during goalie overtime
+  save-discard-deferred-exit:
+    description: Synchronous save then 2-second confirmation overlay before exit
+  score-adjust-mode:
+    description: Long-press decrement mode for score correction without touchscreen
+  score-undo-window:
+    description: 3-second temporal undo after increment, side-locked
+
 ui:
   custom-icon-drawing:
     description: Draw icons with primitives for scalability across devices
