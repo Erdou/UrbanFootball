@@ -107,6 +107,12 @@ In both confirmation screens, press **DOWN** or **BACK** to go back to the pause
 
 ---
 
+## Quick Reference
+
+For a printable one-page cheat sheet of every button and tap zone, see the [Watch Controls Cheat Sheet](cheat-sheets/en.md) (available in [36 languages](cheat-sheets/)).
+
+---
+
 ## Tips
 
 - Touchscreen input can be disabled in the app settings if you prefer buttons only.
