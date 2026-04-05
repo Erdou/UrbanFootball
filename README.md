@@ -40,11 +40,14 @@ Urban Football is a Garmin Connect IQ watch app for football sessions. It combin
    ```
 
 ## Controls
+
+See the full [Usage Guide](docs/usage-guide.md) for detailed instructions including touchscreen tap zones, score undo, and score adjust mode.
+
 - Tap left/right half: increment left/right score (after activity start)
 - `UP` short press: +1 left score
-- `UP` long press: -1 left score
+- `UP` long press: enter Score Adjust Mode
 - `DOWN` short press: +1 right score
-- `DOWN` long press: -1 right score
+- `DOWN` in Score Adjust Mode: -1 selected score
 - `START` or `ENTER`: start/stop activity recording
 - `ESC` short press: reset goalie timer
 - `ESC` long press: open goalie timer configuration
