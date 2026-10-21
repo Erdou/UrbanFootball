@@ -1,4 +1,5 @@
 using Toybox.Activity;
+using Toybox.Application;
 using Toybox.Attention;
 using Toybox.Graphics;
 using Toybox.System;
@@ -48,6 +49,7 @@ class UrbanFootballActivityView extends WatchUi.View {
     var _heartRateRenderer;
     var _preStartRenderer;
     var _mainScreenRenderer;
+    var _clockRenderer;
 
     function initialize() {
         View.initialize();
@@ -62,6 +64,7 @@ class UrbanFootballActivityView extends WatchUi.View {
         _heartRateRenderer = new UrbanFootballHeartRateRenderer();
         _preStartRenderer = new UrbanFootballPreStartRenderer();
         _mainScreenRenderer = new UrbanFootballMainScreenRenderer();
+        _clockRenderer = new UrbanFootballClockRenderer();
 
         _refreshTimer = new Timer.Timer();
         _refreshTimer.start(method(:onTimerTick), 1000, true);
@@ -425,6 +428,9 @@ class UrbanFootballActivityView extends WatchUi.View {
         maybeExpireScoreAdjustMode();
         var width = dc.getWidth();
         var height = dc.getHeight();
+        var app = Application.getApp() as UrbanFootballApp;
+        var showTimeOfDay = app.isTimeOfDayVisible();
+        var clockTop = showTimeOfDay ? _clockRenderer.getTop(dc, height) : null;
         var remainingSeconds = getGoalieRemainingSeconds();
         var goalieTimeText = formatGoalieTime(remainingSeconds);
         var formattedGoalieTimeText = formatGoalieLine(goalieTimeText);
@@ -456,8 +462,15 @@ class UrbanFootballActivityView extends WatchUi.View {
                 formattedGoalieTimeText,
                 remainingSeconds < 0,
                 isRecording,
-                activityStarted
+                activityStarted,
+                clockTop
             );
+        }
+
+        if (showTimeOfDay) {
+            var clockColor = showPreStartScreen ? Graphics.COLOR_WHITE : Graphics.COLOR_BLACK;
+            _clockRenderer.drawFooter(dc, width, height, System.getClockTime(),
+                System.getDeviceSettings().is24Hour, clockColor);
         }
 
         // Keep overlay and pre-start background together during start transition.

@@ -35,7 +35,8 @@ class UrbanFootballMainScreenRenderer {
         goalieTimeText,
         goalieTimerOvertime,
         isRecording,
-        activityStarted
+        activityStarted,
+        clockTop
     ) as Void {
         var centerX = width / 2;
         var centerY = height / 2;
@@ -104,6 +105,12 @@ class UrbanFootballMainScreenRenderer {
                 goalieY = gameTimeY + gameTimeFontHeight + minGap;
             }
             var goalieMaxY = height - dc.getFontHeight(goalieFont) - 24;
+            if (clockTop != null) {
+                var clockSafeMaxY = clockTop - dc.getFontHeight(goalieFont) - 4;
+                if (clockSafeMaxY < goalieMaxY) {
+                    goalieMaxY = clockSafeMaxY;
+                }
+            }
             if (goalieY > goalieMaxY) {
                 goalieY = goalieMaxY;
             }

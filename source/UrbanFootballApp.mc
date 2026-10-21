@@ -28,6 +28,7 @@ class UrbanFootballApp extends Application.AppBase {
     var _discardExitTimer = null;
     var _goalieSettingsReturnToMain = false;
     var _touchscreenDisabled = false;
+    var _timeOfDayVisible = false;
 
     function initialize() {
         AppBase.initialize();
@@ -48,10 +49,22 @@ class UrbanFootballApp extends Application.AppBase {
         } catch (ex) {
             _touchscreenDisabled = false;
         }
+
+        try {
+            var showTime = Application.Properties.getValue("showTimeOfDay");
+            _timeOfDayVisible = (showTime instanceof Toybox.Lang.Boolean) && showTime;
+        } catch (ex) {
+            _timeOfDayVisible = false;
+        }
     }
 
     function onSettingsChanged() as Void {
         loadSettings();
+        WatchUi.requestUpdate();
+    }
+
+    function isTimeOfDayVisible() {
+        return _timeOfDayVisible;
     }
 
     function isTouchscreenDisabled() {

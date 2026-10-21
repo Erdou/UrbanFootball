@@ -3,4 +3,8 @@
              title="@Strings.settingDisableTouchscreenTitle">
         <settingConfig type="boolean" />
     </setting>
+    <setting propertyKey="@Properties.showTimeOfDay"
+             title="@Strings.settingShowTimeOfDayTitle">
+        <settingConfig type="boolean" />
+    </setting>
 </settings>

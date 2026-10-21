@@ -21,6 +21,7 @@ Urban Football is a Garmin Connect IQ watch app for football sessions. It combin
 - Goalie timer: enable/disable, custom duration (1-99 min), quick reset
 - Overtime pulse vibration alerts when goalie time is exceeded
 - Pre-start screen and start transition overlay
+- Optional time-of-day clock on the pre-start, live match, and pause screens (off by default; follows the watch's 12/24-hour format)
 
 ## Quick Start
 1. Install prerequisites: Java, Garmin Connect IQ SDK, developer key.

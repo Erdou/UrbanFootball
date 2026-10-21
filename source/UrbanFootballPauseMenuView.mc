@@ -1,5 +1,7 @@
 using Toybox.Activity;
+using Toybox.Application;
 using Toybox.Graphics;
+using Toybox.System;
 using Toybox.WatchUi;
 
 class UrbanFootballPauseMenuView extends WatchUi.View {
@@ -17,6 +19,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
     var _saveLabel = null;
     var _discardLabel = null;
     var _timerTitle = null;
+    var _clockRenderer;
 
     function initialize() {
         View.initialize();
@@ -25,6 +28,7 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
         _saveLabel = WatchUi.loadResource(Rez.Strings.pauseMenuSave);
         _discardLabel = WatchUi.loadResource(Rez.Strings.pauseMenuDiscard);
         _timerTitle = WatchUi.loadResource(Rez.Strings.pauseMenuTimerTitle);
+        _clockRenderer = new UrbanFootballClockRenderer();
     }
 
     function moveSelection(step) as Void {
@@ -249,6 +253,12 @@ class UrbanFootballPauseMenuView extends WatchUi.View {
             var peekIndex = scrollOffset + VISIBLE_ITEM_COUNT;
             var peekY = ITEM_START_Y + (VISIBLE_ITEM_COUNT * ITEM_SPACING);
             drawMenuRow(dc, textX, iconX, peekY, rowFont, rowHeight, getLabelForIndex(peekIndex), false, peekIndex);
+        }
+
+        var app = Application.getApp() as UrbanFootballApp;
+        if (app.isTimeOfDayVisible()) {
+            _clockRenderer.drawFooter(dc, width, height, System.getClockTime(),
+                System.getDeviceSettings().is24Hour, Graphics.COLOR_WHITE);
         }
 
         // Draw the ring last so it stays visually on top, like Garmin pause UI.

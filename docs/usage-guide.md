@@ -13,6 +13,12 @@ Navigate these screens with the **UP/DOWN** buttons to move between options and 
 
 ## Main Activity Screen
 
+### Time of Day
+
+Enable **Show time of day** in Urban Football's app settings in Connect IQ to display the current local time at the bottom of the pre-start, match, and pause screens. It is **off by default**, and your choice is remembered between sessions.
+
+The clock follows the watch's 12/24-hour setting and keeps updating while the match is paused. It is separate from the elapsed game time and goalie countdown. No extra button press or setup question is required.
+
 ### Starting & Stopping
 
 | Action | How |

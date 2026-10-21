@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- **Optional time-of-day clock** — enable **Show time of day** in app settings to see the watch's local time before kickoff, during the match, and while paused. Disabled by default; respects the watch's 12/24-hour setting.
+
 ## [1.0.2] - 2026-04-06
 
 ### Added

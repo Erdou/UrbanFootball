@@ -31,4 +31,5 @@
     <string id="sessionNameIndoor">Urban Football Внутри</string>
     <string id="sessionNameOutdoor">Urban Football Снаружи</string>
     <string id="settingDisableTouchscreenTitle">Отключить сенсорный экран</string>
+    <string id="settingShowTimeOfDayTitle">Показывать текущее время</string>
 </strings>

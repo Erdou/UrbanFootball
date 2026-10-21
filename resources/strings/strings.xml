@@ -33,4 +33,5 @@
     <string id="sessionNameIndoor">Urban Football Int</string>
     <string id="sessionNameOutdoor">Urban Football Ext</string>
     <string id="settingDisableTouchscreenTitle">Disable touchscreen</string>
+    <string id="settingShowTimeOfDayTitle">Show time of day</string>
 </strings>

@@ -31,4 +31,5 @@
     <string id="sessionNameIndoor">Urban Football Interno</string>
     <string id="sessionNameOutdoor">Urban Football Esterno</string>
     <string id="settingDisableTouchscreenTitle">Disattiva touchscreen</string>
+    <string id="settingShowTimeOfDayTitle">Mostra l’ora</string>
 </strings>

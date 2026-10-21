@@ -1,3 +1,4 @@
 <properties>
     <property id="disableTouchscreen" type="boolean">false</property>
+    <property id="showTimeOfDay" type="boolean">false</property>
 </properties>
